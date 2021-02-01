@@ -7,7 +7,7 @@ build
 dist
 *.tgz
 #Ignore text files (used for notes)
-*.txt
+#*.txt
 #Ignore performance testing file
 performance
 #Testing Reports
