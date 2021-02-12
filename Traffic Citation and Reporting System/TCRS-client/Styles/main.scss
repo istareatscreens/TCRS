@@ -1,3 +1,9 @@
-﻿body {
-    background-color: azure;
-}
+
+@import "abstracts/_functions";
+@import "abstracts/_mixins";
+@import "abstracts/_variables";
+
+@import "base/_base";
+@import "base/_typography";
+@import "base/_utilities";
+@import "base/_animations";

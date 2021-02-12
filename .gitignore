@@ -5,6 +5,10 @@
 ##Source:
 ##https://github.com/JeremyLikness/blazor-wasm/blob/master/.gitignore
 
+#Added
+.vscode
+debug.log
+
 # User-specific files
 *.rsuser
 *.suo
