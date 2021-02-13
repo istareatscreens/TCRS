@@ -1,4 +1,4 @@
-using Blazor.Demo.Pages;
+using TCRS_client.Pages;
 using Bunit;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
@@ -9,15 +9,15 @@ namespace TCRS_client_test
 {
     public class Tests
     {
-		private Bunit.TestContext testContext;
-        private Mock<ILoginProcessor> loginProcessor;
+        private Bunit.TestContext testContext;
+        //private Mock<ILoginProcessor> loginProcessor;
         [SetUp]
         public void Setup()
         {
-			testContext = new Bunit.TestContext();
-            loginProcessor = new Mock<ILoginProcessor>();
+            testContext = new Bunit.TestContext();
+            //   loginProcessor = new Mock<ILoginProcessor>();
         }
-		[TearDown]
+        [TearDown]
         public void Teardown()
         {
             testContext.Dispose();
@@ -26,7 +26,7 @@ namespace TCRS_client_test
         [Test]
         public void Test1()
         {
-            testContext.Services.AddScoped(x => loginProcessor.Object);
+            // testContext.Services.AddScoped(x => loginProcessor.Object);
 
             var component = testContext.RenderComponent<Index>();
 
