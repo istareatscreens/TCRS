@@ -13,8 +13,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Content Include="Styles\main.css" />
-		<Content Include="Styles\main.min.css" />
 		<Content Include="Styles\main.scss" />
 	</ItemGroup>
 
