@@ -42,7 +42,7 @@ CREATE TABLE Person (
 CREATE TABLE Client_Admin(
    person_id,
    PRIMARY KEY(student_id),
-   FOREIGN KEY (user_id) REFERENCES Person(person_id)
+   FOREIGN KEY (person_id) REFERENCES Person(person_id)
    ON DELETE CASCADE
 );
 
@@ -57,7 +57,7 @@ CREATE TABLE School_Rep(
    person_id,
    school_id NOT NULL,
    PRIMARY KEY(person_id),
-   FOREIGN KEY (user_id) REFERENCES Person(person_id)
+   FOREIGN KEY (person_id) REFERENCES Person(person_id)
    ON DELETE RESTRICT,
    FOREIGN KEY (school_id) REFERENCES School(school_id)
    ON DELETE RESTRICT
@@ -91,7 +91,7 @@ CREATE TABLE Police_Dept(
    police_dept_id INT AUTO_INCREMENT NOT NULL,
    manager_id,
    name VARCHAR(255) NOT NULL UNIQUE,
-   PRIMARY KEY (munic_id),
+   PRIMARY KEY (police_dept_id),
    FOREIGN KEY (manager_id) REFERENCES Person(person_id)
 );
 
@@ -129,6 +129,8 @@ Create TABLE Citation(
    citation_number VARCHAR(32) NOT NULL UNIQUE,
    date_recieved DATETIME NOT NULL,
    citation_type_id,
+   officer_id,
+   FOREIGN KEY (officer_id) REFERENCES Person(person_id)
    PRIMARY KEY (citation_id),
    FOREIGN KEY (citation_type_id) REFERENCES Citation_Type(citation_type_id)
 );
@@ -169,12 +171,12 @@ CREATE TABLE Vehicle(
    citizen_id,
    insurer_id,
    FOREIGN KEY (citizen_id) REFERENCES Citizen(citizen_id),
-   FOREIGN KEY (insurer_id) REFERENCES Citizen(insurer_id),
+   FOREIGN KEY (insurer_id) REFERENCES Insurer(insurer_id),
    PRIMARY KEY (vehicle_id)
 );
 
 CREATE TABLE Licence_Plate(
-   plate_number INT AUTO_INCREMENT NOT NULL,
+   plate_number VARCHAR(255) NOT NULL,
    vehicle_id,
    expired BOOLEAN NOT NULL DEFAULT 1,
    PRIMARY KEY (vehicle_id, plate_number),
@@ -208,10 +210,10 @@ CREATE TABLE Wanted_Citizen(
 
 CREATE TABLE Wanted(
    wanted_id INT NOT NULL AUTO_INCREMENT,
+   reference_no VARCHAR(32) NOT NULL,
    dangerous BOOLEAN NOT NULL DEFAULT 1,
    crime VARCHAR(255) NOT NULL,
-   reference_no VARCHAR(32) NOT NULL,
-   PRIMARY KEY (wanted_id)
+   PRIMARY KEY (wanted_id, reference_no)
 );
 
 CREATE TABLE Citizen(
