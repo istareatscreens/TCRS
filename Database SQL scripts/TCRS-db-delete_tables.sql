@@ -1,26 +1,20 @@
-#Delete tables
+--Delete tables from: https://stackoverflow.com/questions/8439650/how-to-drop-all-tables-in-a-sql-server-database
+DECLARE @sql NVARCHAR(2000)
 
-#Users
-DROP TABLE Person; #1
-DROP TABLE Client_Admin; #2
-DROP TABLE School_Rep; #3
-DROP TABLE Municipal_Officer; #4
-DROP TABLE Highway_Patrol_Officer; #5
-DROP TABLE Municipality; #6
-DROP TABLE Police_Dept; #7
-DROP TABLE School; #8
-DROP TABLE Course; #9
-DROP TABLE Registration; #10
-DROP TABLE Citation; #11
-DROP TABLE Citation_Type; #12
-DROP TABLE Vehicle_Record; #13
-DROP TABLE Driver_Record; #14
-DROP TABLE Vehicle; #15
-DROP TABLE Licence_Plate; #16
-DROP TABLE Payment; #17
-DROP TABLE Wanted_Vehicle; #18
-DROP TABLE Wanted_Citizen; #19
-DROP TABLE Wanted; #20
-DROP TABLE Citizen; #21
-DROP TABLE Insurer; #22
-DROP TABLE Licence; #23
+WHILE(EXISTS(SELECT 1 from INFORMATION_SCHEMA.TABLE_CONSTRAINTS WHERE CONSTRAINT_TYPE='FOREIGN KEY'))
+BEGIN
+    SELECT TOP 1 @sql=('ALTER TABLE ' + TABLE_SCHEMA + '.[' + TABLE_NAME + '] DROP CONSTRAINT [' + CONSTRAINT_NAME + ']')
+    FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS
+    WHERE CONSTRAINT_TYPE = 'FOREIGN KEY'
+    EXEC(@sql)
+    PRINT @sql
+END
+
+WHILE(EXISTS(SELECT * from INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME != '__MigrationHistory' AND TABLE_NAME != 'database_firewall_rules'))
+BEGIN
+    SELECT TOP 1 @sql=('DROP TABLE ' + TABLE_SCHEMA + '.[' + TABLE_NAME + ']')
+    FROM INFORMATION_SCHEMA.TABLES
+    WHERE TABLE_NAME != '__MigrationHistory' AND TABLE_NAME != 'database_firewall_rules'
+    EXEC(@sql)
+    PRINT @sql
+END
