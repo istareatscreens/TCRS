@@ -12,6 +12,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TCRS_db;
 
+
 namespace TCRS_server
 {
     public class Startup
@@ -27,11 +28,11 @@ namespace TCRS_server
         public void ConfigureServices(IServiceCollection services)
         {
 
+            services.AddSingleton<IDataAccess, DataAccess>();
+            Global.ConnectionString = Configuration.GetConnectionString("Default");
             services.AddControllers();
             //Setup save and load data enpoints
-            services.AddSingleton<IDataAccess, DataAccess>();
             //Set connection string in global variable
-            Global.ConnectionString = Configuration.GetConnectionString("Default");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

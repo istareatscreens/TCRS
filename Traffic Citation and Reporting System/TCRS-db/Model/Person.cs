@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace TCRS_db.Model
 {
-    class Person
+    public class Person
     {
         [Key]
         public int person_id { get; set; }
