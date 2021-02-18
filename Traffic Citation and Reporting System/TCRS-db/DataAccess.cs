@@ -17,9 +17,20 @@ namespace TCRS_db
             using (IDbConnection connection = new MySqlConnection(connectionString))
             {
                 //Not returning directly to allow for easier debugging
+                connection.Open();
                 List<T> rows = connection.Query<T>(sql, parameters).ToList();
 
                 return rows;
+            }
+        }
+
+        public IEnumerable<T> GetAll<T>(string connectionString, T Model)
+        {
+            using (IDbConnection connection = new MySqlConnection(connectionString))
+            {
+                string sqlQuery = @"Select * FROM " + nameof(Model);
+                connection.Open();
+                return connection.Query<T>(sqlQuery);
             }
         }
 
@@ -27,6 +38,7 @@ namespace TCRS_db
         {
             using (IDbConnection connection = new MySqlConnection(connectionString))
             {
+                connection.Open();
                 connection.Execute(sql, parameters);
             }
 
