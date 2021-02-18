@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using TCRS_db;
 
 
+
 namespace TCRS_server
 {
     public class Startup
@@ -27,6 +28,7 @@ namespace TCRS_server
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
 
             services.AddSingleton<IDataAccess, DataAccess>();
             Global.ConnectionString = Configuration.GetConnectionString("Default");

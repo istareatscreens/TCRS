@@ -11,11 +11,12 @@ namespace TCRS_server.Controllers
     [ApiController]
     public class PersonController : Controller
     {
+        private readonly TCRS_db.DataAccess db;
+
         [HttpPost]
-        public IEnumerable<Person> Post()
+        public IEnumerable<Person> Get()
         {
-
-
+            return db.GetAll<Person>(Global.ConnectionString, new Person());
         }
 
 
