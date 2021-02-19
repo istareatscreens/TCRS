@@ -3,8 +3,12 @@
 	<PropertyGroup>
 		<TargetFramework>net5.0</TargetFramework>
 		<RootNamespace>TCRS_server</RootNamespace>
-		<UserSecretsId>cf18d699-7fa8-4e55-bebe-4321c184ddd7</UserSecretsId>
+		<UserSecretsId>cb9c82bb-9f0c-4d34-bd80-e2f371c8fa60</UserSecretsId>
 	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\TCRS-db\TCRS-db.csproj" />

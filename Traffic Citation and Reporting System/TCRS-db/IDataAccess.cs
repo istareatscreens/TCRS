@@ -6,5 +6,6 @@ namespace TCRS_db
     {
         List<T> LoadData<T, U>(string sql, U parameters, string connectionString);
         void SaveData<U>(string sql, U parameters, string connectionString);
+        IEnumerable<T> GetAll<T>(string connectionString, T Model);
     }
 }

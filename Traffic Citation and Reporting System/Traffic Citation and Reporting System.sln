@@ -7,9 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TCRS-client", "TCRS-client\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TCRS-client-test", "TCRS-client-test\TCRS-client-test.csproj", "{B49EB8F4-B972-4D64-B99F-3F96F6F52F9F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TCRS-server", "TCRS-server\TCRS-server.csproj", "{8F882A0D-B993-4B8A-AF9F-BF49B8B9FB7A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TCRS-db", "TCRS-db\TCRS-db.csproj", "{EDF9C27E-42C6-4A56-983C-200C1E26C3EE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TCRS-db", "TCRS-db\TCRS-db.csproj", "{EDF9C27E-42C6-4A56-983C-200C1E26C3EE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TCRS-server", "TCRS-server\TCRS-server.csproj", "{98EEAF11-587F-42A1-99ED-D09BEDA89D05}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,14 +25,14 @@ Global
 		{B49EB8F4-B972-4D64-B99F-3F96F6F52F9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B49EB8F4-B972-4D64-B99F-3F96F6F52F9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B49EB8F4-B972-4D64-B99F-3F96F6F52F9F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8F882A0D-B993-4B8A-AF9F-BF49B8B9FB7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8F882A0D-B993-4B8A-AF9F-BF49B8B9FB7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8F882A0D-B993-4B8A-AF9F-BF49B8B9FB7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8F882A0D-B993-4B8A-AF9F-BF49B8B9FB7A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EDF9C27E-42C6-4A56-983C-200C1E26C3EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EDF9C27E-42C6-4A56-983C-200C1E26C3EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EDF9C27E-42C6-4A56-983C-200C1E26C3EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EDF9C27E-42C6-4A56-983C-200C1E26C3EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98EEAF11-587F-42A1-99ED-D09BEDA89D05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98EEAF11-587F-42A1-99ED-D09BEDA89D05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98EEAF11-587F-42A1-99ED-D09BEDA89D05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98EEAF11-587F-42A1-99ED-D09BEDA89D05}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
