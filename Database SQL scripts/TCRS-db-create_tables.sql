@@ -33,18 +33,21 @@ CREATE TABLE School_Rep(
    FOREIGN KEY (school_id) REFERENCES School(school_id)
 );
 
+CREATE TABLE Police_Dept(
+   police_dept_id INT IDENTITY(1, 1) NOT NULL,
+   manager_id INT,
+   name VARCHAR(255) NOT NULL UNIQUE,
+   PRIMARY KEY (police_dept_id),
+   FOREIGN KEY (manager_id) REFERENCES Person(person_id)
+);
+
 CREATE TABLE Highway_Patrol_Officer(
    person_id INT,
    position VARCHAR(255) NOT NULL DEFAULT 'personel',
    PRIMARY KEY(person_id),
-   FOREIGN KEY (person_id) REFERENCES Person(person_id)
-);
-
-CREATE TABLE Municipal_Officer(
-   person_id INT,
-   position VARCHAR(255) NOT NULL DEFAULT 'personel'
-   PRIMARY KEY(person_id),
-   FOREIGN KEY (person_id) REFERENCES Person(person_id)
+police_dept_id INT NOT NULL,
+   FOREIGN KEY (person_id) REFERENCES Person(person_id),
+FOREIGN KEY (police_dept_id) REFERENCES Police_Dept(police_dept_id )
 );
 
 CREATE TABLE Municipality(
@@ -55,12 +58,13 @@ CREATE TABLE Municipality(
    FOREIGN KEY (manager_id) REFERENCES Person(person_id)
 );
 
-CREATE TABLE Police_Dept(
-   police_dept_id INT IDENTITY(1, 1) NOT NULL,
-   manager_id INT,
-   name VARCHAR(255) NOT NULL UNIQUE,
-   PRIMARY KEY (police_dept_id),
-   FOREIGN KEY (manager_id) REFERENCES Person(person_id)
+CREATE TABLE Municipal_Officer(
+   person_id INT,
+   position VARCHAR(255) NOT NULL DEFAULT 'personel',
+	munic_id INT NOT NULL,
+   PRIMARY KEY(person_id),
+   FOREIGN KEY (person_id) REFERENCES Person(person_id),
+   FOREIGN KEY (munic_id) REFERENCES Municipality(munic_id)
 );
 
 CREATE TABLE Citation_Type(

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 --Delete tables from: https://stackoverflow.com/questions/8439650/how-to-drop-all-tables-in-a-sql-server-database
 DECLARE @sql NVARCHAR(2000)
 
