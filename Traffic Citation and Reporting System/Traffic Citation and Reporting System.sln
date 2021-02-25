@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TCRS-client-test", "TCRS-cl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TCRS-db", "TCRS-db\TCRS-db.csproj", "{EDF9C27E-42C6-4A56-983C-200C1E26C3EE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TCRS-server", "TCRS-server\TCRS-server.csproj", "{98EEAF11-587F-42A1-99ED-D09BEDA89D05}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TCRS-server", "TCRS-server\TCRS-server.csproj", "{98EEAF11-587F-42A1-99ED-D09BEDA89D05}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

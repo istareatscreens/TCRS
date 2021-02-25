@@ -11,8 +11,11 @@ using Microsoft.OpenApi.Models;
 using System.Linq;
 using System.Threading.Tasks;
 using TCRS_db;
-
-
+using Microsoft.AspNetCore.Authentication;
+using TCRS_server.Tokens;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace TCRS_server
 {
@@ -34,10 +37,39 @@ namespace TCRS_server
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "TCRS_server", Version = "v1" });
             });
-            Global.ConnectionString = Configuration.GetConnectionString("Server");
+
             services.AddControllers();
-            //Setup save and load data enpoints
-            //Set connection string in global variable
+
+            //Load json web token secret
+            var jwtSection = Configuration.GetSection("JWTSettings");
+            services.Configure<JWTSettings>(jwtSection);
+
+            //Load db connection string
+            var dbcontext = Configuration.GetSection("DatabaseContext");
+            services.Configure<DatabaseContext>(dbcontext);
+
+            //to validate the token which has been sent by clients
+            var jwt = jwtSection.Get<JWTSettings>();
+            var key = Encoding.ASCII.GetBytes(jwt.secret);
+
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = true;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ClockSkew = TimeSpan.Zero
+                };
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,6 +86,8 @@ namespace TCRS_server
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
