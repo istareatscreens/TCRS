@@ -10,6 +10,15 @@ CREATE TABLE Person (
    active BIT NOT NULL DEFAULT 0,
 );
 
+--Refresh Token Table
+CREATE TABLE RefreshToken (
+	token_id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	person_id INT NOT NULL,
+	token VARCHAR(200) NOT NULL,
+	expiry_date DATETIME NOT NULL
+	FOREIGN KEY (person_id) REFERENCES Person (person_id)
+);
+
 --Admin table
 CREATE TABLE Client_Admin(
    person_id INT,
