@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -14,7 +15,7 @@ namespace TCRS_db
         //get Data queries
         public List<T> LoadData<T, U>(string sql, U parameters, string connectionString)
         {
-            using (IDbConnection connection = new SqlConnection(connectionString))
+            using (IDbConnection connection = new MySqlConnection(connectionString))
             {
                 //Not returning directly to allow for easier debugging
                 connection.Open();
@@ -27,7 +28,7 @@ namespace TCRS_db
         public IEnumerable<T> GetAll<T>(string connectionString, T Model)
         {
 
-            using (IDbConnection connection = new SqlConnection(connectionString))
+            using (IDbConnection connection = new MySqlConnection(connectionString))
             {
 
                 string sqlQuery = @"Select * FROM Person";
@@ -37,7 +38,7 @@ namespace TCRS_db
 
         public void SaveData<U>(string sql, U parameters, string connectionString)
         {
-            using (IDbConnection connection = new SqlConnection(connectionString))
+            using (IDbConnection connection = new MySqlConnection(connectionString))
             {
                 connection.Open();
                 connection.Execute(sql, parameters);
