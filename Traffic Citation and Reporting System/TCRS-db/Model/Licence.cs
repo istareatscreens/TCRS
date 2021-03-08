@@ -20,5 +20,12 @@ namespace TCRS_db.Model
         public bool is_suspended { get; set; }
         public string licence_class { get; set; }
 
+        //Relationship 
+        //One to
+        public Citizen Citizen { get; set; }
+
+        //Many to
+        public ICollection<Vehicle> Vehicles { get; set; }
+
     }
 }

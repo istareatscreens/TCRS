@@ -16,5 +16,10 @@ namespace TCRS_db.Model
         public string fine { get; set; }
         public bool training_eligable { get; set; }
 
+        //Relationships
+        //Many to one
+        public ICollection<Course> Courses { get; set; }
+        public ICollection<Citation> Citations { get; set; }
+
     }
 }

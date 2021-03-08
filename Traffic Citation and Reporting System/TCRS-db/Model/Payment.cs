@@ -17,6 +17,11 @@ namespace TCRS_db.Model
         public int made_by { get; set; }
         public string payment_method { get; set; }
 
+
+        //Relationship  
+        //one to
+        public Citation Citation { get; set; }
+
     }
 }
 

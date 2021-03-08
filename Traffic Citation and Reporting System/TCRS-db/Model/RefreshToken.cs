@@ -12,5 +12,13 @@ namespace TCRS_db.Model
         public string token { get; set; }
         public DateTime expiry_date { get; set; }
 
+        //Relationships
+        //One to
+        public Person Person { get; set; }
+
+
+
+        //Many to
+
     }
 }

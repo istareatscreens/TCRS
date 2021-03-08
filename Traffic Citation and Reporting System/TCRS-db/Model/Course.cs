@@ -24,5 +24,16 @@ namespace TCRS_db.Model
         public int citation_type_id { get; set; }
         public int school_id { get; set; }
 
+        //Relationships
+        //one to
+        public School School { get; set; }
+        public Citation_Type Citation_Type { get; set; }
+
+        //many to
+        public ICollection<Registration> Registrations { get; set; }
+
+
+
+
     }
 }

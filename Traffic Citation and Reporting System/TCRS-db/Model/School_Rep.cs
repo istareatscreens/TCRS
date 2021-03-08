@@ -15,5 +15,10 @@ namespace TCRS_db.Model
 
         [Key]
         public int school_id { get; set; }
+
+        //Relationships one to one
+        public Person Person { get; set; }
+        public School School { get; set; }
+
     }
 }

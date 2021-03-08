@@ -16,5 +16,11 @@ namespace TCRS_db.Model
         public int manager_id { get; set; }
         public string name { get; set; }
 
+        //Many relationship
+        public ICollection<Municipal_Officer> Municipal_Officers { get; set; }
+
+        //One to realtionship
+        public Person Person { get; set; }
+
     }
 }

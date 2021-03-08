@@ -15,5 +15,12 @@ namespace TCRS_db.Model
         public int manager_id { get; set; }
         public string name { get; set; }
 
+
+        //one to relationship
+        public Person Persons { get; set; }
+
+        //one to many relationship
+        public ICollection<Highway_Patrol_Officer> Highway_Patrol_Officers { get; set; }
+
     }
 }
