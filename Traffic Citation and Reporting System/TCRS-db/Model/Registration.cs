@@ -17,5 +17,13 @@ namespace TCRS_db.Model
         [Key]
         public string citation_id { get; set; }
         public bool passed { get; set; }
+
+        //Relationship 
+
+        //One to
+        public Citation Citaiton { get; set; }
+        public Course Course { get; set; }
+        public Citizen Citizen { get; set; }
+
     }
 }

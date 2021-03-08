@@ -18,5 +18,10 @@ namespace TCRS_db.Model
 
         public bool expired { get; set; }
 
+        //Relationships
+        //One to
+        public Vehicle Vehicle { get; set; }
+
+        //Many to
     }
 }

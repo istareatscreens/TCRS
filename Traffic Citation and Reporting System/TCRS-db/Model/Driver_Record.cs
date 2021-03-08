@@ -17,6 +17,12 @@ namespace TCRS_db.Model
         [Key]
         public int citation_id { get; set; }
 
+        //Relationship
+        //Many to
+        //One to
+        public Citizen Citizen { get; set; }
+        public Citation Citation { get; set; }
+
     }
 }
 

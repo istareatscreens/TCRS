@@ -15,5 +15,13 @@ namespace TCRS_db.Model
         [Key]
         public int citizen_id { get; set; }
 
+
+        //Relationships
+        //One to
+        public Citizen Citizen { get; set; }
+        public Wanted Wanted { get; set; }
+        //Many to
+
+
     }
 }

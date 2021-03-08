@@ -13,5 +13,8 @@ namespace TCRS_db.Model
         [Key]
         public int person_id { get; set; }
 
+        //One to Relationship
+        public Person Person { get; set; }
+
     }
 }
