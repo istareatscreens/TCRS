@@ -27,7 +27,7 @@ namespace TCRS_db.Model
         public Municipal_Officer? Municipal_Officer { get; set; }
 
         //Managers
-        public Police_Debt? Police_Debt { get; set; }
+        public Police_Dept? Police_Dept { get; set; }
         public Municipality? Municipality { get; set; }
 
 #nullable disable

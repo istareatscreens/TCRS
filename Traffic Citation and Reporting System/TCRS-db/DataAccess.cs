@@ -58,13 +58,13 @@ namespace TCRS_db
             using (IDbConnection connection = new MySqlConnection(connectionString))
             {
                 //Not returning directly to allow for easier debugging
-                var rows = await connection.QueryAsync<Person, Client_Admin, Highway_Patrol_Officer, Municipal_Officer, School_Rep, Municipality, Police_Debt, Person>(sql, (Person, Client_Admin, Highway_Patrol_Officer, Municipal_Officer, School_Rep, Municipality, Police_Debt) => {
+                var rows = await connection.QueryAsync<Person, Client_Admin, Highway_Patrol_Officer, Municipal_Officer, School_Rep, Municipality, Police_Dept, Person>(sql, (Person, Client_Admin, Highway_Patrol_Officer, Municipal_Officer, School_Rep, Municipality, Police_Dept) => {
                     Person.Client_Admin = Client_Admin;
                     Person.Highway_Patrol_Officer = Highway_Patrol_Officer;
                     Person.Municipal_Officer = Municipal_Officer;
                     Person.School_Rep = School_Rep;
                     Person.Municipality = Municipality;
-                    Person.Police_Debt = Police_Debt;
+                    Person.Police_Dept = Police_Dept;
                     return Person;
                 }, splitOn: "person_id,police_dept_id,munic_id"); 
 

@@ -19,7 +19,7 @@ namespace TCRS_db.Model
         //One to relationship
 
         public Person Person { get; set; }
-        public Police_Debt Police_Debt { get; set; }
+        public Police_Dept Police_Dept { get; set; }
 
         //One to Many
         public ICollection<Citation> Citations { get; set; }

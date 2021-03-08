@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace TCRS_db.Model
 {
-    public class Police_Debt
+    public class Police_Dept
     {
         public int manager_id { get; set; }
         [Key]
-        public int police_debt_id { get; set; }
+        public int police_dept_id { get; set; }
         public string name { get; set; }
 
 
