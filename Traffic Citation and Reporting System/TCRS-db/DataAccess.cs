@@ -66,9 +66,9 @@ namespace TCRS_db
                     Person.Municipality = Municipality;
                     Person.Police_Dept = Police_Dept;
                     return Person;
-                }, splitOn: /*"person_id,police_dept_id,munic_id"*/"person_id, person_id, person_id, person_id, munic_id, police_dept_id"); 
+                }, splitOn: "person_id, person_id, person_id, person_id, munic_id, police_dept_id"); 
 
-                return (Person)rows;
+                return (Person)(rows.FirstOrDefault<Person>());
             }
         }
 
