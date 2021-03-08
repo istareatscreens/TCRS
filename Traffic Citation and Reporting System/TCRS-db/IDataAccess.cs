@@ -1,11 +1,14 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using TCRS_db.Model;
 
 namespace TCRS_db
 {
     public interface IDataAccess
     {
-        List<T> LoadData<T, U>(string sql, U parameters, string connectionString);
+        Task<IEnumerable<T>> LoadData<T, U>(string sql, U parameters, string connectionString);
         void SaveData<U>(string sql, U parameters, string connectionString);
         IEnumerable<T> GetAll<T>(string connectionString, T Model);
+        Task<Person> GetUserRoles(Person person, string connectionString);
     }
 }

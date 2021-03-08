@@ -10,9 +10,9 @@ namespace TCRS_db.Model
 {
     public class Police_Debt
     {
+        public int manager_id { get; set; }
         [Key]
         public int police_debt_id { get; set; }
-        public int manager_id { get; set; }
         public string name { get; set; }
 
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Dapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -36,26 +37,29 @@ namespace TCRS_server.Controllers
         public async Task<ActionResult<UserWithToken>> Login([FromBody] Person user)
         {
             //Compare email and password provided to database insert logic and determine role
-
-            //create UserWithToken -> test code!
-            user = new Person();
-            user.person_id = 1;
-            user.email = "F";
-            user.first_name = "F";
-            user.last_name = "F";
+            var result = (await _db.LoadData<Person, DynamicParameters>("SELECT * FROM person WHERE email = @Email AND password = @Password",
+                new DynamicParameters(new Person { email = user.email, password = user.password }), _databaseContext.Server)).ToList<Person>();
+            user = (result.Count==1)?
+                new Person{
+                person_id = result[0].person_id,
+                email = result[0].email,
+                first_name = result[0].first_name,
+                last_name = result[0].last_name
+                } : null;
 
             UserWithToken userWithToken = null;
 
-            if (userWithToken == null)
+            if (user == null)
             {
                 return NotFound("User Not Found");
             }
             else if (user != null)
             {
-                RefreshToken refreshToken = GenerateRefreshToken();
-                userWithToken.RefreshToken = refreshToken.token;
-                //save refresh token in database
+
+                var roles = await _db.GetUserRoles(user, _databaseContext.Server);
                 userWithToken = new UserWithToken(user, new List<string> { Role.Admin });
+                userWithToken.RefreshToken = GenerateRefreshToken().token;
+                //save refresh token in database
 
             }
 
