@@ -37,34 +37,29 @@ namespace TCRS_server.Controllers
         public async Task<ActionResult<UserWithToken>> Login([FromBody] Person user)
         {
             //Compare email and password provided to database insert logic and determine role
-            var result = (await _db.LoadData<Person, DynamicParameters>("SELECT * FROM person WHERE email = @Email AND password = @Password",
-                new DynamicParameters(new Person { email = user.email, password = user.password }), _databaseContext.Server)).ToList<Person>();
-            user = (result.Count==1)?
-                new Person{
-                person_id = result[0].person_id,
-                email = result[0].email,
-                first_name = result[0].first_name,
-                last_name = result[0].last_name
-                } : null;
+            user = await _db.GetUser(user, _databaseContext.Server);
 
             UserWithToken userWithToken = null;
 
-            if (user == null)
+            //checks if user exists or active status is false
+            if (user == null || !user.active) 
             {
                 return NotFound("User Not Found");
             }
             else if (user != null)
             {
+                userWithToken = new UserWithToken(user);
 
-                var roles = await _db.GetUserRoles(user, _databaseContext.Server);
-                userWithToken = new UserWithToken(user, new List<string> { Role.Admin });
-                userWithToken.RefreshToken = GenerateRefreshToken().token;
+                var refreshToken = GenerateRefreshToken();
+                refreshToken.person_id = user.person_id;
+                userWithToken.RefreshToken= refreshToken.token;
                 //save refresh token in database
 
             }
 
+
             //Generate JWT token
-            userWithToken.AccessToken = GenerateJWT(user.person_id);
+            userWithToken.AccessToken = GenerateJWT(user);
             return userWithToken;
         }
 
@@ -80,8 +75,8 @@ namespace TCRS_server.Controllers
             if (user != null && ValidateRefreshToken(user, refreshRequest.RefreshToken))
             {
                 //Need to access database and check roles! generate new token for user
-                UserWithToken userWithToken = new UserWithToken(user, new List<string> { Role.Admin });
-                userWithToken.AccessToken = GenerateJWT(user.person_id);
+                var userWithToken = new UserWithToken(user);
+                userWithToken.AccessToken = GenerateJWT(user);
 
                 //Pass back to client
                 return userWithToken;
@@ -137,17 +132,49 @@ namespace TCRS_server.Controllers
             return false;
         }
 
-        private string GenerateJWT(int person_id)
+        private Claim[] getUserClaims(Person user)
+        {
+
+            var claims = new List<Claim> { new Claim(ClaimTypes.Name, user.person_id.ToString()),
+                    new Claim(ClaimTypes.Email, user.email),
+                    new Claim(ClaimTypes.GivenName, user.first_name),
+                    new Claim(ClaimTypes.Surname, user.last_name),
+            };
+
+            if (user.Client_Admin != null)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, Roles.Admin));
+            } else if (user.Municipal_Officer != null)
+            {
+                //role
+                claims.Add(new Claim(ClaimTypes.Role, Roles.MunicipalOfficer));
+            }
+            else if (user.School_Rep != null)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, Roles.SchoolRep));
+            }else if (user.Highway_Patrol_Officer != null)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, Roles.HighwayPatrolOfficer));
+            }
+            else
+            {
+                throw new Exception("Unable to assign user role");
+            }
+
+            if (user.Municipality!=null || user.Police_Dept!=null) {
+                claims.Add(new Claim(ClaimTypes.Role, Roles.Manager));
+             }
+            return claims.ToArray();
+        }
+
+        private string GenerateJWT(Person user)
         {
             //Sign token
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_jwtsettings.secret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-                    new Claim(ClaimTypes.Name, person_id.ToString())
-                }),
+                Subject = new ClaimsIdentity(getUserClaims(user)),
                 Expires = DateTime.UtcNow.AddMinutes(15),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
                 SecurityAlgorithms.HmacSha256Signature)

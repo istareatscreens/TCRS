@@ -45,9 +45,9 @@ namespace TCRS_db
 
         }
 
-        public async Task<Person> GetUserRoles(Person person, string connectionString)
+        public async Task<Person> GetUser(Person person, string connectionString)
         {
-                var sql = @$"SELECT * FROM (SELECT * FROM person WHERE person_id = {person.person_id}) as p
+                var sql = @$"SELECT * FROM (SELECT * FROM person WHERE email = @email AND password = @password) as p
                 LEFT JOIN client_admin ON client_admin.person_id =  p.person_id
                 LEFT JOIN highway_patrol_officer ON highway_patrol_officer.person_id = p.person_id
 		        LEFT JOIN municipal_officer ON municipal_officer.person_id = p.person_id
@@ -66,7 +66,7 @@ namespace TCRS_db
                     Person.Municipality = Municipality;
                     Person.Police_Dept = Police_Dept;
                     return Person;
-                }, splitOn: "person_id, person_id, person_id, person_id, munic_id, police_dept_id"); 
+                }, new { email= person.email, password= person.password}, splitOn: "person_id, person_id, person_id, person_id, munic_id, police_dept_id"); 
 
                 return (Person)(rows.FirstOrDefault<Person>());
             }

@@ -9,6 +9,6 @@ namespace TCRS_db
         Task<IEnumerable<T>> LoadData<T, U>(string sql, U parameters, string connectionString);
         void SaveData<U>(string sql, U parameters, string connectionString);
         IEnumerable<T> GetAll<T>(string connectionString, T Model);
-        Task<Person> GetUserRoles(Person person, string connectionString);
+        Task<Person> GetUser(Person person, string connectionString);
     }
 }
