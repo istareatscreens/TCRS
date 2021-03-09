@@ -42,7 +42,7 @@ namespace TCRS_server.Controllers
             UserWithToken userWithToken = null;
 
             //checks if user exists or active status is false
-            if (user == null || !user.active) 
+            if (user == null || !user.active)
             {
                 return NotFound("User Not Found");
             }
@@ -52,11 +52,10 @@ namespace TCRS_server.Controllers
 
                 var refreshToken = GenerateRefreshToken();
                 refreshToken.person_id = user.person_id;
-                userWithToken.RefreshToken= refreshToken.token;
+                userWithToken.RefreshToken = refreshToken.token;
                 //save refresh token in database
-
+                _db.SaveRefreshToken(refreshToken, _databaseContext.Server);
             }
-
 
             //Generate JWT token
             userWithToken.AccessToken = GenerateJWT(user);
@@ -144,7 +143,8 @@ namespace TCRS_server.Controllers
             if (user.Client_Admin != null)
             {
                 claims.Add(new Claim(ClaimTypes.Role, Roles.Admin));
-            } else if (user.Municipal_Officer != null)
+            }
+            else if (user.Municipal_Officer != null)
             {
                 //role
                 claims.Add(new Claim(ClaimTypes.Role, Roles.MunicipalOfficer));
@@ -152,7 +152,8 @@ namespace TCRS_server.Controllers
             else if (user.School_Rep != null)
             {
                 claims.Add(new Claim(ClaimTypes.Role, Roles.SchoolRep));
-            }else if (user.Highway_Patrol_Officer != null)
+            }
+            else if (user.Highway_Patrol_Officer != null)
             {
                 claims.Add(new Claim(ClaimTypes.Role, Roles.HighwayPatrolOfficer));
             }
@@ -161,9 +162,10 @@ namespace TCRS_server.Controllers
                 throw new Exception("Unable to assign user role");
             }
 
-            if (user.Municipality!=null || user.Police_Dept!=null) {
+            if (user.Municipality != null || user.Police_Dept != null)
+            {
                 claims.Add(new Claim(ClaimTypes.Role, Roles.Manager));
-             }
+            }
             return claims.ToArray();
         }
 
