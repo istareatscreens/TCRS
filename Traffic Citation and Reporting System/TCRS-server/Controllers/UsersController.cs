@@ -1,4 +1,5 @@
-﻿using Dapper;
+﻿using System.Data.Common;
+using Dapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -6,6 +7,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -68,10 +70,10 @@ namespace TCRS_server.Controllers
         public async Task<ActionResult<UserWithToken>> RefreshToken([FromBody] RefreshRequest refreshRequest)
         {
             //Get user of expired access token
-            Person user = GetUserFromAccessToken(refreshRequest.AccessToken);
+            Person user = await GetUserFromAccessToken(refreshRequest.AccessToken);
 
             //Check if user actually matches refresh token that was sent by the client and that its not expired
-            if (user != null && ValidateRefreshToken(user, refreshRequest.RefreshToken))
+            if (user != null && await ValidateRefreshToken(user, refreshRequest.RefreshToken))
             {
                 //Need to access database and check roles! generate new token for user
                 var userWithToken = new UserWithToken(user);
@@ -84,7 +86,7 @@ namespace TCRS_server.Controllers
             return null;
         }
 
-        private Person GetUserFromAccessToken(string accessToken)
+        private async Task<Person> GetUserFromAccessToken(string accessToken)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_jwtsettings.secret);
@@ -105,30 +107,26 @@ namespace TCRS_server.Controllers
             JwtSecurityToken jwtSecurityToken = securityToken as JwtSecurityToken;
             if (jwtSecurityToken != null && jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
             {
-                var user_id = prinicpal.FindFirst(ClaimTypes.Name)?.Value;
-                //Get user from database INSERT userbase input and convert to INT32
-                //where User.UserID = User
 
-                //return user;
-
+                //TODO: make this a single query or refactor JWT generation
+                //Get user from access token
+                var person_id = prinicpal.FindFirst(ClaimTypes.Name)?.Value;
+                Person user = (await _db.LoadData<Person, DynamicParameters>("SELECT email, password FROM person WHERE person_id = @person_id", new DynamicParameters(new {person_id = Convert.ToInt32(person_id)}), _databaseContext.Server)).FirstOrDefault<Person>();
+                return await _db.GetUser(user, _databaseContext.Server);
             }
 
             return null;
         }
 
-        private bool ValidateRefreshToken(Person user, string refreshToken)
+        private async Task<bool> ValidateRefreshToken(Person user, string refreshToken)
         {
 
-            //Check database if the refresh token exists in the database refershToken.token == refreshToken
-            //Get refresh token and save it in refreshToken variable
-            RefreshToken userRefreshToken = new RefreshToken();
+            //Check if the refresh token exists in the database by user_id and token
+            //Get latest refresh token order by desc
+            RefreshToken userRefreshToken = (await _db.LoadData<RefreshToken, RefreshToken>("SELECT * FROM refreshtoken WHERE token = @token AND person_id = @person_id ORDER BY token_id DESC", new RefreshToken { person_id = user.person_id, token = refreshToken }, _databaseContext.Server)).FirstOrDefault<RefreshToken>();
 
             //check if refresh token is valid and for proper user
-            if (userRefreshToken != null && userRefreshToken.person_id == user.person_id && userRefreshToken.expiry_date > DateTime.UtcNow)
-            {
-                return true;
-            }
-            return false;
+            return (userRefreshToken != null && userRefreshToken.expiry_date > DateTime.UtcNow);
         }
 
         private Claim[] getUserClaims(Person user)

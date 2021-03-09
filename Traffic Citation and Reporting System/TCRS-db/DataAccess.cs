@@ -46,11 +46,14 @@ namespace TCRS_db
 
         }
 
+        //TODO Move this server side
+        //Refresh Token
         public void SaveRefreshToken(RefreshToken refreshToken, string connectionString)
         {
             SaveData<RefreshToken>("INSERT INTO refreshtoken (person_id, token, expiry_date) VALUES (@person_id, @token, @expiry_date);", refreshToken, connectionString);
         }
 
+        //Login
         public async Task<Person> GetUser(Person person, string connectionString)
         {
             var sql = @$"SELECT * FROM (SELECT * FROM person WHERE email = @email AND password = @password) as p
