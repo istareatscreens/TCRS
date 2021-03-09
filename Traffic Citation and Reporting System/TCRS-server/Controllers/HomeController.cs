@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -24,6 +25,7 @@ namespace TCRS_server.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public IEnumerable<Person> GetPeople()
         {
             return _db.GetAll<Person>(_databaseContext.Server, new Person());
