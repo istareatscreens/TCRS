@@ -8,6 +8,7 @@
 @import "base/_utilities";
 @import "base/_animations";
 
-body {
-    background-color: aliceblue;
-}
+@import "layout/_body";
+@import "layout/_main";
+@import "layout/_navbar";
+
