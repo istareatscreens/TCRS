@@ -60,7 +60,14 @@ namespace TCRS_server.Controllers
             }
 
             //Generate JWT token
-            userWithToken.AccessToken = GenerateJWT(user);
+            try
+            {
+                userWithToken.AccessToken = GenerateJWT(user);
+            }
+            catch (Exception e)
+            {
+                return NotFound(e.Message); //User has no role, this 
+            }
             return userWithToken;
         }
 
@@ -77,7 +84,14 @@ namespace TCRS_server.Controllers
             {
                 //Need to access database and check roles! generate new token for user
                 var userWithToken = new UserWithToken(user);
-                userWithToken.AccessToken = GenerateJWT(user);
+                try
+                {
+                    userWithToken.AccessToken = GenerateJWT(user);
+                }
+                catch (Exception e)
+                {
+                    return NotFound(e.Message); //User has no role
+                }
 
                 //Pass back to client
                 return userWithToken;
@@ -138,13 +152,13 @@ namespace TCRS_server.Controllers
                     new Claim(ClaimTypes.Surname, user.last_name),
             };
 
+             //Assign specific roles
             if (user.Client_Admin != null)
             {
                 claims.Add(new Claim(ClaimTypes.Role, Roles.Admin));
             }
             else if (user.Municipal_Officer != null)
             {
-                //role
                 claims.Add(new Claim(ClaimTypes.Role, Roles.MunicipalOfficer));
             }
             else if (user.School_Rep != null)
@@ -157,9 +171,11 @@ namespace TCRS_server.Controllers
             }
             else
             {
-                throw new Exception("Unable to assign user role");
+                //Should never happen user error
+                throw new Exception($"Unable to assign user: {user.person_id} a role");
             }
 
+            //Assign general roles
             if (user.Municipality != null || user.Police_Dept != null)
             {
                 claims.Add(new Claim(ClaimTypes.Role, Roles.Manager));
