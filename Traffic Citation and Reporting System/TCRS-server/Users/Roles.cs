@@ -7,11 +7,11 @@ namespace TCRS_server.Users
 {
     public class Roles
     {
-        public static readonly string Admin = "Client_Admin";
-        public static readonly string HighwayPatrolOfficer = "HighwayPatrolOfficer";
-        public static readonly string MunicipalOfficer = "MunicipalOfficer";
-        public static readonly string Manager = "Manager";
-        public static readonly string CitationOfficer = "CitationOfficer";
-        public static readonly string SchoolRep = "SchoolRep";
+        public  const  string Admin = "Client_Admin";
+        public  const string HighwayPatrolOfficer = "HighwayPatrolOfficer";
+        public  const string MunicipalOfficer = "MunicipalOfficer";
+        public  const string Manager = "Manager";
+        public  const string CitationOfficer = "CitationOfficer";
+        public  const string SchoolRep = "SchoolRep";
     }
 }

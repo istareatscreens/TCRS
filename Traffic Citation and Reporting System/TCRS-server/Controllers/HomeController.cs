@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using TCRS_db;
 using TCRS_db.Model;
 using TCRS_server.Tokens;
+using TCRS_server.Users;
 
 namespace TCRS_server.Controllers
 {
@@ -25,7 +26,7 @@ namespace TCRS_server.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles = Roles.Manager)]
         public IEnumerable<Person> GetPeople()
         {
             return _db.GetAll<Person>(_databaseContext.Server, new Person());

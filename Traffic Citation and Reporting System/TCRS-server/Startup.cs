@@ -16,6 +16,7 @@ using TCRS_server.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using TCRS_server.Users;
 
 namespace TCRS_server
 {
@@ -31,6 +32,8 @@ namespace TCRS_server
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddSingleton<Roles>();
 
             services.AddSingleton<IDataAccess, DataAccess>();
             services.AddSwaggerGen(c =>
