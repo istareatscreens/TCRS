@@ -36,10 +36,10 @@ namespace TCRS_server.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<UserWithToken>> Login([FromBody] Person user)
+        public async Task<ActionResult<UserWithToken>> Login([FromBody] UserLoginCredentials credentials)
         {
             //Compare email and password provided to database insert logic and determine role
-            user = await _db.GetUser(user, _databaseContext.Server);
+            Person user = await _db.GetUser(new Person{email= credentials.email, password=credentials.password}, _databaseContext.Server);
 
             UserWithToken userWithToken = null;
 
