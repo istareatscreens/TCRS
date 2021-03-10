@@ -8,12 +8,19 @@ using System.Threading.Tasks;
 
 namespace TCRS_db.Model
 {
-    public class Police_Debt
+    public class Police_Dept
     {
-        [Key]
-        public int police_debt_id { get; set; }
         public int manager_id { get; set; }
+        [Key]
+        public int police_dept_id { get; set; }
         public string name { get; set; }
+
+
+        //one to relationship
+        public Person Persons { get; set; }
+
+        //one to many relationship
+        public ICollection<Highway_Patrol_Officer> Highway_Patrol_Officers { get; set; }
 
     }
 }

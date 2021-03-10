@@ -16,5 +16,11 @@ namespace TCRS_db.Model
         public bool dangerous { get; set; }
         public int crime { get; set; }
 
+        //Relationships
+        //One to
+
+        //Many to
+        public ICollection<Wanted_Citizen> Wanted_Citizens { get; set; }
+        public ICollection<Wanted_Vehicle> Wanted_Vehicles { get; set; }
     }
 }

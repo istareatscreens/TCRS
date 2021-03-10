@@ -15,5 +15,11 @@ namespace TCRS_db.Model
 
         [Key]
         public int citation_id { get; set; }
+
+        //Relationships
+        //Many to
+        //One to
+        public Vehicle Vehicle { get; set; }
+        public Citation Citation { get; set; }
     }
 }

@@ -14,6 +14,13 @@ namespace TCRS_db.Model
         public int insurer_id { get; set; }
         public string name { get; set; }
 
+        //Relationships
+        //One to
+
+        //Many to
+        public ICollection<Citizen> Citizens { get; set; }
+        public ICollection<Vehicle> Vehicles { get; set; }
+
     }
 }
 

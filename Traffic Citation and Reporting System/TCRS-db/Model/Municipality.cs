@@ -10,11 +10,17 @@ namespace TCRS_db.Model
 {
     public class Municipality
     {
-        [Key]
         //same as person_id
-        public int munic_id { get; set; }
         public int manager_id { get; set; }
+        [Key]
+        public int munic_id { get; set; }
         public string name { get; set; }
+
+        //Many relationship
+        public ICollection<Municipal_Officer> Municipal_Officers { get; set; }
+
+        //One to realtionship
+        public Person Person { get; set; }
 
     }
 }

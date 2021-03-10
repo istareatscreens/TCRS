@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 
 namespace TCRS_server.Users
 {
-    interface Interface
+    public class UserLoginCredentials
     {
+        public string email { get; set; }
+        public string password { get; set; }
     }
 }
