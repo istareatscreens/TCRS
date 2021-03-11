@@ -2,7 +2,7 @@
 
 namespace TCRS_api_access
 {
-    public class WebAPIAccess: IPersistanceService
+    public class WebAPIAccess
     {
 
     }

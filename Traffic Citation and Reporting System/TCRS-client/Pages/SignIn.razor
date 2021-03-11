@@ -7,40 +7,35 @@
     <MudCard>
         <MudCardContent>
             <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors">
-                <MudTextField T="string" Label="Email" Required="true" RequiredError="Email is required!"
+                <MudTextField @bind-value="_email" T="string" Label="Email" Required="true"
+                    RequiredError="Email is required!"
                     Validation="@(new EmailAddressAttribute() {ErrorMessage = "The email address is invalid"})" />
-                <MudTextField T="string" Label="Password" Required="true" @ref="pwField1" InputType="InputType.Password"
-                    RequiredError="Password is required!" />
+                <MudTextField @bind-value="_password" T="string" Label="Password" Required="true"
+                    InputType="InputType.Password" RequiredError="Password is required!" />
             </MudForm>
         </MudCardContent>
         <MudCardActions>
-            <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" Class="ml-auto">Sign in
+            <MudButton OnClick="Submit" Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)"
+                Class="ml-auto">
+                Sign in
             </MudButton>
         </MudCardActions>
     </MudCard>
 </div>
 
 @code {
+    private string _email { get; set; }
+
+    private string _password { get; set; }
+
     bool success;
+
     string[] errors = { };
-    MudTextField<string> pwField1;
     MudForm form;
 
-    private IEnumerable<string> PasswordStrength(string pw)
+    private void Submit()
     {
-        if (string.IsNullOrWhiteSpace(pw))
-        {
-            yield return "Password is required!";
-            yield break;
-        }
-        if (pw.Length < 8)
-            yield return "Password must be at least of length 8";
-        if (!Regex.IsMatch(pw, @"[A-Z]"))
-            yield return "Password must contain at least one capital letter";
-        if (!Regex.IsMatch(pw, @"[a-z]"))
-            yield return "Password must contain at least one lowercase letter";
-        if (!Regex.IsMatch(pw, @"[0-9]"))
-            yield return "Password must contain at least one digit";
+        Console.WriteLine(_email + " " + _password);
     }
 
 }
