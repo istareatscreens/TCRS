@@ -12,4 +12,10 @@
 # now the script does something
 # this script just outputs this
 
-dotnet run watch
+# Start-Job -Name DotNetWatch -ScriptBlock{dotnet watch run};
+Start-Job  -Name BrowserSync -ScriptBlock{browser-sync start `
+            --proxy http://localhost:5000/ `
+            --files '**/*.cshtml, **/*.css, **/*.scss, **/*.js, **/*.htm*' `
+            }
+
+dotnet watch run
