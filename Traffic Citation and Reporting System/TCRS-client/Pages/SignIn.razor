@@ -6,7 +6,7 @@
 <div class="sign-in">
     <MudCard>
         <MudCardContent>
-            <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors">
+            <MudForm @bind-IsValid="@success" @bind-Errors="@errors">
                 <MudTextField @bind-value="_email" T="string" Label="Email" Required="true"
                     RequiredError="Email is required!"
                     Validation="@(new EmailAddressAttribute() {ErrorMessage = "The email address is invalid"})" />
@@ -31,7 +31,6 @@
     bool success;
 
     string[] errors = { };
-    MudForm form;
 
     private void Submit()
     {
