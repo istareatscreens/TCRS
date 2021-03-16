@@ -30,4 +30,8 @@
 		<PackageReference Include="System.Net.Http.Json" Version="5.0.0" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\TCRS.Shared\TCRS.Shared.csproj" />
+	</ItemGroup>
+
 </Project>

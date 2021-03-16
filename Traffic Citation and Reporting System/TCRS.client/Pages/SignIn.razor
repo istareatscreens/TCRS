@@ -2,15 +2,16 @@
 
 @using System.Text.RegularExpressions
 @using System.ComponentModel.DataAnnotations
+@using TCRS.Shared.Objects
 <!--TODO: Clean this up, add proper validation checks etc..-->
 <div class="sign-in">
     <MudCard>
         <MudCardContent>
             <MudForm @bind-IsValid="@success" @bind-Errors="@errors">
-                <MudTextField @bind-value="_email" T="string" Label="Email" Required="true"
+                <MudTextField @bind-value="_userCredentials.Email" T="string" Label="Email" Required="true"
                     RequiredError="Email is required!"
                     Validation="@(new EmailAddressAttribute() {ErrorMessage = "The email address is invalid"})" />
-                <MudTextField @bind-value="_password" T="string" Label="Password" Required="true"
+                <MudTextField @bind-value="_userCredentials.Password" T="string" Label="Password" Required="true"
                     InputType="InputType.Password" RequiredError="Password is required!" />
             </MudForm>
         </MudCardContent>
@@ -24,17 +25,15 @@
 </div>
 
 @code {
-    private string _email { get; set; }
 
-    private string _password { get; set; }
+    private UserLoginCredentials _userCredentials { get; set; }
 
-    bool success;
+    private bool success;
 
-    string[] errors = { };
+    private string[] errors = {};
 
     private void Submit()
     {
-        Console.WriteLine(_email + " " + _password);
+        Console.WriteLine(_userCredentials);
     }
-
 }

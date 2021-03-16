@@ -13,6 +13,7 @@ using TCRS.Database;
 using TCRS.Database.Model;
 using TCRS.Server.Tokens;
 using TCRS.Server.Users;
+using TCRS.Shared.Objects;
 
 namespace TCRS.Server.Controllers
 {
@@ -34,7 +35,7 @@ namespace TCRS.Server.Controllers
         public async Task<ActionResult<UserWithToken>> Login([FromBody] UserLoginCredentials credentials)
         {
             //Compare email and password provided to database insert logic and determine role
-            Person user = await _db.GetUser(new Person{email= credentials.email, password=credentials.password}, _databaseContext.Server);
+            Person user = await _db.GetUser(new Person{email= credentials.Email, password=credentials.Password}, _databaseContext.Server);
 
             UserWithToken userWithToken = null;
 
@@ -43,7 +44,7 @@ namespace TCRS.Server.Controllers
             {
                 return NotFound("User Not Found");
             }
-            else if (user != null)
+            else
             {
                 userWithToken = new UserWithToken(user);
 
@@ -109,9 +110,7 @@ namespace TCRS.Server.Controllers
                 ClockSkew = TimeSpan.Zero
             };
 
-            SecurityToken securityToken;
-
-            var prinicpal = tokenHandler.ValidateToken(accessToken, tokenValidationParameters, out securityToken);
+            var principal = tokenHandler.ValidateToken(accessToken, tokenValidationParameters, out var securityToken);
 
             JwtSecurityToken jwtSecurityToken = securityToken as JwtSecurityToken;
             if (jwtSecurityToken != null && jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
@@ -119,7 +118,7 @@ namespace TCRS.Server.Controllers
 
                 //TODO: make this a single query or refactor JWT generation
                 //Get user from access token
-                var person_id = prinicpal.FindFirst(ClaimTypes.Name)?.Value;
+                var person_id = principal.FindFirst(ClaimTypes.Name)?.Value;
                 Person user = (await _db.LoadData<Person, DynamicParameters>("SELECT email, password FROM person WHERE person_id = @person_id", new DynamicParameters(new {person_id = Convert.ToInt32(person_id)}), _databaseContext.Server)).FirstOrDefault<Person>();
                 return await _db.GetUser(user, _databaseContext.Server);
             }

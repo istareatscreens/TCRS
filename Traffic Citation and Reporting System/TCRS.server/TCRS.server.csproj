@@ -14,6 +14,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\TCRS.Database\TCRS.Database.csproj" />
+	  <ProjectReference Include="..\TCRS.Shared\TCRS.Shared.csproj" />
 	</ItemGroup>
 
 </Project>
