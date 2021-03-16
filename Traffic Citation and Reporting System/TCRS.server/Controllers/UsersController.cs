@@ -46,7 +46,7 @@ namespace TCRS.Server.Controllers
             }
             else
             {
-                userWithToken = new UserWithToken(user);
+                userWithToken = CreateUserWithToken(in user);
 
                 var refreshToken = GenerateRefreshToken();
                 refreshToken.person_id = user.person_id;
@@ -67,6 +67,23 @@ namespace TCRS.Server.Controllers
             return userWithToken;
         }
 
+        private static UserWithToken  CreateUserWithToken(in Person user)
+        {
+                return  new UserWithToken
+                {
+                    person_id = user.person_id,
+                    email = user.email,
+                    first_name = user.first_name,
+                    last_name = user.last_name,
+                    isClientAdmin = user.Client_Admin !=null,
+                    isHighway_Patrol_Officer = user.Highway_Patrol_Officer != null,
+                    isMunicipal_Officer = user.Municipal_Officer != null,
+                    isSchool_Rep = user.School_Rep != null,
+                    isManager = (user.Municipality != null || user.Police_Dept != null)
+                };
+
+        }
+
 
         //Refresh access
         [HttpPost("refreshtoken")]
@@ -79,7 +96,7 @@ namespace TCRS.Server.Controllers
             if (user != null && await ValidateRefreshToken(user, refreshRequest.RefreshToken))
             {
                 //Need to access database and check roles! generate new token for user
-                var userWithToken = new UserWithToken(user);
+                var userWithToken = CreateUserWithToken(user);
                 try
                 {
                     userWithToken.AccessToken = GenerateJWT(user);
