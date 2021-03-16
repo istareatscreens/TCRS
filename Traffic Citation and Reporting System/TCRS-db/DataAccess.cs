@@ -92,5 +92,15 @@ namespace TCRS_db
                 return (Person)(rows.FirstOrDefault<Person>());
             }
         }
+
+        public Task<Citation_Type> GetCitationType(Citation_Type citation_type, string connectionString)
+        {
+            using (IDbConnection connection = new MySqlConnection(connectionString))
+            {
+
+                string sqlQuery = @"Select * FROM Citation_Type";
+                return (Task<Citation_Type>)connection.Query(sqlQuery);
+            }
+        }
     }
 }
