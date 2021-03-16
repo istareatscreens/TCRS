@@ -37,6 +37,17 @@ namespace TCRS_db
             }
         }
 
+        public IEnumerable<T> GetAllCitationType<T>(string connectionString, T Model)
+        {
+
+            using (IDbConnection connection = new MySqlConnection(connectionString))
+            {
+
+                string sqlQuery = @"Select * FROM Citation_Type";
+                return connection.Query<T>(sqlQuery);
+            }
+        }
+
         public void SaveData<U>(string sql, U parameters, string connectionString)
         {
             using (IDbConnection connection = new MySqlConnection(connectionString))
@@ -81,6 +92,5 @@ namespace TCRS_db
                 return (Person)(rows.FirstOrDefault<Person>());
             }
         }
-
     }
 }
