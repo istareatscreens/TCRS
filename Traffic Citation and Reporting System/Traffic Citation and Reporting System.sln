@@ -3,15 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31005.135
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TCRS-client", "TCRS-client\TCRS-client.csproj", "{2FBF0B36-66D2-48D1-996A-CB2CC3976193}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TCRS.Server", "TCRS.server\TCRS.Server.csproj", "{4C192734-73C0-4BE5-84E3-D335BB2A9035}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TCRS-client-test", "TCRS-client-test\TCRS-client-test.csproj", "{B49EB8F4-B972-4D64-B99F-3F96F6F52F9F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TCRS.Client", "TCRS.client\TCRS.Client.csproj", "{71A1F7C6-F13C-44BA-B256-54C6131F7BBD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TCRS-db", "TCRS-db\TCRS-db.csproj", "{EDF9C27E-42C6-4A56-983C-200C1E26C3EE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TCRS.Client.Test", "TCRS.client.test\TCRS.Client.Test.csproj", "{5306FA60-A2B3-44A6-8B05-05A101E43203}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TCRS-server", "TCRS-server\TCRS-server.csproj", "{98EEAF11-587F-42A1-99ED-D09BEDA89D05}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TCRS-api-access", "TCRS-api-access\TCRS-api-access.csproj", "{5090B7F0-B058-4AE5-B37E-C9E582519166}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TCRS.Database", "TCRS.Database\TCRS.Database.csproj", "{74F0630E-2C1A-4229-A5BA-4C49D3F8CE04}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,26 +17,22 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{2FBF0B36-66D2-48D1-996A-CB2CC3976193}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2FBF0B36-66D2-48D1-996A-CB2CC3976193}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2FBF0B36-66D2-48D1-996A-CB2CC3976193}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2FBF0B36-66D2-48D1-996A-CB2CC3976193}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B49EB8F4-B972-4D64-B99F-3F96F6F52F9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B49EB8F4-B972-4D64-B99F-3F96F6F52F9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B49EB8F4-B972-4D64-B99F-3F96F6F52F9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B49EB8F4-B972-4D64-B99F-3F96F6F52F9F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EDF9C27E-42C6-4A56-983C-200C1E26C3EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EDF9C27E-42C6-4A56-983C-200C1E26C3EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EDF9C27E-42C6-4A56-983C-200C1E26C3EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EDF9C27E-42C6-4A56-983C-200C1E26C3EE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{98EEAF11-587F-42A1-99ED-D09BEDA89D05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{98EEAF11-587F-42A1-99ED-D09BEDA89D05}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{98EEAF11-587F-42A1-99ED-D09BEDA89D05}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{98EEAF11-587F-42A1-99ED-D09BEDA89D05}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5090B7F0-B058-4AE5-B37E-C9E582519166}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5090B7F0-B058-4AE5-B37E-C9E582519166}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5090B7F0-B058-4AE5-B37E-C9E582519166}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5090B7F0-B058-4AE5-B37E-C9E582519166}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C192734-73C0-4BE5-84E3-D335BB2A9035}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C192734-73C0-4BE5-84E3-D335BB2A9035}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C192734-73C0-4BE5-84E3-D335BB2A9035}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C192734-73C0-4BE5-84E3-D335BB2A9035}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71A1F7C6-F13C-44BA-B256-54C6131F7BBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71A1F7C6-F13C-44BA-B256-54C6131F7BBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71A1F7C6-F13C-44BA-B256-54C6131F7BBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71A1F7C6-F13C-44BA-B256-54C6131F7BBD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5306FA60-A2B3-44A6-8B05-05A101E43203}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5306FA60-A2B3-44A6-8B05-05A101E43203}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5306FA60-A2B3-44A6-8B05-05A101E43203}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5306FA60-A2B3-44A6-8B05-05A101E43203}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74F0630E-2C1A-4229-A5BA-4C49D3F8CE04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74F0630E-2C1A-4229-A5BA-4C49D3F8CE04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74F0630E-2C1A-4229-A5BA-4C49D3F8CE04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74F0630E-2C1A-4229-A5BA-4C49D3F8CE04}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
