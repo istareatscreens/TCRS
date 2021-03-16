@@ -1,4 +1,4 @@
-﻿namespace TCRS.Shared.Objects
+﻿namespace TCRS.Shared.Objects.Login
 {
     public class UserWithToken 
     {

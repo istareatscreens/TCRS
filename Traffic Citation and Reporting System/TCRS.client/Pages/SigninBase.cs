@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
-using TCRS.Shared.Objects;
+using TCRS.Shared.Objects.Login;
+using TCRS.Business;
+using TCRS.Shared.Contracts;
 
 namespace TCRS.Client.Pages
 {
@@ -24,9 +26,24 @@ namespace TCRS.Client.Pages
              EditContext = new EditContext(UserCredentials);
          }
 
-         protected void Submit()
-        {
-              Console.WriteLine(UserCredentials.Email + " " + UserCredentials.Password);
+        [Inject]
+        private IUserManager UserManager { get; set; }
+
+        [Inject]
+        private NavigationManager NavigationManager { get; set; }
+
+         protected async void HandleSubmit()
+         {
+             if (!EditContext.Validate())
+             {
+                 return;
+             }
+
+             var userFound = await UserManager.UserSignIn(UserCredentials);
+             if (userFound != null)
+             {
+                NavigationManager.NavigateTo(("Placeholder"));
+             }
         }
     }
 }

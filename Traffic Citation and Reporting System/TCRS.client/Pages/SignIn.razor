@@ -7,7 +7,7 @@
 @*TODO: Clean this up, add proper validation checks etc*@
 <div class="sign-in">
     <MudCard >
-        <EditForm EditContext="@EditContext">
+        <EditForm EditContext="@EditContext" OnSubmit="@HandleSubmit">
         <MudCardContent>
             <MudForm  @bind-IsValid="@success" @bind-Errors="@errors">
                 <MudTextField @bind-value="UserCredentials.Email" T="string" Label="Email" Required="true"
@@ -18,7 +18,7 @@
             </MudForm>
         </MudCardContent>
         <MudCardActions>
-            <MudButton OnClick="Submit" Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)"
+            <MudButton OnClick="@HandleSubmit" Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)"
                 Class="ml-auto">
                 Sign in
             </MudButton>

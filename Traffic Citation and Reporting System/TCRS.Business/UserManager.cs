@@ -2,14 +2,16 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using TCRS.Shared.Contracts;
+using TCRS.Shared.Objects.Login;
 
 namespace TCRS.Business
 {
-    class UserManager
+    public class UserManager : IUserManager
     {
-        public async Task<UserLoginCredentials> UserSignIn()
+        public async Task<UserWithToken> UserSignIn(UserLoginCredentials userLoginCredentials)
         {
-
+            return await Task.FromResult(new UserWithToken());
         }
 
     }

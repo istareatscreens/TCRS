@@ -13,7 +13,7 @@ using TCRS.Database;
 using TCRS.Database.Model;
 using TCRS.Server.Tokens;
 using TCRS.Server.Users;
-using TCRS.Shared.Objects;
+using TCRS.Shared.Objects.Login;
 
 namespace TCRS.Server.Controllers
 {
