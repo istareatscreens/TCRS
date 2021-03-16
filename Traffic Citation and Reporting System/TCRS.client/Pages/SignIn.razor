@@ -1,17 +1,19 @@
 ﻿@page "/Signin"
+@inherits SigninBase
 
 @using System.Text.RegularExpressions
 @using System.ComponentModel.DataAnnotations
 @using TCRS.Shared.Objects
-<!--TODO: Clean this up, add proper validation checks etc..-->
+@*TODO: Clean this up, add proper validation checks etc*@
 <div class="sign-in">
-    <MudCard>
+    <MudCard >
+        <EditForm EditContext="@EditContext">
         <MudCardContent>
-            <MudForm @bind-IsValid="@success" @bind-Errors="@errors">
-                <MudTextField @bind-value="_userCredentials.Email" T="string" Label="Email" Required="true"
+            <MudForm  @bind-IsValid="@success" @bind-Errors="@errors">
+                <MudTextField @bind-value="UserCredentials.Email" T="string" Label="Email" Required="true"
                     RequiredError="Email is required!"
                     Validation="@(new EmailAddressAttribute() {ErrorMessage = "The email address is invalid"})" />
-                <MudTextField @bind-value="_userCredentials.Password" T="string" Label="Password" Required="true"
+                <MudTextField @bind-value="UserCredentials.Password" T="string" Label="Password" Required="true"
                     InputType="InputType.Password" RequiredError="Password is required!" />
             </MudForm>
         </MudCardContent>
@@ -21,19 +23,6 @@
                 Sign in
             </MudButton>
         </MudCardActions>
+</EditForm>
     </MudCard>
 </div>
-
-@code {
-
-    private UserLoginCredentials _userCredentials { get; set; }
-
-    private bool success;
-
-    private string[] errors = {};
-
-    private void Submit()
-    {
-        Console.WriteLine(_userCredentials);
-    }
-}
