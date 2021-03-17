@@ -32,6 +32,12 @@ namespace TCRS.Client.Pages
         [Inject]
         private NavigationManager NavigationManager { get; set; }
 
+        [Inject]
+        private IUserService UserService { get; set; }
+
+        [Inject]
+        private IPersistanceService api { get; set; }
+
          protected async void HandleSubmit()
          {
              if (!EditContext.Validate())
@@ -39,10 +45,11 @@ namespace TCRS.Client.Pages
                  return;
              }
 
-             var userFound = await UserManager.UserSignIn(UserCredentials);
-             if (userFound != null)
+
+             UserService.User = await UserManager.UserSignIn(UserCredentials, api);
+             if (UserService.User != null)
              {
-                NavigationManager.NavigateTo(("Placeholder"));
+                 NavigationManager.NavigateTo(("Placeholder"));
              }
         }
     }

@@ -1,9 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
 	<PropertyGroup>
 		<TargetFramework>net5.0</TargetFramework>
 		<AssemblyName>TCRS.Client</AssemblyName>
 		<RootNamespace>TCRS.Client</RootNamespace>
+		<LangVersion>latest</LangVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -31,6 +32,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\TCRS.APIAccess\TCRS.APIAccess.csproj" />
 	  <ProjectReference Include="..\TCRS.Business\TCRS.Business.csproj" />
 	  <ProjectReference Include="..\TCRS.Shared\TCRS.Shared.csproj" />
 	</ItemGroup>

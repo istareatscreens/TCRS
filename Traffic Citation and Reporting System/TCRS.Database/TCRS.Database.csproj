@@ -4,6 +4,7 @@
 		<TargetFramework>net5.0</TargetFramework>
 		<RootNamespace>TCRS.Database</RootNamespace>
 		<AssemblyName>TCRS.Database</AssemblyName>
+		<LangVersion>latest</LangVersion>
 	</PropertyGroup>
 
 	<ItemGroup>

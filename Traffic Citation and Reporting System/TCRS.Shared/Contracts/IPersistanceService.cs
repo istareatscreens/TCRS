@@ -6,7 +6,8 @@ using TCRS.Shared.Objects.Login;
 
 namespace TCRS.Shared.Contracts
 {
-    public interface IUserManager { 
-         Task<UserWithToken> UserSignIn(UserLoginCredentials userLoginCredentials, IPersistanceService api);
+    public interface IPersistanceService
+    {
+        Task<UserWithToken> AuthenticateAndGetUserAsync(UserLoginCredentials user, IPersistanceService api);
     }
 }

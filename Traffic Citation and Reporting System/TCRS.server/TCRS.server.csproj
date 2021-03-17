@@ -5,6 +5,7 @@
 		<RootNamespace>TCRS.Server</RootNamespace>
 		<UserSecretsId>cb9c82bb-9f0c-4d34-bd80-e2f371c8fa60</UserSecretsId>
 		<AssemblyName>TCRS.Server</AssemblyName>
+		<LangVersion>latest</LangVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
