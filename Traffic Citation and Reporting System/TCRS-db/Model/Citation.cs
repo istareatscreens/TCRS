@@ -19,13 +19,15 @@ namespace TCRS_db.Model
 
         //Relationships
         //One to
-        public Citation_Type Citation_Type { get; set; }
-        public Payment Payment { get; set; }
-        public Driver_Record Driver_Record { get; set; }
-        public Vehicle_Record Vehicle_Record { get; set; }
+#nullable enable
+        public Citation_Type? Citation_Type { get; set; }
+
+        public Payment? Payment { get; set; }
+        public Driver_Record? Driver_Record { get; set; }
+        public Vehicle_Record? Vehicle_Record { get; set; }
 
         //Many to
-        public ICollection<Registration> Registrations { get; set; }
+        public ICollection<Registration>? Registrations { get; set; }
 
 
     }

@@ -12,6 +12,6 @@ namespace TCRS_db
         Task<Person> GetUser(Person person, string connectionString);
         IEnumerable<T> GetAllCitationType<T>(string connectionString, T Model);
         void SaveRefreshToken(RefreshToken refreshToken, string connectionString);
-        //Task<Licence_Plate> GetCitationsByLicencePlate(Licence_Plate licence_plate, string connectionString);
+        Task<Citation> GetCitationsByLicencePlate(string licence_plate, string connectionString);
     }
 }

@@ -6024,3 +6024,9 @@ CREATE TABLE RefreshToken (
 	expiry_date DATETIME NOT NULL,
 	FOREIGN KEY (person_id) REFERENCES Person (person_id)
 );
+
+#Data adjustments
+INSERT INTO `tcrs-db`.`vehicle_record` (`vehicle_id`, `citation_id`) VALUES ('5', '3');
+INSERT INTO `tcrs-db`.`vehicle_record` (`vehicle_id`, `citation_id`) VALUES ('5', '4');
+INSERT INTO `tcrs-db`.`vehicle_record` (`vehicle_id`, `citation_id`) VALUES ('5', '5');
+INSERT INTO `tcrs-db`.`vehicle_record` (`vehicle_id`, `citation_id`) VALUES ('5', '2');

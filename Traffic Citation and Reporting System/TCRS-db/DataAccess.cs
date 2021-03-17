@@ -92,5 +92,26 @@ namespace TCRS_db
                 return (Person)(rows.FirstOrDefault<Person>());
             }
         }
+
+        public async Task<Citation> GetCitationsByLicencePlate(string plate_number, string connectionString)
+        {
+            var sql = @$"SELECT * FROM (SELECT vehicle_id FROM licence_plate where plate_number = @plate_number) as plate
+                LEFT JOIN vehicle_record ON vehicle_record.vehicle_id = plate.vehicle_id
+                LEFT JOIN citation ON citation.citation_id = vehicle_record.citation_id;
+                LEFT JOIN citation_type ON citation_type.citation_type_id = citation.citation_type_id";
+
+            using (IDbConnection connection = new MySqlConnection(connectionString))
+            {
+                //Not returning directly to allow for easier debugging
+                var rows = await connection.QueryAsync<Licence_Plate, Citation, Vehicle_Record, Citation_Type, Citation> (sql, (Licence_Plate, Citation, Vehicle_Record, Citation_Type) =>
+                {
+                    Citation.Vehicle_Record = Vehicle_Record;
+                    Citation.Citation_Type = Citation_Type;
+                    return Citation;
+                }, new { plate_number = plate_number }, splitOn: "vehicle_id, vehicle_id, citation_id, citation_type_id");
+
+                return (Citation)(rows.FirstOrDefault<Citation>());
+            }
+        }
     }
 }
