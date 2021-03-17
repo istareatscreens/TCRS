@@ -1,0 +1,15 @@
+﻿@inherits LayoutComponentBase
+
+<div class="page">
+<MudThemeProvider/>
+<MudDialogProvider/>
+<MudSnackbarProvider/>
+    <div class="main">
+        <!--Universal components go here-->
+        <NavBar></NavBar>
+        <div class="main-body">
+            <!--Render Page-->
+            @Body
+        </div>
+    </div>
+</div>

@@ -1,0 +1,48 @@
+﻿@page "/ResolveCitation"
+
+@using System.Text.RegularExpressions
+@using System.ComponentModel.DataAnnotations
+
+<!--TODO: clean up template code, disable one if the other has text in it-->
+<div class="resolve-citation">
+    <MudCard>
+        <MudCardContent>
+            <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors">
+                <MudTextField T="string" Label="Licence Plate Number"
+                    Validation="@(new EmailAddressAttribute() {ErrorMessage = "Licence plate number is not valid"})" />
+                <MudTextField T="string" Label="Citation Number" ref="CitationNumber" InputType="InputType.Text"
+                    Validation="@(new Func<string, IEnumerable<string>>(ValidLicencePlate))" />
+            </MudForm>
+        </MudCardContent>
+        <MudCardActions>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" Class="ml-auto">Submit
+            </MudButton>
+        </MudCardActions>
+    </MudCard>
+</div>
+
+@code {
+    bool success;
+    string[] errors = { };
+    MudTextField<string> CitationNumber;
+    MudForm form;
+
+
+    private IEnumerable<string> ValidLicencePlate(string pw)
+    {
+        if (string.IsNullOrWhiteSpace(pw))
+        {
+            yield return "Password is required!";
+            yield break;
+        }
+        if (pw.Length < 8)
+            yield return "Password must be at least of length 8";
+        if (!Regex.IsMatch(pw, @"[A-Z]"))
+            yield return "Password must contain at least one capital letter";
+        if (!Regex.IsMatch(pw, @"[a-z]"))
+            yield return "Password must contain at least one lowercase letter";
+        if (!Regex.IsMatch(pw, @"[0-9]"))
+            yield return "Password must contain at least one digit";
+    }
+
+}

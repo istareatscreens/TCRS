@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net5.0</TargetFramework>
+		<RootNamespace>TCRS.Client.Test</RootNamespace>
+
+		<IsPackable>false</IsPackable>
+
+		<AssemblyName>TCRS.Client.Test</AssemblyName>
+
+		<LangVersion>latest</LangVersion>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="bunit.web" Version="1.0.0-preview-01" />
+		<PackageReference Include="Moq" Version="4.16.0" />
+		<PackageReference Include="NUnit" Version="3.12.0" />
+		<PackageReference Include="NUnit3TestAdapter" Version="3.16.1" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\TCRS.client\TCRS.Client.csproj" />
+	</ItemGroup>
+
+</Project>

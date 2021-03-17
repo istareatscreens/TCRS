@@ -1,0 +1,10 @@
+﻿.navbar {
+  width: 100vw;
+  height: 5vh;
+  display: flex;
+  flex-direction: row;
+  background: #7f7979;
+  &__btn-group {
+    width: auto;
+  }
+}
