@@ -9,7 +9,6 @@ namespace TCRS.Client.Pages
 {
     public class CitationIssuingBase : ComponentBase
     {
-        [Inject]
-        protected ICitationManager
+
     }
 }
