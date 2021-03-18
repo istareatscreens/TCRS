@@ -19,7 +19,7 @@ namespace TCRS.APIAccess
 
         public async Task<UserWithToken> AuthenticateAndGetUserAsync(UserLoginCredentials userLoginCredentials)
         {
-            Console.WriteLine(await _httpClient.PostAsJsonAsync("/api/Users/login", userLoginCredentials));
+            Console.WriteLine(await ((await _httpClient.PostAsJsonAsync("/api/Users/login", userLoginCredentials)).Content.ReadAsStringAsync()));
 
             return new UserWithToken
             {
