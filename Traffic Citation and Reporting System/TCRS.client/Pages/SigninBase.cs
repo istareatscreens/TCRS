@@ -34,7 +34,7 @@ namespace TCRS.Client.Pages
 
         [Inject]
         private IUserService UserService { get; set; }
-         protected async void HandleSubmit()
+        protected async void HandleSubmit()
          {
              if (!EditContext.Validate())
              {

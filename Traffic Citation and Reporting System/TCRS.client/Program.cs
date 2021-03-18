@@ -7,6 +7,7 @@ using MudBlazor.Services;
 using TCRS.APIAccess;
 using TCRS.Business;
 using TCRS.Shared.Contracts;
+using TCRS.Shared.Contracts.CitationManagement;
 
 namespace TCRS.Client
 {
@@ -26,6 +27,7 @@ namespace TCRS.Client
             builder.Services.AddScoped<IPersistanceService, APIAccessService>();
             builder.Services.AddScoped<IUserManager, UserManager>();
             builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddTransient<ICitationManager, CitationManager>();
 
             await builder.Build().RunAsync();
         }
