@@ -9,10 +9,15 @@ namespace TCRS.Business
 {
     public class UserManager : IUserManager
     {
-
-        public async Task<UserWithToken> UserSignIn(UserLoginCredentials userLoginCredentials, IPersistanceService api)
+        private readonly IPersistanceService _api; 
+        public UserManager(IPersistanceService api)
         {
-            return await api.AuthenticateAndGetUserAsync(userLoginCredentials);
+            _api = api;
+        }
+
+        public async Task<UserWithToken> UserSignIn(UserLoginCredentials userLoginCredentials)
+        {
+            return await _api.AuthenticateAndGetUserAsync(userLoginCredentials);
             /*
             return await Task.FromResult(new UserWithToken
             {

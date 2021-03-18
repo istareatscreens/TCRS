@@ -34,10 +34,6 @@ namespace TCRS.Client.Pages
 
         [Inject]
         private IUserService UserService { get; set; }
-
-        [Inject]
-        private IPersistanceService api { get; set; }
-
          protected async void HandleSubmit()
          {
              if (!EditContext.Validate())
@@ -46,7 +42,7 @@ namespace TCRS.Client.Pages
              }
 
 
-             UserService.User = await UserManager.UserSignIn(UserCredentials, api);
+             UserService.User = await UserManager.UserSignIn(UserCredentials);
              if (UserService.User != null)
              {
                  NavigationManager.NavigateTo(("Placeholder"));
