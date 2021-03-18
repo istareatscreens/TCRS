@@ -27,7 +27,7 @@ namespace TCRS.Database.Model
 
         //Many to
         public ICollection<Wanted_Vehicle> Wanted_Vehicles { get; set; }
-        public ICollection<Licence_Plate> Licence_Plates { get; set; }
+        public ICollection<License_Plate> Licence_Plates { get; set; }
 
     }
 }

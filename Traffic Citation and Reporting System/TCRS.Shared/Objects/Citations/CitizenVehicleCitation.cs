@@ -14,5 +14,6 @@ namespace TCRS.Shared.Objects.Citations
 
         public int vehicle_id { get; set; }
         public double fine { get; set; }
+        public string plate_number { get; set; }
     }
 }

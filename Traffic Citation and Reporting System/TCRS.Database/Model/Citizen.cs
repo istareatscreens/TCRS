@@ -23,7 +23,7 @@ namespace TCRS.Database.Model
 
         //Many to
         public ICollection<Registration> Registrations { get; set; }
-        public ICollection<Licence> Licences { get; set; }
+        public ICollection<License> Licences { get; set; }
         public ICollection<Wanted_Citizen> Wanted_Citizen { get; set; }
         public ICollection<Vehicle> Vehicles { get; set; }
 

@@ -13,26 +13,31 @@ using TCRS.Shared.Objects.Citations;
 namespace TCRS.Server.Controllers
 {
     [ApiController]
-    [Route("Citation")]
-    public class CitationTypeController : Controller
+    [Route("api/[controller]")]
+    public class CitationsController : Controller
     {
         private readonly IDataAccess _db;
         private readonly DatabaseContext _databaseContext;
 
-        public CitationTypeController(IDataAccess db, IOptions<DatabaseContext> databaseContext)
+        public CitationsController(IDataAccess db, IOptions<DatabaseContext> databaseContext)
         {
             _db = db;
             _databaseContext = databaseContext.Value;
         }
-
-        [HttpGet("PlateNumberCitations")]
-        public  IEnumerable<CitizenVehicleCitation> GetCitationByLicencePlateAsync()
+        [HttpGet]
+        public  ActionResult<IEnumerable<CitizenVehicleCitation>> GetCitationByLicense([FromQuery]String plate_number)
         {
-            //?licenceplate=23423414
+        //Return type is wrapped in action result to allow NotFond to be returned
+
+            //I pull licenseplate url query parameter here to be passed to database query
+            if(plate_number == null || plate_number.Length > 8)
+            {
+                return NotFound("No License Plate Specified");
+            }
             try
             {
                 var citations = new List<CitizenVehicleCitation>();
-                foreach (var citation in _db.GetCitationsByLicencePlate("55870382", _databaseContext.Server))
+                foreach (var citation in _db.GetCitationsByLicensePlate(plate_number, _databaseContext.Server))
                 {
                     citations.Add(
                         new CitizenVehicleCitation
@@ -43,7 +48,8 @@ namespace TCRS.Server.Controllers
                             fine = Double.Parse(citation.Citation_Type.fine),
                             date_recieved = citation.date_recieved,
                             vehicle_id = citation.Vehicle_Record.vehicle_id,
-                            training_eligable = citation.Citation_Type.training_eligable
+                            training_eligable = citation.Citation_Type.training_eligable,
+                            plate_number = plate_number
                         }
                         );
 
@@ -52,12 +58,11 @@ namespace TCRS.Server.Controllers
                 return citations;
             }catch(Exception e)
             {
-                return (IEnumerable<CitizenVehicleCitation>)NotFound("Not found");
+                return NotFound("Not found");
             }
         }
 
-        [HttpGet]
-       // [Authorize(Roles = Roles.Manager)]
+        [HttpGet("All")]
         public IEnumerable<Citation_Type> GetCitationType()
         {     
             return _db.GetAllCitationType<Citation_Type>(_databaseContext.Server, new Citation_Type());
