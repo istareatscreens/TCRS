@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using TCRS.Shared.Objects.Login;
+using TCRS.Shared.Objects.Auth;
 
 namespace TCRS.Shared.Contracts
 {

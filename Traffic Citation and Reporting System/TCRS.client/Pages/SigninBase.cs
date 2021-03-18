@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
-using TCRS.Shared.Objects.Login;
+using TCRS.Shared.Objects.Auth;
 using TCRS.Business;
 using TCRS.Shared.Contracts;
 

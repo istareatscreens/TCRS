@@ -1,6 +1,6 @@
-﻿namespace TCRS.Server.Users
+﻿namespace TCRS.Shared.Objects.Auth
 {
-    public class RefreshRequest
+    public class UserTokens
     {
         public string AccessToken { get; set; }
         public string RefreshToken { get; set; }

@@ -13,7 +13,7 @@ using TCRS.Database;
 using TCRS.Database.Model;
 using TCRS.Server.Tokens;
 using TCRS.Server.Users;
-using TCRS.Shared.Objects.Login;
+using TCRS.Shared.Objects.Auth;
 
 namespace TCRS.Server.Controllers
 {
@@ -32,62 +32,41 @@ namespace TCRS.Server.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<UserWithToken>> Login([FromBody] UserLoginCredentials credentials)
+        public async Task<ActionResult<UserTokens>> Login([FromBody] UserLoginCredentials credentials)
         {
             //Compare email and password provided to database insert logic and determine role
             Person user = await _db.GetUser(new Person{email= credentials.Email, password=credentials.Password}, _databaseContext.Server);
 
-            UserWithToken userWithToken = null;
+            //UserWithToken userWithToken = null;
+            UserTokens tokens = new UserTokens();
 
             //checks if user exists or active status is false
             if (user == null || !user.active)
             {
                 return NotFound("User Not Found");
             }
-            else
-            {
-                userWithToken = CreateUserWithToken(in user);
-
-                var refreshToken = GenerateRefreshToken();
-                refreshToken.person_id = user.person_id;
-                userWithToken.RefreshToken = refreshToken.token;
-                //save refresh token in database
-                _db.SaveRefreshToken(refreshToken, _databaseContext.Server);
-            }
-
             //Generate JWT token
             try
             {
-                userWithToken.AccessToken = GenerateJWT(user);
+                var refreshToken = GenerateRefreshToken();
+                refreshToken.person_id = user.person_id;
+                tokens.RefreshToken = refreshToken.token;
+                //save refresh token in database
+                _db.SaveRefreshToken(refreshToken, _databaseContext.Server);
+                //get JWT
+                tokens.AccessToken = GenerateJWT(user);
             }
             catch (Exception e)
             {
                 return NotFound(e.Message); //User has no role, this 
             }
-            return userWithToken;
-        }
-
-        private static UserWithToken  CreateUserWithToken(in Person user)
-        {
-                return  new UserWithToken
-                {
-                    person_id = user.person_id,
-                    email = user.email,
-                    first_name = user.first_name,
-                    last_name = user.last_name,
-                    isClientAdmin = user.Client_Admin !=null,
-                    isHighway_Patrol_Officer = user.Highway_Patrol_Officer != null,
-                    isMunicipal_Officer = user.Municipal_Officer != null,
-                    isSchool_Rep = user.School_Rep != null,
-                    isManager = (user.Municipality != null || user.Police_Dept != null)
-                };
+            return tokens;
 
         }
-
 
         //Refresh access
         [HttpPost("refreshtoken")]
-        public async Task<ActionResult<UserWithToken>> RefreshToken([FromBody] RefreshRequest refreshRequest)
+        public async Task<ActionResult<string>> RefreshToken([FromBody] UserTokens refreshRequest)
         {
             //Get user of expired access token
             Person user = await GetUserFromAccessToken(refreshRequest.AccessToken);
@@ -96,21 +75,21 @@ namespace TCRS.Server.Controllers
             if (user != null && await ValidateRefreshToken(user, refreshRequest.RefreshToken))
             {
                 //Need to access database and check roles! generate new token for user
-                var userWithToken = CreateUserWithToken(user);
+                string jwt = "";
                 try
                 {
-                    userWithToken.AccessToken = GenerateJWT(user);
+                    jwt = GenerateJWT(user);
                 }
                 catch (Exception e)
                 {
                     return NotFound(e.Message); //User has no role
                 }
 
-                //Pass back to client
-                return userWithToken;
+                //Pass new jwt back to client
+                return jwt;
 
             }
-            return null;
+            return NotFound("Invalid Request");
         }
 
         private async Task<Person> GetUserFromAccessToken(string accessToken)

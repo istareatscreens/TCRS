@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Net.Http;
-using System.Net.Http.Json;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using TCRS.Shared.Contracts;
-using TCRS.Shared.Objects.Login;
+using TCRS.Shared.Objects.Auth;
 
 namespace TCRS.APIAccess
 {
@@ -19,7 +19,10 @@ namespace TCRS.APIAccess
 
         public async Task<UserWithToken> AuthenticateAndGetUserAsync(UserLoginCredentials userLoginCredentials)
         {
-            Console.WriteLine(await ((await _httpClient.PostAsJsonAsync("/api/Users/login", userLoginCredentials)).Content.ReadAsStringAsync()));
+            var tokens = JsonConvert.DeserializeObject<UserTokens>(await (await _httpClient.PostAsJsonAsync("/api/Users/login", userLoginCredentials)).Content
+                .ReadAsStringAsync());
+
+            Console.WriteLine(tokens.AccessToken);
 
             return new UserWithToken
             {
