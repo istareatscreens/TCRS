@@ -56,7 +56,7 @@ namespace TCRS.Server.Controllers
                 };
 
                 return citations;
-            }catch(Exception e)
+            }catch(Exception )
             {
                 return NotFound("Not found");
             }
