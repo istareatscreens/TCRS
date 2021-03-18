@@ -2,7 +2,7 @@ using Dapper.Contrib.Extensions;
 
 namespace TCRS.Database.Model
 {
-    public class Licence_Plate
+    public class License_Plate
     {
         [ExplicitKey]
         public int plate_number { get; set; }

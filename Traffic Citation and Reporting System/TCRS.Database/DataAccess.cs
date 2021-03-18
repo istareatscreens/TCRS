@@ -33,6 +33,17 @@ namespace TCRS.Database
             }
         }
 
+        public IEnumerable<T> GetAllCitationType<T>(string connectionString, T Model)
+        {
+
+            using (IDbConnection connection = new MySqlConnection(connectionString))
+            {
+
+                string sqlQuery = @"Select * FROM Citation_Type";
+                return connection.Query<T>(sqlQuery);
+            }
+        }
+
         public void SaveData<U>(string sql, U parameters, string connectionString)
         {
             using (IDbConnection connection = new MySqlConnection(connectionString))
@@ -77,6 +88,27 @@ namespace TCRS.Database
                 return (Person)(rows.FirstOrDefault<Person>());
             }
         }
+        
+        #nullable enable
+        public  IEnumerable<Citation>? GetCitationsByLicensePlate(string plate_number, string connectionString)
+        {
+            var sql = @$"SELECT * FROM (SELECT * FROM license_plate where plate_number = @plate_number) as plate
+                LEFT JOIN vehicle_record ON vehicle_record.vehicle_id = plate.vehicle_id
+                LEFT JOIN citation ON citation.citation_id = vehicle_record.citation_id
+                LEFT JOIN citation_type ON citation_type.citation_type_id = citation.citation_type_id";
 
+            using (IDbConnection connection = new MySqlConnection(connectionString))
+            {
+                //Not returning directly to allow for easier debugging
+                var rows =  connection.Query<License_Plate, Vehicle_Record, Citation, Citation_Type, Citation> (sql, (License_Plate, Vehicle_Record, Citation,Citation_Type) =>
+                {
+                    Citation.Vehicle_Record = Vehicle_Record;
+                    Citation.Citation_Type = Citation_Type;
+                    return Citation;
+                }, new { plate_number = plate_number }, splitOn: "plate_number, vehicle_id, citation_id, citation_type_id");
+
+                return rows;
+            }
+        }
     }
 }

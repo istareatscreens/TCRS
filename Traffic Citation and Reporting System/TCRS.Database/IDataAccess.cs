@@ -10,6 +10,9 @@ namespace TCRS.Database
         void SaveData<U>(string sql, U parameters, string connectionString);
         IEnumerable<T> GetAll<T>(string connectionString, T Model);
         Task<Person> GetUser(Person person, string connectionString);
+        IEnumerable<T> GetAllCitationType<T>(string connectionString, T Model);
         void SaveRefreshToken(RefreshToken refreshToken, string connectionString);
+#nullable enable
+       IEnumerable<Citation> GetCitationsByLicensePlate(string plate_number, string connectionString);
     }
 }
