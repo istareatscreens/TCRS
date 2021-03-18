@@ -8,6 +8,9 @@
 #5. restore nuget packages by right-clicking main solution
 #6. rebuild solution from main solution
 #7. close VS and reopen
+#8. run:
+# dotnet dev-certs https --trust
+# in powershell to allow debugging
 
 # now the script does something
 # this script just outputs this

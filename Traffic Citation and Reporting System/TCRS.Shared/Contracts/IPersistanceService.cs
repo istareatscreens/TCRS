@@ -8,6 +8,7 @@ namespace TCRS.Shared.Contracts
 {
     public interface IPersistanceService
     {
-        Task<UserWithToken> AuthenticateAndGetUserAsync(UserLoginCredentials user, IPersistanceService api);
+        Task<UserWithToken> AuthenticateAndGetUserAsync(UserLoginCredentials user);
     }
+
 }

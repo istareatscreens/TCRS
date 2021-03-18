@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.Net.Http.Json" Version="6.0.0-preview.2.21154.6" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\TCRS.Shared\TCRS.Shared.csproj" />
   </ItemGroup>
 

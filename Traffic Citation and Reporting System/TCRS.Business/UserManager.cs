@@ -12,10 +12,13 @@ namespace TCRS.Business
 
         public async Task<UserWithToken> UserSignIn(UserLoginCredentials userLoginCredentials, IPersistanceService api)
         {
+            return await api.AuthenticateAndGetUserAsync(userLoginCredentials);
+            /*
             return await Task.FromResult(new UserWithToken
             {
                 email=userLoginCredentials.Email
             });
+            */
         }
 
     }
