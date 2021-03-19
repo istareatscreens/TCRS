@@ -12,9 +12,9 @@ namespace TCRS.Client.Pages
 {
     public class SigninBase: ComponentBase
     {
-        protected UserLoginCredentials UserCredentials { get; set; } = new UserLoginCredentials();
+         protected UserLoginCredentials UserCredentials { get; set; } = new UserLoginCredentials();
 
-        protected EditContext EditContext { get; set; }
+         protected EditContext EditContext { get; set; }
 
          protected bool success;
 
