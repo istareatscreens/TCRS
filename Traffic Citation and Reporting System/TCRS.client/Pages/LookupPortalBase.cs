@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace TCRS.Client.Pages
 {
-    public class CitationIssuingBase : ComponentBase
+    public class LookupPortalBase : ComponentBase
     {
 
     }
