@@ -18,4 +18,8 @@
 	  <ProjectReference Include="..\TCRS.Shared\TCRS.Shared.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Users\" />
+	</ItemGroup>
+
 </Project>

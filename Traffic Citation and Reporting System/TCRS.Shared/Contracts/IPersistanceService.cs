@@ -6,9 +6,10 @@ using TCRS.Shared.Objects.Auth;
 
 namespace TCRS.Shared.Contracts
 {
-    public interface IPersistanceService
+    public interface IPersistenceService
     {
-        Task<UserWithToken> AuthenticateAndGetUserAsync(UserLoginCredentials user);
+        Task<UserTokens> AuthenticateAndGetUserAsync(UserLoginCredentials userLoginCredentials);
+         Task<IEnumerable<T>> GetAsync<T>(List<KeyValuePair<string, string>> parametersList);
     }
 
 }

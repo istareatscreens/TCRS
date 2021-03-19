@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using TCRS.Shared.Contracts;
@@ -7,7 +11,7 @@ using TCRS.Shared.Objects.Auth;
 
 namespace TCRS.APIAccess
 {
-    public class APIAccessService: IPersistanceService
+    public class APIAccessService: IPersistenceService
     {
 
         private readonly HttpClient _httpClient;
@@ -17,17 +21,29 @@ namespace TCRS.APIAccess
             _httpClient = httpClient;
         }
 
-        public async Task<UserWithToken> AuthenticateAndGetUserAsync(UserLoginCredentials userLoginCredentials)
+        public async Task<IEnumerable<T>> GetAsync<T>(List<KeyValuePair<string, string>> parametersList)
         {
-            var tokens = JsonConvert.DeserializeObject<UserTokens>(await (await _httpClient.PostAsJsonAsync("/api/Users/login", userLoginCredentials)).Content
-                .ReadAsStringAsync());
+                //Add query parameters to url
+                var queryParameters = "";
+                if (parametersList != null && parametersList.Count != 0)
+                {
+                    queryParameters = parametersList.Aggregate("?", (current, parameter)
+                        => current + $"{parameter.Key}={parameter.Value}&");
+                    //remove trailing &
+                    queryParameters = queryParameters.Remove(queryParameters.Length - 1);
+                }
 
-            Console.WriteLine(tokens.AccessToken);
+                var requestUrl = RouteByType.GetEntityRouteAssignment[typeof(T)] + queryParameters;
+                return await _httpClient.GetFromJsonAsync<IList<T>>(requestUrl);
+        }
 
-            return new UserWithToken
-            {
-                email = "HELLO"
-            };
+        public async Task<UserTokens> AuthenticateAndGetUserAsync(UserLoginCredentials userLoginCredentials)
+        {
+            //Post to login end point, get body content, read content as string, deserialize object to json object
+             return JsonConvert.DeserializeObject<UserTokens>(
+                await (await _httpClient.PostAsJsonAsync("/api/Users/login", userLoginCredentials))
+                    .Content
+                    .ReadAsStringAsync());
         }
     }
 }

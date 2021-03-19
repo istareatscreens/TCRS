@@ -8,6 +8,6 @@ namespace TCRS.Business
 {
     public class UserService : IUserService
     {
-        public UserWithToken User { get; set; }
+        public User User { get; set; }
     }
 }

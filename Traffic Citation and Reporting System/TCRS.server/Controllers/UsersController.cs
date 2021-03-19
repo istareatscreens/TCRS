@@ -6,13 +6,14 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Dapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using TCRS.Database;
 using TCRS.Database.Model;
 using TCRS.Server.Tokens;
-using TCRS.Server.Users;
 using TCRS.Shared.Objects.Auth;
 
 namespace TCRS.Server.Controllers
@@ -64,6 +65,16 @@ namespace TCRS.Server.Controllers
 
         }
 
+        [Authorize]
+        [HttpGet("getUser")]
+        public ActionResult<IEnumerable<User>> GetUser([FromHeader] string authorization)
+        {
+            var result = new List<User>();
+            result.Add(new User(authorization));
+            return result;
+        }
+
+
         //Refresh access
         [HttpPost("refreshtoken")]
         public async Task<ActionResult<string>> RefreshToken([FromBody] UserTokens refreshRequest)
@@ -91,6 +102,8 @@ namespace TCRS.Server.Controllers
             }
             return NotFound("Invalid Request");
         }
+
+        //        public async ActionResult<>
 
         private async Task<Person> GetUserFromAccessToken(string accessToken)
         {

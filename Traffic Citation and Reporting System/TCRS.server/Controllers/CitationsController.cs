@@ -7,7 +7,6 @@ using Microsoft.Extensions.Options;
 using TCRS.Database;
 using TCRS.Database.Model;
 using TCRS.Server.Tokens;
-using TCRS.Server.Users;
 using TCRS.Shared.Objects.Citations;
 
 namespace TCRS.Server.Controllers

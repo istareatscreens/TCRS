@@ -10,7 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using TCRS.Database;
 using TCRS.Server.Tokens;
-using TCRS.Server.Users;
+using TCRS.Shared.Objects.Auth;
 
 namespace TCRS.Server
 {

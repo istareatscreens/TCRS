@@ -8,6 +8,6 @@ namespace TCRS.Shared.Contracts
 {
     public interface IUserManager
     {
-        Task<UserWithToken> UserSignIn(UserLoginCredentials userLoginCredentials);
+        Task<UserTokens> UserSignIn(UserLoginCredentials userLoginCredentials);
     }
 }

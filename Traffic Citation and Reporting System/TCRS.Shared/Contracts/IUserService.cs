@@ -7,6 +7,6 @@ namespace TCRS.Shared.Contracts
 {
     public interface IUserService
     {
-        UserWithToken User { get; set; }    
+        public User User { get; set; }    
     }
 }
