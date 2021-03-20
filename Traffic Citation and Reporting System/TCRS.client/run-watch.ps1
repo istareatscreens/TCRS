@@ -21,4 +21,4 @@ Start-Job  -Name BrowserSync -ScriptBlock{browser-sync start `
             --files '**/*.cshtml, **/*.css, **/*.scss, **/*.js, **/*.htm*' `
             }
 
-dotnet watch run
+dotnet watch run --configuration Debug

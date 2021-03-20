@@ -1,5 +1,6 @@
 ﻿@inherits LayoutComponentBase
 
+@if(IsAuthenticated) { 
 <div class="page">
 <MudThemeProvider/>
 <MudDialogProvider/>
@@ -24,3 +25,10 @@
         </div>
     </div>
 </div>
+}
+else
+{
+    <div>
+    @{ NavigationManager.NavigateTo("/Signin"); }
+    </div>
+}

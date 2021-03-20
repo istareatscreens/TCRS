@@ -5,38 +5,41 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using TCRS.Client.AuthenticationStateProvider;
 
 namespace TCRS.Client.Shared
 {
     public partial class MainLayout : LayoutComponentBase
     {
-        public bool isAuthenticated { get; set; }
+        public bool IsAuthenticated { get; set; } = true;
 
         [CascadingParameter]
         private Task<AuthenticationState> AuthenticationStateTask { get; set; }
 
         [Inject]
         private NavigationManager NavigationManager { get; set; }
+
+        [Inject]
+        private IAuthenticationStateProvider AuthenticationStateProvider { get; set; }
         
         //check for authentication status of user and allow loading of data on authentication
         protected override async Task OnParametersSetAsync()
         {
-            await base.OnParametersSetAsync();
+            await base.OnParametersSetAsync(); 
             var authState = await AuthenticationStateTask;
-            isAuthenticated = authState.User.Identity.IsAuthenticated;
+            IsAuthenticated = authState.User.Identity.IsAuthenticated;
 
-            if (!isAuthenticated)
+            if (!IsAuthenticated)
             {
                 return;
             }
-
             //Load user data needed
         }
 
 
         public void SignOut()
         {
-
+            AuthenticationStateProvider.UnsetUser();
         }
     }
 }

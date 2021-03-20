@@ -18,7 +18,6 @@ namespace TCRS.Client.Shared
         private IAuthenticationStateProvider authenticationStateProvider { get; set; }
         protected void SignOut()
         {
-
             //Console.WriteLine((User.User == null)?"":User.User.email);
             authenticationStateProvider.UnsetUser();
         }

@@ -46,11 +46,10 @@ namespace TCRS.Client.Pages
                  return;
              }
 
-
+             //TODO: add warning message
              var tokensAcquired = await UserManager.UserSignIn(UserCredentials);
              if (tokensAcquired !=null)
              {
-                 //TODO: add roles here
                  authenticationStateProvider.SetAuthenticatedState(tokensAcquired);
                  NavigationManager.NavigateTo(UserService.User.isSchool_Rep ? "/Coursemanagement" : "/citationissuing");
              }

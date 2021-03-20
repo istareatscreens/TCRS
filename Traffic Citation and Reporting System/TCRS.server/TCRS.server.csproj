@@ -9,6 +9,13 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Users\**" />
+	  <Content Remove="Users\**" />
+	  <EmbeddedResource Remove="Users\**" />
+	  <None Remove="Users\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.3" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
 	</ItemGroup>
@@ -16,10 +23,6 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\TCRS.Database\TCRS.Database.csproj" />
 	  <ProjectReference Include="..\TCRS.Shared\TCRS.Shared.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Users\" />
 	</ItemGroup>
 
 </Project>

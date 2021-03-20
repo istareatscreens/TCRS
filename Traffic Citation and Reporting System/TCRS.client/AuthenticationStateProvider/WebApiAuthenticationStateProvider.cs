@@ -10,6 +10,7 @@ using Blazored.LocalStorage;
 using TCRS.APIAccess;
 using TCRS.Shared.Contracts;
 using TCRS.Shared.Objects.Auth;
+using TCRS.Shared.Helper;
 
 namespace TCRS.Client.AuthenticationStateProvider
 {
@@ -18,14 +19,14 @@ namespace TCRS.Client.AuthenticationStateProvider
     {
         private readonly IUserService _currentUserServices;
         private readonly HttpClient _httpClient;
-        private readonly LocalStorageService _localStorageService;
+        private readonly ILocalStorageService _localStorageService;
         private readonly APIAccessService _api;
         
         public WebApiAuthenticationStateProvider(
            IUserService currentUserServices ,
             HttpClient httpClient,
-            IPersistenceService persistanceService,
-            LocalStorageService localStorageService
+            IPersistenceService persistenceService,
+            ILocalStorageService localStorageService
             )
         {
             _currentUserServices = currentUserServices;
@@ -33,7 +34,7 @@ namespace TCRS.Client.AuthenticationStateProvider
             _localStorageService = localStorageService;
             try
             {
-                _api = (APIAccessService) persistanceService;
+                _api = (APIAccessService) persistenceService;
             }
             catch (Exception e)
             {
@@ -55,7 +56,7 @@ namespace TCRS.Client.AuthenticationStateProvider
                  _httpClient.DefaultRequestHeaders.Authorization
                     = new AuthenticationHeaderValue("bearer", accessToken);
                 var user = (await _api.GetAsync<User>(null)).ToList().First(); //call server end point to check token
-                return CreateAuthenticationState(user);
+                return CreateAuthenticationState(user,new UserTokens { AccessToken = accessToken });
             }
             catch
             {
@@ -69,12 +70,12 @@ namespace TCRS.Client.AuthenticationStateProvider
             NotifyAuthenticationStateChanged(authStateTask);
         }
 
-        private AuthenticationState CreateAuthenticationState(User user)
+        private AuthenticationState CreateAuthenticationState(User user, UserTokens tokens)
         {
             _currentUserServices.User = user; //side effect updating user state
+            //Add claims here and roles here from jwt through parser helper class
             var claimsPrincipal =
-            //Add claims here and roles here
-                new ClaimsPrincipal(new ClaimsIdentity(new[] {new Claim("id", "1")},"apiauth"));
+                new ClaimsPrincipal(new ClaimsIdentity(JwtParser.GetClaimsFromJWT(tokens.AccessToken)));
             return new AuthenticationState(claimsPrincipal);
 
         }
@@ -83,7 +84,7 @@ namespace TCRS.Client.AuthenticationStateProvider
 
             await _localStorageService.SetItemAsync("authToken",tokens.AccessToken);
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", tokens.AccessToken);
-            return CreateAuthenticationState(new User(tokens.AccessToken));
+            return CreateAuthenticationState(new User(tokens.AccessToken), tokens);
 
             /*
             await _localStorageService.SetItemAsync("authToken", user.Token);
