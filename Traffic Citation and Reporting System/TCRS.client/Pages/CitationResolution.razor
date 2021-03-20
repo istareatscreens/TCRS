@@ -1,7 +1,9 @@
 ﻿@page "/Citationresolution"
+@inject IDialogService DialogService
 @layout UnAuthLayout
 
-<h3>Citation Resolution</h3>
+<MudText Typo="Typo.h3">Citation Resolution</MudText>
+
 <MudTable Items="@Citations" Hover="true" Breakpoint="Breakpoint.Sm">
     <ColGroup>
         <col style="width:300px;" />
@@ -19,31 +21,33 @@
         <MudTh>Schedule Training</MudTh>
     </HeaderContent>
     <RowTemplate>
-
         <MudTd DataLabel="CitationNumber">@context.citationid</MudTd>
         <MudTd DataLabel="Status">@context.status</MudTd>
         <MudTd DataLabel="DateIssued">@context.dateIssued</MudTd>
         <MudTd DataLabel="DateDue">@context.dateDue</MudTd>
         <MudTd DataLabel="Fineamount">@context.fineAmount</MudTd>
-        <MudTd><MudButton Variant="Variant.Outlined" Size="Size.Small" OnClick="@(() => ShowBtnPress("Payment"))">@((!context.paymentRequired)? "No Payment Required" : "Pay Now")</MudButton></MudTd>
-        <MudTd><MudButton Variant="Variant.Outlined" Size="Size.Small" OnClick="@(() => ShowBtnPress("ScheduleTraining"))">@((!context.trainingAvailable)? "Training Not Available" : "Schedule")</MudButton></MudTd>
+        <MudTd>
+            <MudButton @onclick="OpenPayDialog" Variant="Variant.Filled" Color="Color.Primary" Disabled=@(!context.paymentRequired)>Pay</MudButton>
+        </MudTd>
+        <MudTd>
+            <MudButton @onclick="OpenCourseEnrollmentDialog" Variant="Variant.Filled" Color="Color.Primary" Disabled=@(!context.trainingAvailable)>Course Enrollment</MudButton>
+        </MudTd>
     </RowTemplate>
-    <ChildRowContent>
 
-    </ChildRowContent>
 </MudTable>
-
-
-
-
-
-
-
-
-
 
 @code
 {
+    private void OpenPayDialog()
+    {
+        DialogService.Show<PayDialog>("Fine Payment");
+    }
+
+    private void OpenCourseEnrollmentDialog()
+    {
+        DialogService.Show<CourseEnrollmentDialog>("Course Enrollment");
+    }
+
     protected override void OnInitialized()
     {
         fillTable();
@@ -57,8 +61,6 @@
     public class ShowScheduleTraining
     {
         public bool trainingAvailable { get; set; }
-
-
     }
 
     public class Citation
@@ -85,14 +87,16 @@
     private void fillTable()
     {
         IList<Citation> citations = new List<Citation>();
-        citations.Add(new Citation {
+        citations.Add(new Citation
+        {
             citationid = 10,
             status = "Processing",
             dateIssued = randomDay(),
             dateDue = randomDay(),
             fineAmount = 70.90,
             trainingAvailable = true,
-            paymentRequired = true });
+            paymentRequired = true
+        });
 
         citations.Add(new Citation
         {
@@ -129,22 +133,6 @@
 
         Citations = citations;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     private void ShowBtnPress(String choice)
     {
