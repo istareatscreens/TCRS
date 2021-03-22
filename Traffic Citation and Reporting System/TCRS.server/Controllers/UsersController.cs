@@ -62,7 +62,6 @@ namespace TCRS.Server.Controllers
                 return NotFound(e.Message); //User has no role, this 
             }
             return tokens;
-
         }
 
         [Authorize]

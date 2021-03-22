@@ -4,9 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using TCRS.Shared.Objects.Auth;
 
-namespace TCRS.Client.AuthenticationStateProvider
+namespace TCRS.Client.AuthStateProvider
 {
-    public interface IAuthenticationStateProvider
+    public interface IAuthServiceProvider
     {
         void UnsetUser();
 

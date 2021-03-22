@@ -11,7 +11,7 @@ using TCRS.Shared.Objects.Auth;
 
 namespace TCRS.APIAccess
 {
-    public class APIAccessService: IPersistenceService
+    public class APIAccessService : IPersistenceService
     {
 
         private readonly HttpClient _httpClient;
@@ -23,19 +23,23 @@ namespace TCRS.APIAccess
 
         public async Task<IEnumerable<T>> GetAsync<T>(List<KeyValuePair<string, string>> parametersList)
         {
-                //Add query parameters to url
-                var queryParameters = "";
-                if (parametersList != null && parametersList.Count != 0)
-                {
-                    queryParameters = parametersList.Aggregate("?", (current, parameter)
-                        => current + $"{parameter.Key}={parameter.Value}&");
-                    //remove trailing &
-                    queryParameters = queryParameters.Remove(queryParameters.Length - 1);
-                }
+            //Add query parameters to url
+            var queryParameters = "";
+            if (parametersList != null && parametersList.Count != 0)
+            {
+                queryParameters = parametersList.Aggregate("?", (current, parameter)
+                    => current + $"{parameter.Key}={parameter.Value}&");
+                //remove trailing &
+                queryParameters = queryParameters.Remove(queryParameters.Length - 1);
+            }
 
-                var requestUrl = RouteByType.GetEntityRouteAssignment[typeof(T)] + queryParameters;
-                return await _httpClient.GetFromJsonAsync<IList<T>>(requestUrl);
+            var requestUrl = RouteByType.GetEntityRouteAssignment[typeof(T)] + queryParameters;
+            return await _httpClient.GetFromJsonAsync<IList<T>>(requestUrl);
         }
+
+        public async Task<IEnumerable<T>> GetAsync<T>(){
+            return await GetAsync<T>(new List<KeyValuePair<string, string>>());
+       }
 
         public async Task<UserTokens> AuthenticateAndGetUserAsync(UserLoginCredentials userLoginCredentials)
         {

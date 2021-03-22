@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using TCRS.Shared.Objects.Auth;
 using TCRS.Shared.Objects.Citations;
 
 namespace TCRS.APIAccess
@@ -9,7 +10,8 @@ namespace TCRS.APIAccess
     {
         public static Dictionary<Type, string> GetEntityRouteAssignment { get; } = new Dictionary<Type, string>
         {
-            {typeof(CitizenVehicleCitation), "api/Citations"}
+            {typeof(CitizenVehicleCitation), "api/Citations"},
+            {typeof(User), "api/Users/getUser"}
         };
 
     }

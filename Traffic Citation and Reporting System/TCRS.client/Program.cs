@@ -2,12 +2,13 @@ using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Blazored.LocalStorage;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using MudBlazor.Services;
 using TCRS.APIAccess;
 using TCRS.Business;
-using TCRS.Client.AuthenticationStateProvider;
+using TCRS.Client.AuthStateProvider;
 using TCRS.Shared.Contracts;
 
 namespace TCRS.Client
@@ -36,11 +37,16 @@ namespace TCRS.Client
             builder.Services.AddScoped<IUserService, UserService>();
 
             //Load User Authentication services
-            builder.Services.AddScoped<WebApiAuthenticationStateProvider>();
-            builder.Services.AddScoped<IAuthenticationStateProvider>(
-                provider => provider.GetRequiredService<WebApiAuthenticationStateProvider>());
-            builder.Services.AddScoped<Microsoft.AspNetCore.Components.Authorization.AuthenticationStateProvider>(
-                provider => provider.GetRequiredService<WebApiAuthenticationStateProvider>());
+            builder.Services.AddAuthorizationCore();
+                builder.Services.AddScoped<WebApiAuthStateProvider>();
+                builder.Services.AddScoped<IAuthServiceProvider>(
+                    provider => provider.GetRequiredService<WebApiAuthStateProvider>());
+                builder.Services.AddScoped<AuthenticationStateProvider>(
+                    provider => provider.GetRequiredService<WebApiAuthStateProvider>());
+            /*
+            builder.Services.AddScoped<IAuthServiceProvider>(
+                provider => provider.GetRequiredService<WebApiAuthStateProvider>());
+            */
 
             await builder.Build().RunAsync();
         }

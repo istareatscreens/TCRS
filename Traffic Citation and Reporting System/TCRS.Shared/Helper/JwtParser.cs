@@ -16,10 +16,12 @@ namespace TCRS.Shared.Helper
             var claims = new List<Claim>();
             var handler = new JwtSecurityTokenHandler();
             //if jwt contains Bearer token then remove "Bearer " from start else don't
-            var token = (handler.ReadJwtToken((jwt.Substring(0,7).Contains("Bearer"))?jwt.Substring(7):jwt)).Claims.ToList();
-
-            //claims.AddRange(token.Claims.Select(kvp => new Claim(kvp.Key, kvp.Value.ToString())));
-            return token;
+            var claimsList = (handler.ReadJwtToken((jwt.Substring(0,7).Contains("Bearer"))?jwt.Substring(7):jwt)).Claims.ToList();
+            foreach(var claim in claimsList)
+            {
+                claims.Add(new Claim(claim.Type, claim.Value));
+            }
+            return claims;
         }
     }
 }
