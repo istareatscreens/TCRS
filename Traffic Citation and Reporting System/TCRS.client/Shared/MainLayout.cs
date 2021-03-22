@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Authorization;
+﻿using Microsoft.AspNetCore.Components;
 using TCRS.Client.AuthStateProvider;
 
 namespace TCRS.Client.Shared
@@ -16,7 +10,7 @@ namespace TCRS.Client.Shared
 
         [Inject]
         private IAuthServiceProvider authServiceProvider { get; set; }
-        
+
         public void SignOut()
         {
             authServiceProvider.UnsetUser();

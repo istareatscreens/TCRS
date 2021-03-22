@@ -50,8 +50,7 @@ namespace TCRS.Client.AuthStateProvider
 
                 if (string.IsNullOrWhiteSpace(accessToken))
                 {
-                    Console.WriteLine("FAILED To REtrieve");
-                    return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
+                    throw new Exception();
                 }
                 _httpClient.DefaultRequestHeaders.Authorization
                    = new AuthenticationHeaderValue("bearer", accessToken);
@@ -77,34 +76,8 @@ namespace TCRS.Client.AuthStateProvider
             await _localStorageService.SetItemAsync("authToken", tokens.AccessToken);
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", tokens.AccessToken);
             var claimsPrincipal =
-                new ClaimsPrincipal(new ClaimsIdentity(JwtParser.GetClaimsFromJWT(tokens.AccessToken), "jwtAuthType"));
+               new ClaimsPrincipal(new ClaimsIdentity(JwtParser.GetClaimsFromJWT(tokens.AccessToken).ToArray(), "jwtAuthType"));
             return new AuthenticationState(claimsPrincipal);
-
-            /*
-            await _localStorageService.SetItemAsync("authToken", user.Token);
-            _currentUserService.CurrentUser = user;
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", user.Token);
-
-            var handler = new JwtSecurityTokenHandler();
-            var token = handler.ReadJwtToken(user.Token);
-
-            var claims = token.Claims.ToList();
-            var roleClaim = claims.FirstOrDefault(c => c.Type == "role");
-            if (roleClaim != null)
-            {
-                var newRoleClaim = new Claim(ClaimTypes.Role, roleClaim.Value);
-                claims.Add(newRoleClaim);
-            }
-
-             Console.WriteLine(JsonSerializer.Serialize(claims));
-
-            var claimsPrincipal = new ClaimsPrincipal(
-                new ClaimsIdentity(claims, "apiauth"));
-
-            //var claimsPrincipal = new ClaimsPrincipal(
-            //    new ClaimsIdentity(new[] { new Claim("id", user.Id.ToString()) }, "apiauth"));
-            return new AuthenticationState(claimsPrincipal);
-            */
         }
 
         public void UnsetUser()
@@ -114,7 +87,14 @@ namespace TCRS.Client.AuthStateProvider
 
         private async Task<AuthenticationState> CreateUnsetUserAuthenticationStateAsync()
         {
-            await _localStorageService.RemoveItemAsync("authToken");
+            try
+            {
+                await _localStorageService.RemoveItemAsync("authToken");
+            }
+            catch
+            {
+
+            }
             var unsetUser = new ClaimsPrincipal(new ClaimsIdentity());
             return new AuthenticationState(unsetUser);
         }
