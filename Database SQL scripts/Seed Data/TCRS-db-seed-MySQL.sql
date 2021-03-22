@@ -6035,6 +6035,16 @@ INSERT INTO `tcrs-db`.`driver_record` (`citizen_id`, `citation_id`) VALUES ('1',
 INSERT INTO `tcrs-db`.`driver_record` (`citizen_id`, `citation_id`) VALUES ('1', '4');
 INSERT INTO `tcrs-db`.`driver_record` (`citizen_id`, `citation_id`) VALUES ('1', '6');
 
+INSERT INTO `tcrs-db`.`highway_patrol_officer` (`person_id`, `position`, `police_dept_id`) VALUES ('3', 'asd', '1');
+INSERT INTO `tcrs-db`.`highway_patrol_officer` (`person_id`, `position`, `police_dept_id`) VALUES ('5', 'as', '1');
+INSERT INTO `tcrs-db`.`highway_patrol_officer` (`person_id`, `position`, `police_dept_id`) VALUES ('7', 'sq', '1');
+
+INSERT INTO `tcrs-db`.`municipal_officer` (`person_id`, `position`, `munic_id`) VALUES ('8', 'pipa', '1');
+INSERT INTO `tcrs-db`.`municipal_officer` (`person_id`, `position`, `munic_id`) VALUES ('9', 'aqua', '1');
+INSERT INTO `tcrs-db`.`municipal_officer` (`person_id`, `position`, `munic_id`) VALUES ('14', 'cica', '1');
+
+
+
 
  
 #Rename Tables to fix spelling mistakes

@@ -118,13 +118,48 @@ namespace TCRS.Database
                 LEFT JOIN citation_type ON citation_type.citation_type_id = citation.citation_type_id";
             using (IDbConnection connection = new MySqlConnection(connectionString))
             {
-                //Not returning directly to allow for easier debugging
                 var rows = connection.Query<Citizen, Driver_Record, Citation, Citation_Type, Citation>(sql, (Citizen, Driver_Record, Citation, Citation_Type) =>
                 {
                     Citation.Driver_Record = Driver_Record;
                     Citation.Citation_Type = Citation_Type;
                     return Citation;
                 }, new { first_name = first_name }, splitOn: "citizen_id, citizen_id, citation_id, citation_type_id");
+
+                return rows;
+            }
+        }
+
+        public IEnumerable<Police_Dept> GetPoliceDeptEmployeesByManager(int manager_id, string connectionString)
+        {
+            var sql = @$"SELECT * FROM (SELECT * FROM police_dept WHERE manager_id = @manager_id) as mid
+		        LEFT JOIN highway_patrol_officer ON highway_patrol_officer.police_dept_id = mid.police_dept_id
+                LEFT JOIN person ON person.person_id = highway_patrol_officer.person_id";
+            using (IDbConnection connection = new MySqlConnection(connectionString))
+            {
+                var rows = connection.Query<Police_Dept, Highway_Patrol_Officer, Person, Police_Dept>(sql, (Police_Dept, Highway_Patrol_Officer, Person) =>
+                {
+                    Police_Dept.Highway_Patrol_Officers = (ICollection<Highway_Patrol_Officer>)Highway_Patrol_Officer;
+                    Police_Dept.Persons = Person;
+                    return Police_Dept;
+                }, new { manager_id = manager_id }, splitOn: "police_dept_id, person_id, person_id");
+
+                return rows;
+            }
+        }
+
+        public IEnumerable<Municipality> GetMunicipalOfficersByManager(int manager_id, string connectionString)
+        {
+            var sql = @$"SELECT * FROM (SELECT * FROM municipality WHERE manager_id = @manager_id) as mid
+		        LEFT JOIN municipal_officer ON municipal_officer.munic_id = mid.munic_id
+                LEFT JOIN person ON person.person_id = municipal_officer.person_id";
+            using (IDbConnection connection = new MySqlConnection(connectionString))
+            {
+                var rows = connection.Query<Municipality, Municipal_Officer, Person, Municipality>(sql, (Municipality, Municipal_Officer, Person) =>
+                {
+                    Municipality.Municipal_Officers = (ICollection<Municipal_Officer>)Municipal_Officer;
+                    Municipality.Person = Person;
+                    return Municipality;
+                }, new { manager_id = manager_id }, splitOn: "munic_id, person_id, person_id");
 
                 return rows;
             }

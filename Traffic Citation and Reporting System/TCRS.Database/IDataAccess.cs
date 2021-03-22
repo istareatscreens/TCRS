@@ -15,6 +15,7 @@ namespace TCRS.Database
 #nullable enable
        IEnumerable<Citation> GetCitationsByLicensePlate(string plate_number, string connectionString);
        IEnumerable<Citation> GetCitationsByCitizen(string first_name, string connectionString);
-
+       IEnumerable<Police_Dept> GetPoliceDeptEmployeesByManager(int manager_id, string connectionString);
+       IEnumerable<Municipality> GetMunicipalOfficersByManager(int munic_id, string connectionString);
     }
 }

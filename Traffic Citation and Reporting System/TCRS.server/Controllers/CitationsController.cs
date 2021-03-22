@@ -25,7 +25,7 @@ namespace TCRS.Server.Controllers
             _databaseContext = databaseContext.Value;
         }
         [HttpGet]
-        public  ActionResult<IEnumerable<CitizenVehicleCitation>> GetCitationByLicense([FromQuery]String plate_number)
+        public  ActionResult<IEnumerable<CitizenVehicleCitation>> GetCitationsByCitizen([FromQuery]String plate_number)
         {
         //Return type is wrapped in action result to allow NotFond to be returned
 
