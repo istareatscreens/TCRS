@@ -6031,6 +6031,11 @@ INSERT INTO `tcrs-db`.`vehicle_record` (`vehicle_id`, `citation_id`) VALUES ('5'
 INSERT INTO `tcrs-db`.`vehicle_record` (`vehicle_id`, `citation_id`) VALUES ('5', '5');
 INSERT INTO `tcrs-db`.`vehicle_record` (`vehicle_id`, `citation_id`) VALUES ('5', '2');
 
+INSERT INTO `tcrs-db`.`driver_record` (`citizen_id`, `citation_id`) VALUES ('1', '2');
+INSERT INTO `tcrs-db`.`driver_record` (`citizen_id`, `citation_id`) VALUES ('1', '4');
+INSERT INTO `tcrs-db`.`driver_record` (`citizen_id`, `citation_id`) VALUES ('1', '6');
+
+
  
 #Rename Tables to fix spelling mistakes
 ALTER TABLE `tcrs-db`.`licence` 

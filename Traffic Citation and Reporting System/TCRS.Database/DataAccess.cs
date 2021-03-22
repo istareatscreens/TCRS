@@ -110,5 +110,25 @@ namespace TCRS.Database
                 return rows;
             }
         }
+
+        public IEnumerable<Citation> GetCitationsByCitizen(string first_name, string connectionString)
+        {
+            var sql = @$"SELECT * FROM (SELECT * FROM citizen WHERE first_name = @first_name) as fname	
+	            LEFT JOIN driver_record ON driver_record.citizen_id = fname.citizen_id
+	            LEFT JOIN citation ON citation.citation_id = driver_record.citation_id
+                LEFT JOIN citation_type ON citation_type.citation_type_id = citation.citation_type_id";
+            using (IDbConnection connection = new MySqlConnection(connectionString))
+            {
+                //Not returning directly to allow for easier debugging
+                var rows = connection.Query<Citizen, Driver_Record, Citation, Citation_Type, Citation>(sql, (Citizen, Driver_Record, Citation, Citation_Type) =>
+                {
+                    Citation.Driver_Record = Driver_Record;
+                    Citation.Citation_Type = Citation_Type;
+                    return Citation;
+                }, new { first_name = first_name }, splitOn: "citizen_id, citizen_id, citation_id, citation_type_id");
+
+                return rows;
+            }
+        }
     }
 }

@@ -14,5 +14,7 @@ namespace TCRS.Database
         void SaveRefreshToken(RefreshToken refreshToken, string connectionString);
 #nullable enable
        IEnumerable<Citation> GetCitationsByLicensePlate(string plate_number, string connectionString);
+       IEnumerable<Citation> GetCitationsByCitizen(string first_name, string connectionString);
+
     }
 }

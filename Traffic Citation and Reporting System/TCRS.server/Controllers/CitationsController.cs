@@ -56,12 +56,13 @@ namespace TCRS.Server.Controllers
                 };
 
                 return citations;
-            }catch(Exception e)
+
+            }
+            catch(Exception e)
             {
                 return NotFound("Not found");
             }
         }
-
         [HttpGet("All")]
         public IEnumerable<Citation_Type> GetCitationType()
         {     
