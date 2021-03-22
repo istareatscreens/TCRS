@@ -1,11 +1,17 @@
 ﻿@inherits NavBarBase
 <div class="navbar">
     <div class="navbar__btn-group">
-        <MudButton Class="navbar__homepage" Link="/ResolveCitation" Color="Color.Primary" Variant="Variant.Filled">Resolve Citation
-        </MudButton>
-        <MudButton Class="navbar__homepage" Link="/Signin" Color="Color.Primary" Variant="Variant.Filled">Sign in</MudButton>
+        @NavButtons
     </div>
-    <MudButton OnClick="@SignOut" Variant="Variant.Filled" Color="Color.Primary" class="navbar__signout-btn">Sign out</MudButton>
+    @LoginLogout
 </div>
 
 
+@code
+{
+    [Parameter]
+    public RenderFragment NavButtons { get; set; }
+
+    [Parameter]
+    public RenderFragment LoginLogout { get; set; }
+}

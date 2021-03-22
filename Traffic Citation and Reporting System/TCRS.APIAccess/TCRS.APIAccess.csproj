@@ -6,6 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
+    <PackageReference Include="MudBlazor" Version="5.0.6" />
+    <PackageReference Include="System.Net.Http.Json" Version="6.0.0-preview.2.21154.6" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\TCRS.Shared\TCRS.Shared.csproj" />
   </ItemGroup>
 

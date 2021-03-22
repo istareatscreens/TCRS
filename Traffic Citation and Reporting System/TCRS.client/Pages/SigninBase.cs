@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
-using TCRS.Shared.Objects.Login;
+using TCRS.Shared.Objects.Auth;
 using TCRS.Business;
 using TCRS.Shared.Contracts;
 
@@ -12,9 +12,9 @@ namespace TCRS.Client.Pages
 {
     public class SigninBase: ComponentBase
     {
-        protected UserLoginCredentials UserCredentials { get; set; } = new UserLoginCredentials();
+         protected UserLoginCredentials UserCredentials { get; set; } = new UserLoginCredentials();
 
-        protected EditContext EditContext { get; set; }
+         protected EditContext EditContext { get; set; }
 
          protected bool success;
 
@@ -34,11 +34,7 @@ namespace TCRS.Client.Pages
 
         [Inject]
         private IUserService UserService { get; set; }
-
-        [Inject]
-        private IPersistanceService api { get; set; }
-
-         protected async void HandleSubmit()
+        protected async void HandleSubmit()
          {
              if (!EditContext.Validate())
              {
@@ -46,7 +42,7 @@ namespace TCRS.Client.Pages
              }
 
 
-             UserService.User = await UserManager.UserSignIn(UserCredentials, api);
+             UserService.User = await UserManager.UserSignIn(UserCredentials);
              if (UserService.User != null)
              {
                  NavigationManager.NavigateTo(("Placeholder"));

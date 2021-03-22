@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Runtime.CompilerServices;
 
-namespace TCRS.Shared.Objects.Login
+namespace TCRS.Shared.Objects.Auth
 {
     public class UserLoginCredentials
     {

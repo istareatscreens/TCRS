@@ -16,6 +16,7 @@ namespace TCRS.Server
 {
     public class Startup
     {
+        private static bool isDev = true;
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -26,6 +27,24 @@ namespace TCRS.Server
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+
+            if (isDev)
+            {
+                services.AddCors(options =>
+                    options.AddDefaultPolicy(builder =>
+                    {
+                        builder.AllowAnyHeader().AllowAnyOrigin();
+                    }));
+            }
+            else
+            {
+                services.AddCors(options =>
+                {
+                    options.AddDefaultPolicy(builder =>
+                        builder.WithOrigins(Configuration.GetSection("CORS_URL").Value));
+                });
+            }
 
             services.AddSingleton<Roles>();
 
@@ -108,6 +127,8 @@ namespace TCRS.Server
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors();
 
             app.UseAuthentication();
 

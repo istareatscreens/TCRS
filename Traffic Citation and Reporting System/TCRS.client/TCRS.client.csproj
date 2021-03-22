@@ -5,6 +5,7 @@
 		<AssemblyName>TCRS.Client</AssemblyName>
 		<RootNamespace>TCRS.Client</RootNamespace>
 		<LangVersion>latest</LangVersion>
+		<UserSecretsId>da0ee687-0e52-48fe-9e47-72e3b9c8ca84</UserSecretsId>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -27,8 +28,7 @@
 		<PackageReference Include="BuildWebCompiler" Version="1.12.394" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.3" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.3" PrivateAssets="all" />
-		<PackageReference Include="MudBlazor" Version="5.0.5" />
-		<PackageReference Include="System.Net.Http.Json" Version="5.0.0" />
+		<PackageReference Include="MudBlazor" Version="5.0.6" />
 	</ItemGroup>
 
 	<ItemGroup>

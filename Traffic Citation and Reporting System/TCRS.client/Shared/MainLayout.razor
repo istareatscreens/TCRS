@@ -6,7 +6,18 @@
 <MudSnackbarProvider/>
     <div class="main">
         <!--Universal components go here-->
-        <NavBar></NavBar>
+        <NavBar>
+            <NavButtons>
+                <MudButton Class="navbar__homepage" Link="/Dialogs" Color="Color.Primary" Variant="Variant.Filled">Pay and Enrollment Dialogs</MudButton>
+                <MudButton Class="navbar__homepage" Link="/Coursemanagement" Color="Color.Primary" Variant="Variant.Filled">Course Management</MudButton>
+                <MudButton Class="navbar__homepage" Link="/Citationissuing" Color="Color.Primary" Variant="Variant.Filled">Citation Issuing</MudButton>
+                <MudButton Class="navbar__homepage" Link="/Lookupportal" Color="Color.Primary" Variant="Variant.Filled">Lookup Portal</MudButton>
+                <MudButton Class="navbar__homepage" Link="/Employeelookup" Color="Color.Primary" Variant="Variant.Filled">Employee Lookup</MudButton>
+            </NavButtons>
+            <LoginLogout>
+                <MudButton OnClick="@SignOut" Variant="Variant.Filled" Color="Color.Primary" class="navbar__signout-btn">Sign out</MudButton>
+            </LoginLogout>
+        </NavBar>
         <div class="main-body">
             <!--Render Page-->
             @Body

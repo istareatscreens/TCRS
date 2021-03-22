@@ -1,0 +1,119 @@
+﻿@page "/Lookupportal"
+@inherits LookupPortalBase
+
+@using System.ComponentModel.DataAnnotations
+
+<MudText Typo="Typo.h3">Lookup Portal for Citizen, Vehicle, Citation</MudText>
+
+<div class="citation-body">
+    <div style="max-width: 400px;">
+        <EditForm Model="@model" OnValidSubmit="OnValidSubmit">
+            <DataAnnotationsValidator />
+            <MudCard>
+                <MudCardContent>
+                    <MudTextField Label="Licence ID" Variant="Variant.Outlined"
+                                  @bind-Value="model.licence_id" For="@(() => model.licence_id)" />
+                    <MudTextField Label="Licence Plate" Variant="Variant.Outlined"
+                                  @bind-Value="model.licence_plate" For="@(() => model.licence_plate)" />
+                    <MudTextField Label="Citation ID" Variant="Variant.Outlined"
+                                  @bind-Value="model.citation_id" For="@(() => model.citation_id)" />
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Search</MudButton>
+                </MudCardActions>
+            </MudCard>
+        </EditForm>
+    </div>
+
+    <MudPaper Class="pa-1 ma-2" Elevation="3">
+
+        <MudText Typo="Typo.h6">Person Information</MudText>
+        <div style="max-width: 400px;">
+            <MudTextField @bind-Value="GetPersonName" Label="Person Name:" ReadOnly="true" Variant="Variant.Filled" />
+            <MudTextField @bind-Value="GetLicenseID" Label="Person Licence ID:" ReadOnly="true" Variant="Variant.Filled" />
+            <MudTextField @bind-Value="GetLicenceExpirationDate" Label="Licence Expiration :" ReadOnly="true" Variant="Variant.Filled" />
+            <MudTextField @bind-Value="GetLicenceRevoked" Label="Licence Revoked?:" ReadOnly="true" Variant="Variant.Filled" />
+            <MudTextField @bind-Value="GetLicenceSuspended" Label="Licence Suspended?" ReadOnly="true" Variant="Variant.Filled" />
+            <MudTextField @bind-Value="GetLicenceClass" Label="Licence Class:" ReadOnly="true" Variant="Variant.Filled" />
+        </div>
+
+        <MudText Typo="Typo.h6">Vehicle Information</MudText>
+        <div style="max-width: 400px;">
+            <MudTextField @bind-Value="GetVehicleID" Label="Vehicle ID:" ReadOnly="true" Variant="Variant.Filled" />
+            <MudTextField @bind-Value="GetVehicleVIN" Label="Vehicle VIN:" ReadOnly="true" Variant="Variant.Filled" />
+            <MudTextField @bind-Value="GetVehicleName" Label="Vehicle Name:" ReadOnly="true" Variant="Variant.Filled" />
+            <MudTextField @bind-Value="GetVehicleStolen" Label="vehicle Stolen:" ReadOnly="true" Variant="Variant.Filled" />
+            <MudTextField @bind-Value="GetVehicleMake" Label="Vehicle Make:" ReadOnly="true" Variant="Variant.Filled" />
+            <MudTextField @bind-Value="GetVehicleModel" Label="Vehicle Model:" ReadOnly="true" Variant="Variant.Filled" />
+            <MudTextField @bind-Value="GetVehicleYearMade" Label="Vehicle Year Made:" ReadOnly="true" Variant="Variant.Filled" />
+            <MudTextField @bind-Value="GetVehicleCitizenID" Label="Vehicle Citizen ID Relation:" ReadOnly="true" Variant="Variant.Filled" />
+            <MudTextField @bind-Value="GetVehicleInsuredID" Label="Vehicle Insured ID Relation:" ReadOnly="true" Variant="Variant.Filled" />
+        </div>
+
+        <MudText Typo="Typo.h6">Citation Information</MudText>
+        <div style="max-width: 400px;">
+            <MudTextField @bind-Value="GetCitationID" Label="Citation ID" ReadOnly="true" Variant="Variant.Filled" />
+            <MudTextField @bind-Value="GetOffenderName" Label="Offender Name:" ReadOnly="true" Variant="Variant.Filled" />
+            <MudTextField @bind-Value="GetOffenderLicencePlate" Label="Offender Licence Plate:" ReadOnly="true" Variant="Variant.Filled" />
+            <MudTextField @bind-Value="GetOfficerName" Label="Officer Name:" ReadOnly="true" Variant="Variant.Filled" />
+            <MudTextField @bind-Value="GetDateOfOffence" Label="Date of Offence:" ReadOnly="true" Variant="Variant.Filled" />
+        </div>
+
+
+    </MudPaper>
+
+
+
+    @code {
+        RegisterAccountForm model = new RegisterAccountForm();
+        bool success;
+
+        public class RegisterAccountForm
+        {
+            [Required]
+            [StringLength(8, ErrorMessage = "Invalid licence_id")]
+            public string licence_id { get; set; }
+
+            [Required]
+            [StringLength(8, ErrorMessage = "Invalid licence_plate")]
+            public string licence_plate { get; set; }
+
+            [Required]
+            [StringLength(8, ErrorMessage = "Invalid citation_id")]
+            public string citation_id { get; set; }
+        }
+
+        private void OnValidSubmit(EditContext context)
+        {
+            success = true;
+            StateHasChanged();
+        }
+
+        public string Disabled { get; set; }
+
+
+        public string GetPersonName { get; set; } = "Person Name Here";
+        public string GetLicenseID { get; set; } = "Person Licence ID Here";
+        public string GetLicenceExpirationDate { get; set; } = "Person Licence Expiration Date Here";
+        public string GetLicenceRevoked { get; set; } = "Person Licence Revoked?";
+        public string GetLicenceSuspended { get; set; } = "Person Licence Suspended?";
+        public string GetLicenceClass { get; set; } = "Person Licence Class Here";
+
+        public string GetVehicleID { get; set; } = "Vehicle ID Here";
+        public string GetVehicleVIN { get; set; } = "Vehicle VIN Here";
+        public string GetVehicleName { get; set; } = "Vehicle Name Here";
+        public string GetVehicleStolen { get; set; } = "Vehicle Stolen Here";
+        public string GetVehicleMake { get; set; } = "Vehicle Make Here";
+        public string GetVehicleModel { get; set; } = "Vehicle Model Here";
+        public string GetVehicleYearMade { get; set; } = "Vehicle Year Made Here";
+        public string GetVehicleCitizenID { get; set; } = "Vehicle Related to Citizen ID Here";
+        public string GetVehicleInsuredID { get; set; } = "Vehicle Related to Insured ID Here";
+
+        public string GetCitationID { get; set; } = "Citation ID Here";
+        public string GetOffenderName { get; set; } = "Person Name Here";
+        public string GetOffenderLicencePlate { get; set; } = "Licence Plate Here";
+        public string GetOfficerName { get; set; } = "Officer Name Here";
+        public string GetDateOfOffence { get; set; } = "Date Of Offence Here";
+    }
+
+</div>

@@ -89,8 +89,7 @@ namespace TCRS.Database
             }
         }
         
-        #nullable enable
-        public  IEnumerable<Citation>? GetCitationsByLicensePlate(string plate_number, string connectionString)
+        public  IEnumerable<Citation> GetCitationsByLicensePlate(string plate_number, string connectionString)
         {
             var sql = @$"SELECT * FROM (SELECT * FROM license_plate where plate_number = @plate_number) as plate
                 LEFT JOIN vehicle_record ON vehicle_record.vehicle_id = plate.vehicle_id

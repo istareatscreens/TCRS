@@ -7,6 +7,7 @@ using MudBlazor.Services;
 using TCRS.APIAccess;
 using TCRS.Business;
 using TCRS.Shared.Contracts;
+using TCRS.Shared.Contracts.CitationManagement;
 
 namespace TCRS.Client
 {
@@ -16,13 +17,17 @@ namespace TCRS.Client
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("app");
-
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            builder.Services.AddScoped(
+                sp => new HttpClient {BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)});
             builder.Services.AddMudServices();
 
+
+            builder.Services.AddScoped(sp =>
+                new HttpClient {BaseAddress = new Uri(builder.Configuration["apiURL"])});
             builder.Services.AddScoped<IPersistanceService, APIAccessService>();
             builder.Services.AddScoped<IUserManager, UserManager>();
             builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddTransient<ICitationManager, CitationManager>();
 
             await builder.Build().RunAsync();
         }
