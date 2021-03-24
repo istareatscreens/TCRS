@@ -1,4 +1,5 @@
 ﻿@page "/Coursemanagement"
+@attribute [Authorize(Roles = Roles.SchoolRep)]
 @inherits CourseManagementBase
 @using System.ComponentModel.DataAnnotations
 
@@ -12,7 +13,7 @@
                 <MudCardContent>
                     <MudTextField @bind-Value="GetPersonName" Label="Instructor Name:" ReadOnly="true" Variant="Variant.Filled" />
                     <MudTextField @bind-Value="GetPersonID" Label="Person ID:" ReadOnly="true" Variant="Variant.Filled" />
-                    
+
                     <MudTextField Label="Course ID" Variant="Variant.Outlined"
                                   @bind-Value="model.course_id" For="@(() => model.course_id)" />
                     <MudTextField Label="Course Type" Variant="Variant.Outlined"

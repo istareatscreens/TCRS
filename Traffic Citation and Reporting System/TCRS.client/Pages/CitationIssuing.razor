@@ -1,20 +1,20 @@
 ﻿@page "/Citationissuing"
+@attribute [Authorize(Roles = Roles.HighwayPatrolOfficer)]
 @inherits CitationIssuingBase
 
 @using System.ComponentModel.DataAnnotations
-
 <MudText Typo="Typo.h3">Citation Issuing</MudText>
 
 <div class="citation-body">
     <div style="max-width: 400px;">
-        <EditForm Model="@model" OnValidSubmit="OnValidSubmit">
+        <EditForm Model="@EditContext" OnValidSubmit="@OnValidSubmit">
             <DataAnnotationsValidator />
             <MudCard>
                 <MudCardContent>
                     <MudTextField Label="Licence ID" Variant="Variant.Outlined"
-                                  @bind-Value="model.licence_id" For="@(() => model.licence_id)" />
+                                  @bind-Value="CitationData.licence_id" For="@(() => CitationData.licence_id)" />
                     <MudTextField Label="Licence Plate" Variant="Variant.Outlined"
-                                  @bind-Value="model.licence_plate" For="@(() => model.licence_plate)" />
+                                  @bind-Value="CitationData.licencePlate" For="@(() => CitationData.licencePlate)" />
                 </MudCardContent>
                 <MudCardActions>
                     <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Search</MudButton>
@@ -55,40 +55,5 @@
             </MudItem>
         </MudGrid>
     </MudPaper>
-
-    @code {
-        RegisterAccountForm model = new RegisterAccountForm();
-        bool success;
-
-        public class RegisterAccountForm
-        {
-            [Required]
-            [StringLength(8, ErrorMessage = "Invalid licence_id")]
-            public string licence_id { get; set; }
-
-            [Required]
-            [StringLength(8, ErrorMessage = "Invalid licence_plate")]
-            public string licence_plate { get; set; }
-        }
-
-        private void OnValidSubmit(EditContext context)
-        {
-            success = true;
-            StateHasChanged();
-        }
-
-        public string Disabled { get; set; }
-        public string GetOffenderName { get; set; } = "Offender Name Here";
-        public string GetOffenderLicencePlate { get; set; } = "Offender Licence Plate Here";
-        public string GetOfficerName { get; set; } = "Officer Name Here";
-        public string GetDateOfOffence { get; set; } = "Date Of Offence Here";
-
-        public string CitationNumber { get; set; } = "";
-        public string Status { get; set; } = "";
-        public string DateIssued { get; set; } = "";
-        public string DateDue { get; set; } = "";
-        public string FineAmount { get; set; } = "";
-
-    }
 
 </div>

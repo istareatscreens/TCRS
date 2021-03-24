@@ -1,4 +1,5 @@
 ﻿@page "/Employeelookup"
+@attribute [Authorize(Roles = Roles.Manager)]
 @inherits EmployeeLookupBase
 
 @using System.ComponentModel.DataAnnotations
@@ -59,7 +60,7 @@
 
         public string GetEmployeeName { get; set; } = "Employee Name Here";
         public string GetEmployeeEmail { get; set; } = "Employee Email Here";
-        public string GetEmployeeActive{ get; set; } = "Employee Name Here";
+        public string GetEmployeeActive { get; set; } = "Employee Name Here";
         public string GetEmployeeDepartment { get; set; } = "Employee Department Here";
         public string GetEmployeeRole { get; set; } = "Employee Role Here";
 
