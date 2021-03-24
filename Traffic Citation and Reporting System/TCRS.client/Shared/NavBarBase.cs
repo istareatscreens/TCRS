@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using TCRS.Business;
-using TCRS.Client.AuthenticationStateProvider;
+using TCRS.Client.AuthStateProvider;
 using TCRS.Shared.Contracts;
 
 namespace TCRS.Client.Shared
@@ -15,7 +15,7 @@ namespace TCRS.Client.Shared
         private IUserService User { get; set; }
 
         [Inject]
-        private IAuthenticationStateProvider authenticationStateProvider { get; set; }
+        private IAuthServiceProvider authenticationStateProvider { get; set; }
         protected void SignOut()
         {
             //Console.WriteLine((User.User == null)?"":User.User.email);

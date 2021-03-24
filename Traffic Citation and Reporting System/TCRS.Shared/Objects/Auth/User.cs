@@ -13,7 +13,7 @@ namespace TCRS.Shared.Objects.Auth
         {
             var handler = new JwtSecurityTokenHandler();
             //if jwt contains Bearer token then remove "Bearer " from start else don't
-            var token = (handler.ReadJwtToken((jwt.Substring(0,7).Contains("Bearer"))?jwt.Substring(7):jwt));
+            var token = (handler.ReadJwtToken((jwt.Substring(0,7).ToLower().Contains("bearer"))?jwt.Substring(7):jwt));
             foreach (var value in token.Claims.ToList())
             {
                 switch (value.Type)

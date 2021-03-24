@@ -1,16 +1,15 @@
-﻿using System;
+﻿using Dapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using Dapper;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 using TCRS.Database;
 using TCRS.Database.Model;
 using TCRS.Server.Tokens;
@@ -36,7 +35,7 @@ namespace TCRS.Server.Controllers
         public async Task<ActionResult<UserTokens>> Login([FromBody] UserLoginCredentials credentials)
         {
             //Compare email and password provided to database insert logic and determine role
-            Person user = await _db.GetUser(new Person{email= credentials.Email, password=credentials.Password}, _databaseContext.Server);
+            Person user = await _db.GetUser(new Person { email = credentials.Email, password = credentials.Password }, _databaseContext.Server);
 
             //UserWithToken userWithToken = null;
             UserTokens tokens = new UserTokens();
@@ -62,7 +61,6 @@ namespace TCRS.Server.Controllers
                 return NotFound(e.Message); //User has no role, this 
             }
             return tokens;
-
         }
 
         [Authorize]
@@ -128,7 +126,7 @@ namespace TCRS.Server.Controllers
                 //TODO: make this a single query or refactor JWT generation
                 //Get user from access token
                 var person_id = principal.FindFirst(ClaimTypes.Name)?.Value;
-                Person user = (await _db.LoadData<Person, DynamicParameters>("SELECT email, password FROM person WHERE person_id = @person_id", new DynamicParameters(new {person_id = Convert.ToInt32(person_id)}), _databaseContext.Server)).FirstOrDefault<Person>();
+                Person user = (await _db.LoadData<Person, DynamicParameters>("SELECT email, password FROM person WHERE person_id = @person_id", new DynamicParameters(new { person_id = Convert.ToInt32(person_id) }), _databaseContext.Server)).FirstOrDefault<Person>();
                 return await _db.GetUser(user, _databaseContext.Server);
             }
 
@@ -149,13 +147,14 @@ namespace TCRS.Server.Controllers
         private Claim[] getUserClaims(Person user)
         {
 
-            var claims = new List<Claim> { new Claim(ClaimTypes.Name, user.person_id.ToString()),
+            var claims = new List<Claim> {
+                    new Claim(ClaimTypes.Name, user.person_id.ToString()),
                     new Claim(ClaimTypes.Email, user.email),
                     new Claim(ClaimTypes.GivenName, user.first_name),
                     new Claim(ClaimTypes.Surname, user.last_name),
             };
 
-             //Assign specific roles
+            //Assign specific roles
             if (user.Client_Admin != null)
             {
                 claims.Add(new Claim(ClaimTypes.Role, Roles.Admin));

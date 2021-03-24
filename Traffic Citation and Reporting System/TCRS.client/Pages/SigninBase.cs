@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using TCRS.Shared.Objects.Auth;
 using TCRS.Business;
-using TCRS.Client.AuthenticationStateProvider;
+using TCRS.Client.AuthStateProvider;
 using TCRS.Shared.Contracts;
 
 namespace TCRS.Client.Pages
@@ -37,7 +37,7 @@ namespace TCRS.Client.Pages
         private IUserService UserService { get; set; }
 
         [Inject]
-        private IAuthenticationStateProvider authenticationStateProvider { get; set; }
+        private IAuthServiceProvider authenticationStateProvider { get; set; }
 
          protected async void HandleSubmit()
          {
