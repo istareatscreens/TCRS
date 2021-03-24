@@ -19,7 +19,6 @@ namespace TCRS.Shared.Helper
                     new Claim(ClaimTypes.Email, claimsList[1].Value),
                     new Claim(ClaimTypes.GivenName, claimsList[2].Value),
                     new Claim(ClaimTypes.Surname, claimsList[3].Value),
-
             };
 
             //Get roles
