@@ -1,4 +1,148 @@
 ﻿@page "/Citationresolution"
+@inject IDialogService DialogService
 @layout UnAuthLayout
 
-<h3>Citation Resolution</h3>
+<MudText Typo="Typo.h3">Citation Resolution</MudText>
+
+<MudTable Items="@Citations" Hover="true" Breakpoint="Breakpoint.Sm">
+    <ColGroup>
+        <col style="width:300px;" />
+        <col style="width:100px;" />
+        <col />
+        <col style="width:100px;" />
+    </ColGroup>
+    <HeaderContent>
+        <MudTh>Citation #</MudTh>
+        <MudTh>Status</MudTh>
+        <MudTh>Date Issued</MudTh>
+        <MudTh>Date Due</MudTh>
+        <MudTh>Fine Amount</MudTh>
+        <MudTh>Payment</MudTh>
+        <MudTh>Schedule Training</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="CitationNumber">@context.citationid</MudTd>
+        <MudTd DataLabel="Status">@context.status</MudTd>
+        <MudTd DataLabel="DateIssued">@context.dateIssued</MudTd>
+        <MudTd DataLabel="DateDue">@context.dateDue</MudTd>
+        <MudTd DataLabel="Fineamount">@context.fineAmount</MudTd>
+        <MudTd>
+            <MudButton @onclick="OpenPayDialog" Variant="Variant.Filled" Color="Color.Primary" Disabled=@(!context.paymentRequired)>Pay</MudButton>
+        </MudTd>
+        <MudTd>
+            <MudButton @onclick="OpenCourseEnrollmentDialog" Variant="Variant.Filled" Color="Color.Primary" Disabled=@(!context.trainingAvailable)>Course Enrollment</MudButton>
+        </MudTd>
+    </RowTemplate>
+
+</MudTable>
+
+@code
+{
+    private void OpenPayDialog()
+    {
+        DialogService.Show<PayDialog>("Fine Payment");
+    }
+
+    private void OpenCourseEnrollmentDialog()
+    {
+        DialogService.Show<CourseEnrollmentDialog>("Course Enrollment");
+    }
+
+    protected override void OnInitialized()
+    {
+        fillTable();
+    }
+
+    public class ShowPayment
+    {
+        public bool paymentRequired { get; set; }
+    }
+
+    public class ShowScheduleTraining
+    {
+        public bool trainingAvailable { get; set; }
+    }
+
+    public class Citation
+    {
+        public int citationid { get; set; }
+        public string status { get; set; }
+        public DateTime dateIssued { get; set; }
+        public DateTime dateDue { get; set; }
+        public double fineAmount { get; set; }
+        public bool trainingAvailable { get; set; }
+        public bool paymentRequired { get; set; }
+
+    }
+    private static IEnumerable<Citation> Citations { get; set; }
+
+    private Random gen = new Random();
+    private DateTime randomDay()
+    {
+        DateTime start = new DateTime(1995, 1, 1);
+        int range = (DateTime.Today - start).Days;
+        return start.AddDays(gen.Next(range));
+    }
+
+    private void fillTable()
+    {
+        IList<Citation> citations = new List<Citation>();
+        citations.Add(new Citation
+        {
+            citationid = 10,
+            status = "Processing",
+            dateIssued = randomDay(),
+            dateDue = randomDay(),
+            fineAmount = 70.90,
+            trainingAvailable = true,
+            paymentRequired = true
+        });
+
+        citations.Add(new Citation
+        {
+            citationid = 1,
+            status = "Resolved",
+            dateIssued = randomDay(),
+            dateDue = randomDay(),
+            fineAmount = 37.31,
+            trainingAvailable = false,
+            paymentRequired = false
+        });
+
+        citations.Add(new Citation
+        {
+            citationid = 16,
+            status = "Processing",
+            dateIssued = randomDay(),
+            dateDue = randomDay(),
+            fineAmount = 63.92,
+            trainingAvailable = true,
+            paymentRequired = true
+        });
+
+        citations.Add(new Citation
+        {
+            citationid = 29,
+            status = "BAD",
+            dateIssued = randomDay(),
+            dateDue = randomDay(),
+            fineAmount = 8.90,
+            trainingAvailable = true,
+            paymentRequired = true
+        });
+
+        Citations = citations;
+    }
+
+    private void ShowBtnPress(String choice)
+    {
+        if (choice.Equals("Payment"))
+        {
+
+        }
+        else
+        {
+
+        }
+    }
+}

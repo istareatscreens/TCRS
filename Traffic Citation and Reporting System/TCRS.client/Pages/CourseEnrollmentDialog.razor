@@ -1,0 +1,52 @@
+﻿@inject IDialogService DialogService
+
+<MudDialog>
+    <DialogContent>
+        <MudSimpleTable Hover="true" Dense="true" FixedHeader="true" Style="height:300px">
+            <thead>
+                <tr>
+                    @foreach (var h in headings)
+                    {
+                        <th>@h</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var row in rows)
+                {
+                <tr>
+                    @foreach (var x in row.Split())
+                    {
+                        <td>@x</td>
+                    }
+                    <MudButton @onclick="OpenPayDialog" Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary" Class="ma-2">Book</MudButton>
+                </tr>
+                }
+            </tbody>
+        </MudSimpleTable>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel" Variant="Variant.Filled" Color="Color.Secondary">Cancel</MudButton>
+    </DialogActions>
+</MudDialog>
+@code {
+    private void OpenPayDialog()
+    {
+        DialogService.Show<PayDialog>("Course Payment");
+    }
+
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; }
+
+    void Cancel() => MudDialog.Cancel();
+
+    string[] headings = { "Course ID", "Date", "Location" };
+    string[] rows = {
+        @"1 Date1 Location1",
+        @"2 Date2 Location2",
+        @"3 Date3 Location3",
+        @"4 Date4 Location4",
+        @"5 Date5 Location5"
+    };
+
+}

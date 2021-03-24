@@ -9,6 +9,7 @@ using TCRS.APIAccess;
 using TCRS.Business;
 using TCRS.Client.AuthenticationStateProvider;
 using TCRS.Shared.Contracts;
+using TCRS.Shared.Contracts.CitationManagement;
 
 namespace TCRS.Client
 {
@@ -34,6 +35,7 @@ namespace TCRS.Client
             //Services for managing user and maintaining information about user
             builder.Services.AddScoped<IUserManager, UserManager>();
             builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddTransient<ICitationManager, CitationManager>();
 
             //Load User Authentication services
             builder.Services.AddScoped<WebApiAuthenticationStateProvider>();
