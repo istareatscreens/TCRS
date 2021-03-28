@@ -6044,3 +6044,7 @@ CHANGE COLUMN `licence_id` `license_id` VARCHAR(255) NOT NULL ;
 
 ALTER TABLE `tcrs-db`.`license` 
 CHANGE COLUMN `licence_class` `license_class` VARCHAR(255) NOT NULL ;
+
+UPDATE `tcrs-db`.`person` SET `email` = 'a@b.c', `password` = '1234' WHERE (`person_id` = '50');
+
+INSERT INTO `tcrs-db`.`municipal_officer` (`person_id`, `position`, `munic_id`) VALUES ('50', 'random', '1');
