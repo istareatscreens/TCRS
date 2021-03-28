@@ -46,7 +46,7 @@ namespace TCRS.APIAccess
 
         public async Task<IEnumerable<U>> PostAsync<T, U>(T data)
         {
-            return PostAsync<T, U>(data, new List<KeyValuePair<string, string>>());
+            return await PostAsync<T, U>(data, new List<KeyValuePair<string, string>>());
         }
 
         public async Task<IEnumerable<U>> PostAsync<T, U>(T data, List<KeyValuePair<string, string>> parametersList)
