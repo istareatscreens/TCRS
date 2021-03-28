@@ -44,6 +44,21 @@ namespace TCRS.APIAccess
             return await GetAsync<T>(new List<KeyValuePair<string, string>>());
         }
 
+        public async Task<IEnumerable<U>> PostAsync<T, U>(T data)
+        {
+            return PostAsync<T, U>(data, new List<KeyValuePair<string, string>>());
+        }
+
+        public async Task<IEnumerable<U>> PostAsync<T, U>(T data, List<KeyValuePair<string, string>> parametersList)
+        {
+            var requestUrl = RouteByType.PostEntityRouteAssignment[typeof(T)] + stringifyParameter(parametersList);
+            return JsonConvert.DeserializeObject<IEnumerable<U>>(
+               await (await _httpClient.PostAsJsonAsync(requestUrl, data))
+                   .Content
+                   .ReadAsStringAsync());
+        }
+
+
         public async Task PostAsync<T>(T data)
         {
             await PostAsync<T>(data, new List<KeyValuePair<string, string>>());
