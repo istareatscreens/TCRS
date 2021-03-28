@@ -51,7 +51,7 @@ namespace TCRS.Client.Pages
              if (tokensAcquired !=null)
              {
                  authenticationStateProvider.SetAuthenticatedState(tokensAcquired);
-                 NavigationManager.NavigateTo(UserService.User.isSchool_Rep ? "/Coursemanagement" : "/citationissuing");
+                 NavigationManager.NavigateTo(UserService.User.isSchool_Rep ? "/Coursemanagement" : "/Citationissuing");
              }
         }
     }
