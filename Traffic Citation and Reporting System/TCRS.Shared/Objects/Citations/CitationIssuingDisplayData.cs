@@ -13,9 +13,9 @@ namespace TCRS.Shared.Objects.Citations
         public string GetOfficerName { get; set; } = "Officer Name Here";
         public string GetDateOfOffence { get; set; } = "Date Of Offence Here";
 
-        public string CitationNumber { get; set; } = "";
+        public string citation_number { get; set; } = "";
         public string Status { get; set; } = "";
-        public string DateIssued { get; set; } = "";
+        public string date_received { get; set; } = "";
         public string DateDue { get; set; } = "";
         public string FineAmount { get; set; } = "";
     }
