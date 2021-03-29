@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using Dapper;
+using MySql.Data.MySqlClient;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
-using Dapper;
-using MySql.Data.MySqlClient;
 using TCRS.Database.Model;
 
 namespace TCRS.Database
@@ -66,7 +66,7 @@ namespace TCRS.Database
             var sql = @$"SELECT * FROM (SELECT * FROM person WHERE email = @email AND password = @password) as p
                 LEFT JOIN client_admin ON client_admin.person_id =  p.person_id
                 LEFT JOIN highway_patrol_officer ON highway_patrol_officer.person_id = p.person_id
-		        LEFT JOIN municipal_officer ON municipal_officer.person_id = p.person_id
+                LEFT JOIN municipal_officer ON municipal_officer.person_id = p.person_id
                 LEFT JOIN school_rep ON school_rep.person_id = p.person_id
                 LEFT JOIN municipality ON municipality.manager_id = p.person_id
                 LEFT JOIN police_dept ON police_dept.manager_id = p.person_id";
@@ -88,8 +88,8 @@ namespace TCRS.Database
                 return (Person)(rows.FirstOrDefault<Person>());
             }
         }
-        
-        public  IEnumerable<Citation> GetCitationsByLicensePlate(string plate_number, string connectionString)
+
+        public IEnumerable<Citation> GetCitationsByLicensePlate(string plate_number, string connectionString)
         {
             var sql = @$"SELECT * FROM (SELECT * FROM license_plate where plate_number = @plate_number) as plate
                 LEFT JOIN vehicle_record ON vehicle_record.vehicle_id = plate.vehicle_id
@@ -99,12 +99,12 @@ namespace TCRS.Database
             using (IDbConnection connection = new MySqlConnection(connectionString))
             {
                 //Not returning directly to allow for easier debugging
-                var rows =  connection.Query<License_Plate, Vehicle_Record, Citation, Citation_Type, Citation> (sql, (License_Plate, Vehicle_Record, Citation,Citation_Type) =>
-                {
-                    Citation.Vehicle_Record = Vehicle_Record;
-                    Citation.Citation_Type = Citation_Type;
-                    return Citation;
-                }, new { plate_number = plate_number }, splitOn: "plate_number, vehicle_id, citation_id, citation_type_id");
+                var rows = connection.Query<License_Plate, Vehicle_Record, Citation, Citation_Type, Citation>(sql, (License_Plate, Vehicle_Record, Citation, Citation_Type) =>
+              {
+                  Citation.Vehicle_Record = Vehicle_Record;
+                  Citation.Citation_Type = Citation_Type;
+                  return Citation;
+              }, new { plate_number = plate_number }, splitOn: "plate_number, vehicle_id, citation_id, citation_type_id");
 
                 return rows;
             }
