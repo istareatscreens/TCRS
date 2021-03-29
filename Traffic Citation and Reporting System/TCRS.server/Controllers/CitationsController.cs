@@ -152,8 +152,8 @@ namespace TCRS.Server.Controllers
                     var list = new List<CitationIssuingDisplayData>();
                     var result = new CitationIssuingDisplayData
                     {
-                        DateIssued = NewCitation.FirstOrDefault().date_recieved.ToString(),
-                        CitationNumber = NewCitation.FirstOrDefault().citation_number
+                        date_received = NewCitation.FirstOrDefault().date_recieved,
+                        citation_number = NewCitation.FirstOrDefault().citation_number
                     };
                     list.Add(result);
                     return list;
