@@ -8,6 +8,6 @@ namespace TCRS.Shared.Objects.Payment
 {
     class PaymentData
     {
-        public double payment { get; set; };
+        public double payment { get; set; } = 0;
     }
 }
