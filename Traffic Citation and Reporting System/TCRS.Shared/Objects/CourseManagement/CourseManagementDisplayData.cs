@@ -13,6 +13,6 @@
         public string instructor { get; set; }
         public string capacity { get; set; }
         public string citation_type_id { get; set; }
-        public string school_id { get; set; }
+        public string school_name { get; set; }
     }
 }
