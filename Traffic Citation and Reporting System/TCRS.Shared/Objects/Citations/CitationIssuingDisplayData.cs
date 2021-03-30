@@ -19,7 +19,7 @@ namespace TCRS.Shared.Objects.Citations
         // citation
         public string citation_number { get; set; } = "";
         public string Status { get; set; } = "";
-        public DateTime? date_received { get; set; } = null;
+        public DateTime? date_recieved { get; set; } = null;
 
         // citation_type
         public string fine { get; set; } = "";

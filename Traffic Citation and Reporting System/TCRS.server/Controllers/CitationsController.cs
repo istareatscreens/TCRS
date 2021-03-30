@@ -124,7 +124,7 @@ namespace TCRS.Server.Controllers
                 last_name = FoundLicense.Citizen.middle_name,
                 //common data
                 citation_number = Citation.citation_number,
-                date_received = Citation.date_recieved,
+                date_recieved = Citation.date_recieved,
                 DateDue = calculateDueDate(NewCitation),
                 fine = NewCitation.Citation_Type.fine
             } : new CitationIssuingDisplayData
@@ -132,7 +132,7 @@ namespace TCRS.Server.Controllers
                 plate_number = citationIssueData.licencePlate,
                 //common data
                 citation_number = Citation.citation_number,
-                date_received = Citation.date_recieved,
+                date_recieved = Citation.date_recieved,
                 DateDue = calculateDueDate(NewCitation),
                 fine = NewCitation.Citation_Type.fine
             }

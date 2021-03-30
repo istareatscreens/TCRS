@@ -4,6 +4,9 @@ namespace TCRS.Shared.Objects.Citations
 {
     public class CitizenVehicleCitation
     {
+        // Get request
+        // Belongs in CitationResolution
+        // Takes in parameter(vehicle_id)
         public int citation_id { get; set; }
         public string citation_number { get; set; }
         public string name { get; set; }

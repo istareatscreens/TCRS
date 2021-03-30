@@ -29,7 +29,7 @@
         <div style="max-width: 400px;">
             <MudTextField Value="data.GetOffenderName()" Label="Offender Name:" ReadOnly="true" Variant="Variant.Filled" />
             <MudTextField @bind-Value="data.plate_number" Label="Offender Licence Plate:" ReadOnly="true" Variant="Variant.Filled" />
-            <MudTextField @bind-Value="data.date_received" Label="Date of Offence:" ReadOnly="true" Variant="Variant.Filled" />
+            <MudTextField @bind-Value="data.date_recieved" Label="Date of Offence:" ReadOnly="true" Variant="Variant.Filled" />
         </div>
 
         <MudText Typo="Typo.h6">Citation Input Fields</MudText>
@@ -38,7 +38,7 @@
                 <MudTextField @bind-Value="data.citation_number" Label="Citation Number" Variant="Variant.Outlined" />
             </MudItem>
             <MudItem xs="12" sm="6" md="3">
-                <MudTextField @bind-Value="data.date_received" Label="Date Issued" Variant="Variant.Outlined" />
+                <MudTextField @bind-Value="data.date_recieved" Label="Date Issued" Variant="Variant.Outlined" />
             </MudItem>
             <MudItem xs="12" sm="6" md="3">
                 <MudTextField @bind-Value="data.DateDue" Label="Date Due" Variant="Variant.Outlined" />
