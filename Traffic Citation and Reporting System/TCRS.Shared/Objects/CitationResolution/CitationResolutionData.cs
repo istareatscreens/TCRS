@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TCRS.Shared.Objects.CitationResolution
 {
-    class CitationResolutionData
+    public class CitationResolutionData
     {
         // citation
         public int citation_id { get; set; }
