@@ -26,7 +26,7 @@ namespace TCRS.APIAccess
 
             /* ***** CourseEnrollmentBookingData ***** */
             // CourseEnrollmentBookingDataController : JWT for current signed in citizen_id should be passed
-            {typeof(CourseEnrollmentBookingData), "api/CourseEnrollment/Book" },
+            {typeof(CourseEnrollmentBookingData), "api/Course/Book" },
 
             /* ***** CourseManagement ***** */
             // JWT should be passed for the logged in instructor's id
@@ -34,11 +34,11 @@ namespace TCRS.APIAccess
 
             /* ***** EmployeeLookup ***** */
             // Returns EmployeeLookupData 
-            {typeof(EmployeeLookupData), "api/EmployeeLookup/Lookup" },
+            {typeof(EmployeeLookupData), "api/Employee/Lookup" },
 
             /* ***** Payment ***** */
             // citation_id should be passed
-            {typeof(PaymentData), "api/Payment/SubmitPayment" }            
+            {typeof(PaymentData), "api/Payment/SubmitPayment" }
 
         };
         public static Dictionary<Type, string> GetEntityRouteAssignment { get; } = new Dictionary<Type, string>
@@ -49,15 +49,15 @@ namespace TCRS.APIAccess
 
             /* ***** CourseEnrollmentData ***** */
             // CourseEnrollmentDataController : get(course_id, citation_id)
-            {typeof(CourseEnrollmentData), "api/CourseEnrollmentData" },
+            {typeof(CourseEnrollmentData), "api/Course" },
 
             /* ***** CitationResolution ***** */
             // CitationResolutionController: get(citation_id)
-            {typeof(CitationResolutionData), "api/CitationResolution" },
+            {typeof(CitationResolutionData), "api/Citation" },
 
             /* ***** EmployeeLookup ***** */
             // EmployeeLookupData: get()
-            {typeof(EmployeeLookupData), "api/EmployeeLookup" },
+            {typeof(EmployeeLookupData), "api/Employee" },
 
             /* ***** LookupPortal ***** */
             // CitationController: get(citation_id)
@@ -68,7 +68,7 @@ namespace TCRS.APIAccess
 
             // VehicleController: get(vehicle_id)
             {typeof(LookupVehicleDisplayData), "api/Vehicle" },
-            
+
         };
 
     }

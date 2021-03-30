@@ -18,6 +18,7 @@ namespace TCRS.Shared.Objects.EmployeeLookup
         public string email { get; set; } = "";
         public int active { get; set; } = 0;
         public int police_dept_id { get; set; } = 0;
+        public int munic_id { get; set; } = 0;
 
 
         public string GetEmployeeName()
