@@ -13,10 +13,16 @@ namespace TCRS.APIAccess
     {
 
         private readonly HttpClient _httpClient;
+        private readonly JsonSerializerSettings _settings;
 
         public APIAccessService(HttpClient httpClient)
         {
             _httpClient = httpClient;
+            _settings = new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                MissingMemberHandling = MissingMemberHandling.Ignore
+            };
         }
 
         public async Task<IEnumerable<T>> GetAsync<T>(List<KeyValuePair<string, string>> parametersList)
@@ -52,10 +58,11 @@ namespace TCRS.APIAccess
         public async Task<IEnumerable<U>> PostAsync<T, U>(T data, List<KeyValuePair<string, string>> parametersList)
         {
             var requestUrl = RouteByType.PostEntityRouteAssignment[typeof(T)] + stringifyParameter(parametersList);
+
             return JsonConvert.DeserializeObject<IEnumerable<U>>(
                await (await _httpClient.PostAsJsonAsync(requestUrl, data))
                    .Content
-                   .ReadAsStringAsync());
+                   .ReadAsStringAsync(), _settings);
         }
 
 
@@ -76,7 +83,7 @@ namespace TCRS.APIAccess
             return JsonConvert.DeserializeObject<UserTokens>(
                await (await _httpClient.PostAsJsonAsync("/api/Users/login", userLoginCredentials))
                    .Content
-                   .ReadAsStringAsync());
+                   .ReadAsStringAsync(), _settings);
         }
 
     }
