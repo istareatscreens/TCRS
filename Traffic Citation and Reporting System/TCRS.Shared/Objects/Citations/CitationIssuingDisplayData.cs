@@ -8,8 +8,9 @@ namespace TCRS.Shared.Objects.Citations
         public string first_name { get; set; } = "";
         public string middle_name { get; set; } = "";
         public string last_name { get; set; } = "";
-        public string GetOffenderName() { 
-            return first_name + " " + middle_name + " " + last_name; 
+        public string GetOffenderName()
+        {
+            return first_name + " " + middle_name + " " + last_name;
         }
 
         // licence_plate
@@ -23,6 +24,6 @@ namespace TCRS.Shared.Objects.Citations
         // citation_type
         public string fine { get; set; } = "";
 
-        public string DateDue { get; set; } = "";
+        public DateTime? DateDue { get; set; } = null;
     }
 }

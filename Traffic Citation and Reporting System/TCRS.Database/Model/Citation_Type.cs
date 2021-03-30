@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace TCRS.Database.Model
@@ -10,6 +10,7 @@ namespace TCRS.Database.Model
         public string name { get; set; }
         public string fine { get; set; }
         public bool training_eligable { get; set; }
+        public int due_date_month { get; set; }
 
         //Relationships
         //Many to one

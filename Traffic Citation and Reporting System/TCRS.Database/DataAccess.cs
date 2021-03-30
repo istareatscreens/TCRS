@@ -89,6 +89,7 @@ namespace TCRS.Database
             }
         }
 
+        //Citation
         public IEnumerable<Citation> GetCitationsByLicensePlate(string plate_number, string connectionString)
         {
             var sql = @$"SELECT * FROM (SELECT * FROM license_plate where plate_number = @plate_number) as plate
@@ -109,5 +110,96 @@ namespace TCRS.Database
                 return rows;
             }
         }
+
+        //General
+        public IEnumerable<Citation> GetCitationByNumber(string citation_number, string connectionString)
+        {
+            var sql = @"SELECT * FROM (SELECT * FROM citation WHERE citation_number = @citation_number) as cit" +
+                "LEFT JOIN citation_type ON citation_type.citation_type_id = cit.citation_type_id";
+
+            using (IDbConnection connection = new MySqlConnection(connectionString))
+            {
+                //Not returning directly to allow for easier debugging
+                var rows = connection.Query<Citation, Citation_Type, Citation>(sql, (Citation, Citation_Type) =>
+              {
+                  Citation.Citation_Type = Citation_Type;
+                  return Citation;
+              }, new { citation_number = citation_number }, splitOn: "citation_id, citation_type_id");
+
+                return rows;
+            }
+        }
+
+
+        //Issue Citation
+        public async Task<IEnumerable<License_Plate>> GetVehicleInfoByLicencePlate(string licencePlate, string connectionString)
+        {
+            return await LoadData<License_Plate, DynamicParameters>(
+                                   "SELECT * FROM license_plate WHERE plate_number = @plate_number",
+                                   new DynamicParameters(new { plate_number = licencePlate }),
+                                   connectionString);
+        }
+
+        public IEnumerable<License> GetLicenseInfoByLicence(string license_id, string connectionString)
+        {
+
+            var sql = @"SELECT * FROM (SELECT * FROM License  WHERE license_id = @license_id) as lic" +
+                "LEFT JOIN citizen ON citizen.citizen_id = lic.citizen_id";
+
+            using (IDbConnection connection = new MySqlConnection(connectionString))
+            {
+                //Not returning directly to allow for easier debugging
+                var rows = connection.Query<License, Citizen, License>(sql, (License, Citizen) =>
+               {
+                   License.Citizen = Citizen;
+                   return License;
+               }, new { license_id = license_id }, splitOn: "license_id, citizen_id");
+
+                return rows;
+            }
+        }
+
+        private void PostCitation(Citation Citation, string connectionString)
+        {
+            SaveData<DynamicParameters>("INSERT INTO `Citation` " +
+                "(`citation_number`, `date_recieved`, `citation_type_id`, `officer_id`)" +
+                " VALUES (@citation_number, @date, @citation_type_id, @officer_id)",
+                new DynamicParameters(new { citation_number = Citation.citation_number, date = Citation.date_recieved, citation_type_id = Citation.citation_type_id, officer_id = Citation.officer_id }),
+                connectionString);
+        }
+
+        public void PostCitizenCitation(Citation Citation, License License, string connectionString)
+        {
+            PostCitation(Citation, connectionString);
+            SaveData<DynamicParameters>("INSERT INTO `driver_record`" +
+                                                  " (`citizen_id`, `citation_id`)" +
+                                                  " VALUES (@citizen_id, @citation_id)",
+                                                  new DynamicParameters(
+                                                      new
+                                                      {
+                                                          citizen_id = License.citizen_id,
+                                                          citation_id = Citation.citation_id
+                                                      }
+                                                      ),
+                                                 connectionString
+                                                  );
+        }
+
+        public void PostVehicleCitation(Citation Citation, License_Plate License_Plate, string connectionString)
+        {
+            PostCitation(Citation, connectionString);
+            SaveData<DynamicParameters>(
+               "INSERT INTO `Vehicle_Record`" +
+               " (`vehicle_id`, `citation_id`)" +
+               " VALUES (@vehicle_id, @citation_id)",
+               new DynamicParameters(
+                   new { vehicle_id = License_Plate.vehicle_id, citation_id = Citation.citation_id }
+                   ),
+               connectionString
+               );
+        }
+
+
+
     }
 }

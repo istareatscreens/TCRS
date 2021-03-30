@@ -13,6 +13,13 @@ namespace TCRS.Database
         IEnumerable<T> GetAllCitationType<T>(string connectionString, T Model);
         void SaveRefreshToken(RefreshToken refreshToken, string connectionString);
 #nullable enable
+        //Citations
         IEnumerable<Citation> GetCitationsByLicensePlate(string plate_number, string connectionString);
+        IEnumerable<Citation> GetCitationByNumber(string citation_number, string connectionString);
+        Task<IEnumerable<License_Plate>> GetVehicleInfoByLicencePlate(string licencePlate, string connectionString);
+        IEnumerable<License> GetLicenseInfoByLicence(string license_id, string connectionString);
+        void PostCitizenCitation(Citation Citation, License License, string connectionString);
+        void PostVehicleCitation(Citation Citation, License_Plate License_Plate, string connectionString);
+
     }
 }

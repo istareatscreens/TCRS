@@ -6048,3 +6048,7 @@ CHANGE COLUMN `licence_class` `license_class` VARCHAR(255) NOT NULL ;
 UPDATE `tcrs-db`.`person` SET `email` = 'a@b.c', `password` = '1234' WHERE (`person_id` = '50');
 
 INSERT INTO `tcrs-db`.`municipal_officer` (`person_id`, `position`, `munic_id`) VALUES ('50', 'random', '1');
+
+ALTER TABLE `tcrs-db`.`citation_type` 
+ADD COLUMN `due_date_month` INT(2) NOT NULL DEFAULT 3 AFTER `training_eligable`;
+
