@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using TCRS.Shared.Contracts;
+﻿using TCRS.Shared.Contracts;
 using TCRS.Shared.Objects.Auth;
 
 namespace TCRS.Business

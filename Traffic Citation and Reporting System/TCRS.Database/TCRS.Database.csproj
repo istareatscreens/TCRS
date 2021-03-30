@@ -14,4 +14,8 @@
 		<PackageReference Include="MySql.Data" Version="8.0.23" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\TCRS.Shared\TCRS.Shared.csproj" />
+	</ItemGroup>
+
 </Project>

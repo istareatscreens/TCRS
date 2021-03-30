@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace TCRS.Shared.Objects.Citations
+﻿namespace TCRS.Shared.Objects.Citations
 {
     public class CitationIssueData
     {
@@ -12,6 +8,6 @@ namespace TCRS.Shared.Objects.Citations
 #nullable enable
         public string? licence_id { get; set; }
         public string? licencePlate { get; set; }
-        
+
     }
 }

@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using System.Collections.Generic;
 using TCRS.Database;
 using TCRS.Database.Model;
 using TCRS.Server.Tokens;
-using TCRS.Shared.Objects;
 using TCRS.Shared.Objects.Auth;
 
 namespace TCRS.Server.Controllers

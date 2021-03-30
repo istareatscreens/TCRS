@@ -1,13 +1,11 @@
-﻿using Dapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using TCRS.Database;
 using TCRS.Database.Model;
 using TCRS.Server.Tokens;
+using TCRS.Shared.Helper;
 using TCRS.Shared.Objects.Citations;
 
 namespace TCRS.Server.Controllers
@@ -64,7 +62,7 @@ namespace TCRS.Server.Controllers
         }
 
         [HttpPost("IssueCitation")]
-        public async Task<ActionResult<IEnumerable<CitationIssuingDisplayData>>> PostCitation([FromBody] CitationIssueData citationIssueData)
+        public ActionResult<IEnumerable<CitationIssuingDisplayData>> PostCitation([FromBody] CitationIssueData citationIssueData)
         {
             Citation Citation = new Citation
             {
@@ -74,92 +72,71 @@ namespace TCRS.Server.Controllers
                 officer_id = citationIssueData.person_id
             };
 
-            if (citationIssueData.licencePlate != null)
+            //Check data
+            License FoundLicense = null;
+            License_Plate FoundPlate = null;
+            Citation NewCitation = null;
+            try
             {
-                var FoundPlate = await _db.LoadData<License_Plate, DynamicParameters>(
-                      "SELECT * FROM license_plate WHERE plate_number = @plate_number",
-                      new DynamicParameters(new { plate_number = citationIssueData.licencePlate }),
-                      _databaseContext.Server);
+                //Get Data For Citizen or License Plate
+                if (citationIssueData.licencePlate != null)
+                {
+                    FoundPlate = IEnumerableHandler.UnpackIEnumerable<License_Plate>(_db.GetVehicleInfoByLicencePlate(citationIssueData.licencePlate, _databaseContext.Server));
+
+                }
+                else if (citationIssueData.licence_id != null)
+                {
+                    FoundLicense = IEnumerableHandler.UnpackIEnumerable<License>(_db.GetLicenseInfoByLicence(citationIssueData.licence_id, _databaseContext.Server));
+                }
+                else
+                {
+                    return NotFound("Licence plate or id not specified");
+                }
+
+
+                //Post data
                 if (FoundPlate != null)
                 {
-                    _db.SaveData<DynamicParameters>(
-                       "INSERT INTO `Citation` " +
-                       "(`citation_number`, `date_recieved`, `citation_type_id`, `officer_id`)" +
-                       " VALUES (@citation_number, @date, @citation_type_id, @officer_id)",
-                       new DynamicParameters(new { citation_number = Citation.citation_number, date = Citation.date_recieved, citation_type_id = Citation.citation_type_id, officer_id = Citation.officer_id }),
-                       _databaseContext.Server
-                       );
-
-                    var NewCitation = await _db.LoadData<Citation, DynamicParameters>(
-                        $"SELECT * FROM citation WHERE citation_number = {Citation.citation_number}",
-                        new DynamicParameters(),
-                        _databaseContext.Server
-                        );
-
-                    _db.SaveData<DynamicParameters>(
-                       "INSERT INTO `Vehicle_Record`" +
-                       " (`vehicle_id`, `citation_id`)" +
-                       " VALUES (@vehicle_id, @citation_id)",
-                       new DynamicParameters(
-                           new { vehicle_id = FoundPlate.ToList().FirstOrDefault().vehicle_id, citation_id = NewCitation.FirstOrDefault().citation_id }
-                           ),
-                       _databaseContext.Server
-                       );
+                    _db.PostVehicleCitation(Citation, FoundPlate, _databaseContext.Server);
                 }
-
-            }
-            else if (citationIssueData.licence_id != null)
-            {
-                var FoundLicence = await _db.LoadData<License, DynamicParameters>(
-                      "SELECT * FROM License  WHERE license_id = @license_id",
-                      new DynamicParameters(new { license_id = citationIssueData.licence_id }),
-                      _databaseContext.Server);
-                if (FoundLicence != null)
+                else if (FoundLicense != null)
                 {
-
-                    _db.SaveData<DynamicParameters>(
-                       "INSERT INTO `Citation` " +
-                       "(`citation_number`, `date_recieved`, `citation_type_id`, `officer_id`)" +
-                       " VALUES (@citation_number, @date, @citation_type_id, @officer_id)",
-                       new DynamicParameters(new
-                       {
-                           citation_number = Citation.citation_number,
-                           date = Citation.date_recieved,
-                           citation_type_id = Citation.citation_type_id,
-                           officer_id = Citation.officer_id
-                       }),
-                       _databaseContext.Server
-                       );
-
-                    var NewCitation = await _db.LoadData<Citation, DynamicParameters>(
-                        $"SELECT * FROM citation WHERE citation_number = {Citation.citation_number}",
-                        new DynamicParameters(), _databaseContext.Server
-                        );
-
-                    _db.SaveData<DynamicParameters>(
-                                       "INSERT INTO `driver_record`" +
-                                       " (`citizen_id`, `citation_id`)" +
-                                       " VALUES (@citizen_id, @citation_id)",
-                                       new DynamicParameters(
-                                           new
-                                           {
-                                               citizen_id = FoundLicence.ToList().FirstOrDefault().citizen_id,
-                                               citation_id = NewCitation.FirstOrDefault().citation_id
-                                           }
-                                           ),
-                                       _databaseContext.Server
-                                       );
-                    var list = new List<CitationIssuingDisplayData>();
-                    var result = new CitationIssuingDisplayData
-                    {
-                        date_recieved = NewCitation.FirstOrDefault().date_recieved,
-                        citation_number = NewCitation.FirstOrDefault().citation_number
-                    };
-                    list.Add(result);
-                    return list;
+                    _db.PostCitizenCitation(Citation, FoundLicense, _databaseContext.Server);
                 }
+
+                NewCitation = IEnumerableHandler.UnpackIEnumerable(_db.GetCitationByNumber(Citation.citation_number, _databaseContext.Server));
+
+
             }
-            return NotFound("Licence plate or id not specified");
+            catch (Exception e)
+            {
+                return NotFound("Connection Error" + e.Message);
+            }
+
+            Func<Citation, DateTime> calculateDueDate = (Citation citation) => citation.date_recieved.AddMonths(citation.Citation_Type.due_date_month);
+
+            return IEnumerableHandler.PackageInList<CitationIssuingDisplayData>(
+            (FoundLicense != null) ?
+            new CitationIssuingDisplayData
+            {
+                first_name = FoundLicense.Citizen.first_name,
+                middle_name = FoundLicense.Citizen.last_name,
+                last_name = FoundLicense.Citizen.middle_name,
+                //common data
+                citation_number = Citation.citation_number,
+                date_received = Citation.date_recieved,
+                DateDue = calculateDueDate(NewCitation),
+                fine = NewCitation.Citation_Type.fine
+            } : new CitationIssuingDisplayData
+            {
+                plate_number = citationIssueData.licencePlate,
+                //common data
+                citation_number = Citation.citation_number,
+                date_received = Citation.date_recieved,
+                DateDue = calculateDueDate(NewCitation),
+                fine = NewCitation.Citation_Type.fine
+            }
+            );
         }
 
         [HttpGet("All")]
