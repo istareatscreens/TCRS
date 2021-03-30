@@ -6052,3 +6052,5 @@ INSERT INTO `tcrs-db`.`municipal_officer` (`person_id`, `position`, `munic_id`) 
 ALTER TABLE `tcrs-db`.`citation_type` 
 ADD COLUMN `due_date_month` INT(2) NOT NULL DEFAULT 3 AFTER `training_eligable`;
 
+ALTER TABLE `tcrs-db`.`citation` 
+CHANGE COLUMN `citation_number` `citation_number` VARCHAR(36) NOT NULL ;

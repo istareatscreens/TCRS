@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using TCRS.Database;
 using TCRS.Database.Model;
 using TCRS.Server.Tokens;
@@ -63,7 +62,7 @@ namespace TCRS.Server.Controllers
         }
 
         [HttpPost("IssueCitation")]
-        public async Task<ActionResult<IEnumerable<CitationIssuingDisplayData>>> PostCitation([FromBody] CitationIssueData citationIssueData)
+        public ActionResult<IEnumerable<CitationIssuingDisplayData>> PostCitation([FromBody] CitationIssueData citationIssueData)
         {
             Citation Citation = new Citation
             {
@@ -75,37 +74,44 @@ namespace TCRS.Server.Controllers
 
             //Check data
             License FoundLicense = null;
+            License_Plate FoundPlate = null;
+            Citation NewCitation = null;
             try
             {
+                //Get Data For Citizen or License Plate
                 if (citationIssueData.licencePlate != null)
                 {
-                    var FoundPlate = IEnumerableHandler.UnpackIEnumerable<License_Plate>(await _db.GetVehicleInfoByLicencePlate(citationIssueData.licencePlate, _databaseContext.Server));
-                    if (FoundPlate != null)
-                    {
-                        _db.PostVehicleCitation(Citation, FoundPlate, _databaseContext.Server);
-                    }
+                    FoundPlate = IEnumerableHandler.UnpackIEnumerable<License_Plate>(_db.GetVehicleInfoByLicencePlate(citationIssueData.licencePlate, _databaseContext.Server));
+
                 }
                 else if (citationIssueData.licence_id != null)
                 {
                     FoundLicense = IEnumerableHandler.UnpackIEnumerable<License>(_db.GetLicenseInfoByLicence(citationIssueData.licence_id, _databaseContext.Server));
-                    if (FoundLicense != null)
-                    {
-                        _db.PostCitizenCitation(Citation, FoundLicense, _databaseContext.Server);
-                    }
-
                 }
                 else
                 {
                     return NotFound("Licence plate or id not specified");
                 }
+
+
+                //Post data
+                if (FoundPlate != null)
+                {
+                    _db.PostVehicleCitation(Citation, FoundPlate, _databaseContext.Server);
+                }
+                else if (FoundLicense != null)
+                {
+                    _db.PostCitizenCitation(Citation, FoundLicense, _databaseContext.Server);
+                }
+
+                NewCitation = IEnumerableHandler.UnpackIEnumerable(_db.GetCitationByNumber(Citation.citation_number, _databaseContext.Server));
+
+
             }
-            catch
+            catch (Exception e)
             {
-                return NotFound("Licence plate or id not specified");
+                return NotFound("Connection Error" + e.Message);
             }
-
-            Citation NewCitation = IEnumerableHandler.UnpackIEnumerable(_db.GetCitationByNumber(Citation.citation_number, _databaseContext.Server));
-
 
             Func<Citation, DateTime> calculateDueDate = (Citation citation) => citation.date_recieved.AddMonths(citation.Citation_Type.due_date_month);
 
@@ -119,31 +125,18 @@ namespace TCRS.Server.Controllers
                 //common data
                 citation_number = Citation.citation_number,
                 date_received = Citation.date_recieved,
-                DateDue = calculateDueDate(Citation)
-
-
+                DateDue = calculateDueDate(NewCitation),
+                fine = NewCitation.Citation_Type.fine
             } : new CitationIssuingDisplayData
             {
                 plate_number = citationIssueData.licencePlate,
                 //common data
                 citation_number = Citation.citation_number,
                 date_received = Citation.date_recieved,
-                DateDue = calculateDueDate(Citation)
+                DateDue = calculateDueDate(NewCitation),
+                fine = NewCitation.Citation_Type.fine
             }
             );
-
-            /*
-                var list = new List<CitationIssuingDisplayData>();
-                var result = new CitationIssuingDisplayData
-                {
-                    date_received = NewCitation.FirstOrDefault().date_recieved,
-                    citation_number = NewCitation.FirstOrDefault().citation_number
-                };
-                list.Add(result);
-                return list;
-            }
-        }
-            */
         }
 
         [HttpGet("All")]

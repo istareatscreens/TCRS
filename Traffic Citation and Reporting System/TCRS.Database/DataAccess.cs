@@ -5,12 +5,23 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using TCRS.Database.Model;
+using TCRS.Shared.Helper;
 
 namespace TCRS.Database
 {
     public class DataAccess : IDataAccess
     {
         //get Data queries
+        public IEnumerable<T> SyncLoadData<T, U>(string sql, U parameters, string connectionString)
+        {
+            using (IDbConnection connection = new MySqlConnection(connectionString))
+            {
+                //Not returning directly to allow for easier debugging
+                var rows = connection.Query<T>(sql, parameters);
+                return rows;
+            }
+        }
+
         public async Task<IEnumerable<T>> LoadData<T, U>(string sql, U parameters, string connectionString)
         {
             using (IDbConnection connection = new MySqlConnection(connectionString))
@@ -114,8 +125,8 @@ namespace TCRS.Database
         //General
         public IEnumerable<Citation> GetCitationByNumber(string citation_number, string connectionString)
         {
-            var sql = @"SELECT * FROM (SELECT * FROM citation WHERE citation_number = @citation_number) as cit" +
-                "LEFT JOIN citation_type ON citation_type.citation_type_id = cit.citation_type_id";
+            var sql = "SELECT * FROM (SELECT citation_id, date_recieved, citation_type_id as type_id, officer_id FROM citation WHERE citation_number = @citation_number) as cit" +
+                    " LEFT JOIN citation_type ON citation_type.citation_type_id = cit.type_id";
 
             using (IDbConnection connection = new MySqlConnection(connectionString))
             {
@@ -123,6 +134,7 @@ namespace TCRS.Database
                 var rows = connection.Query<Citation, Citation_Type, Citation>(sql, (Citation, Citation_Type) =>
               {
                   Citation.Citation_Type = Citation_Type;
+                  Citation.citation_type_id = Citation_Type.citation_type_id;
                   return Citation;
               }, new { citation_number = citation_number }, splitOn: "citation_id, citation_type_id");
 
@@ -132,9 +144,9 @@ namespace TCRS.Database
 
 
         //Issue Citation
-        public async Task<IEnumerable<License_Plate>> GetVehicleInfoByLicencePlate(string licencePlate, string connectionString)
+        public IEnumerable<License_Plate> GetVehicleInfoByLicencePlate(string licencePlate, string connectionString)
         {
-            return await LoadData<License_Plate, DynamicParameters>(
+            return SyncLoadData<License_Plate, DynamicParameters>(
                                    "SELECT * FROM license_plate WHERE plate_number = @plate_number",
                                    new DynamicParameters(new { plate_number = licencePlate }),
                                    connectionString);
@@ -143,8 +155,12 @@ namespace TCRS.Database
         public IEnumerable<License> GetLicenseInfoByLicence(string license_id, string connectionString)
         {
 
+            /*
             var sql = @"SELECT * FROM (SELECT * FROM License  WHERE license_id = @license_id) as lic" +
                 "LEFT JOIN citizen ON citizen.citizen_id = lic.citizen_id";
+            */
+            var sql = @"SELECT * FROM (SELECT license_id expiry_date, is_revoked, is_suspended, license_class, citizen_id as license_citizen_id FROM License  WHERE license_id = @license_id) as lic
+                        INNER JOIN citizen ON citizen.citizen_id = lic.license_citizen_id";
 
             using (IDbConnection connection = new MySqlConnection(connectionString))
             {
@@ -152,6 +168,7 @@ namespace TCRS.Database
                 var rows = connection.Query<License, Citizen, License>(sql, (License, Citizen) =>
                {
                    License.Citizen = Citizen;
+                   License.citizen_id = Citizen.citizen_id; //needed to alias citizen id
                    return License;
                }, new { license_id = license_id }, splitOn: "license_id, citizen_id");
 
@@ -159,18 +176,19 @@ namespace TCRS.Database
             }
         }
 
-        private void PostCitation(Citation Citation, string connectionString)
+        private IEnumerable<Citation> PostCitation(Citation Citation, string connectionString)
         {
             SaveData<DynamicParameters>("INSERT INTO `Citation` " +
                 "(`citation_number`, `date_recieved`, `citation_type_id`, `officer_id`)" +
                 " VALUES (@citation_number, @date, @citation_type_id, @officer_id)",
                 new DynamicParameters(new { citation_number = Citation.citation_number, date = Citation.date_recieved, citation_type_id = Citation.citation_type_id, officer_id = Citation.officer_id }),
                 connectionString);
+            return SyncLoadData<Citation, DynamicParameters>("SELECT * FROM Citation WHERE citation_number=@citation_number", new DynamicParameters(new { citation_number = Citation.citation_number }), connectionString);
         }
 
         public void PostCitizenCitation(Citation Citation, License License, string connectionString)
         {
-            PostCitation(Citation, connectionString);
+            var NewCitation = IEnumerableHandler.UnpackIEnumerable<Citation>(PostCitation(Citation, connectionString));
             SaveData<DynamicParameters>("INSERT INTO `driver_record`" +
                                                   " (`citizen_id`, `citation_id`)" +
                                                   " VALUES (@citizen_id, @citation_id)",
@@ -178,7 +196,7 @@ namespace TCRS.Database
                                                       new
                                                       {
                                                           citizen_id = License.citizen_id,
-                                                          citation_id = Citation.citation_id
+                                                          citation_id = NewCitation.citation_id
                                                       }
                                                       ),
                                                  connectionString
@@ -187,14 +205,14 @@ namespace TCRS.Database
 
         public void PostVehicleCitation(Citation Citation, License_Plate License_Plate, string connectionString)
         {
-            PostCitation(Citation, connectionString);
+            var NewCitation = IEnumerableHandler.UnpackIEnumerable<Citation>(PostCitation(Citation, connectionString));
+
             SaveData<DynamicParameters>(
                "INSERT INTO `Vehicle_Record`" +
                " (`vehicle_id`, `citation_id`)" +
                " VALUES (@vehicle_id, @citation_id)",
                new DynamicParameters(
-                   new { vehicle_id = License_Plate.vehicle_id, citation_id = Citation.citation_id }
-                   ),
+                   new { vehicle_id = License_Plate.vehicle_id, citation_id = NewCitation.citation_id }),
                connectionString
                );
         }
