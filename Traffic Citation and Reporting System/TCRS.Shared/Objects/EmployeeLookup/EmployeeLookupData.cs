@@ -13,12 +13,12 @@ namespace TCRS.Shared.Objects.EmployeeLookup
         public int person_id { get; set; }
 
         // return that person's name, email, etc
-        public string first_name { get; set; } = "";
-        public string last_name { get; set; } = "";
-        public string email { get; set; } = "";
-        public int active { get; set; } = 0;
-        public int police_dept_id { get; set; } = 0;
-        public int munic_id { get; set; } = 0;
+        public string first_name { get; set; }
+        public string last_name { get; set; }
+        public string email { get; set; }
+        public bool active { get; set; }
+        public int police_dept_id { get; set; }
+        public int munic_id { get; set; }
 
 
         public string GetEmployeeName()

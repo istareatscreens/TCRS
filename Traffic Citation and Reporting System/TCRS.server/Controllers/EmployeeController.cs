@@ -52,30 +52,28 @@ namespace TCRS.Server.Controllers
 
             if(PoliceEmployee != null)
             {
-                var police = PoliceEmployee.ToList().Select(employee => new EmployeeLookupData { 
+                return Ok(PoliceEmployee.ToList().Select(employee => new EmployeeLookupData { 
                     first_name = employee.Persons.first_name,
                     last_name = employee.Persons.last_name,
                     email = employee.Persons.email,
                     active = employee.Persons.active,
                     police_dept_id = employee.police_dept_id
-                });
-
-                return police;
+                }));
             }
 
             else if(MunicipalEmployee != null)
             {
-                var municipal = MunicipalEmployee.ToList().Select(emp => new EmployeeLookupData
+                return Ok(MunicipalEmployee.ToList().Select(employee => new EmployeeLookupData
                 {
-                    first_name = emp.Person.first_name,
-                    last_name = emp.Person.last_name,
-                    email = emp.Person.email,
-                    active = emp.Person.active,
-                    munic_id = emp.munic_id
-                });
-
-                return municipal;
+                    first_name = employee.Person.first_name,
+                    last_name = employee.Person.last_name,
+                    email = employee.Person.email,
+                    active = employee.Person.active,
+                    munic_id = employee.munic_id
+                }));
             }
+
+            return BadRequest("Database Error");
         }
     }
 }

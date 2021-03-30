@@ -22,7 +22,7 @@ namespace TCRS.Database
             {
                 var rows = connection.Query<Police_Dept, Highway_Patrol_Officer, Person, Police_Dept>(sql, (Police_Dept, Highway_Patrol_Officer, Person) =>
                 {
-                    Police_Dept.Highway_Patrol_Officers = (ICollection<Highway_Patrol_Officer>)Highway_Patrol_Officer;
+                    //Police_Dept.Highway_Patrol_Officers = Highway_Patrol_Officer;
                     Police_Dept.Persons = Person;
                     return Police_Dept;
                 }, new { manager_id = manager_id }, splitOn: "police_dept_id, person_id, person_id");
@@ -40,7 +40,7 @@ namespace TCRS.Database
             {
                 var rows = connection.Query<Municipality, Municipal_Officer, Person, Municipality>(sql, (Municipality, Municipal_Officer, Person) =>
                 {
-                    Municipality.Municipal_Officers = (ICollection<Municipal_Officer>)Municipal_Officer;
+                    //Municipality.Municipal_Officers = Municipal_Officer;
                     Municipality.Person = Person;
                     return Municipality;
                 }, new { manager_id = manager_id }, splitOn: "munic_id, person_id, person_id");
