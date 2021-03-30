@@ -21,6 +21,11 @@ namespace TCRS.Database
         IEnumerable<License> GetLicenseInfoByLicence(string license_id, string connectionString);
         void PostCitizenCitation(Citation Citation, License License, string connectionString);
         void PostVehicleCitation(Citation Citation, License_Plate License_Plate, string connectionString);
-
+        void PostCourse(Course Course, string connectionString);
+        IEnumerable<School_Rep> GetSchoolRep(int person_id, string connectionString);
+        IEnumerable<Course> GetCoursesByCitationType(int citation_type_id, string connectionString);
+        IEnumerable<Citizen> GetCitizenById(int citizen_id, string connectionString);
+        IEnumerable<Course> GetCourseById(int course_id, string connectionString);
+        void RegisterCitizenInCourse(int citation_id, int course_id, int citizen_id, string connectionString);
     }
 }

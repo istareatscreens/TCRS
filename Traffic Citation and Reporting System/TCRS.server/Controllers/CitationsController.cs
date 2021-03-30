@@ -14,14 +14,15 @@ namespace TCRS.Server.Controllers
     [Route("api/[controller]")]
     public class CitationsController : Controller
     {
+
         private readonly IDataAccess _db;
         private readonly DatabaseContext _databaseContext;
-
         public CitationsController(IDataAccess db, IOptions<DatabaseContext> databaseContext)
         {
             _db = db;
             _databaseContext = databaseContext.Value;
         }
+
         [HttpGet]
         public ActionResult<IEnumerable<CitizenVehicleCitation>> GetCitationByLicense([FromQuery] String plate_number)
         {
