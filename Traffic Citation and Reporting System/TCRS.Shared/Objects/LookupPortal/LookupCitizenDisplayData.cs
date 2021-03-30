@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TCRS.Shared.Objects.Lookup
 {
-    class LookupCitizenDisplayData
+    public class LookupCitizenDisplayData
     {
         // citizen
         public string first_name { get; set; } = "";

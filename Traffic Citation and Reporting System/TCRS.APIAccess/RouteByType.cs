@@ -10,7 +10,7 @@ namespace TCRS.APIAccess
 
         public static Dictionary<Type, string> PostEntityRouteAssignment { get; } = new Dictionary<Type, string>
         {
-            {typeof(CitationIssueData), "api/Citation/IssueCitation"}
+            {typeof(CitationIssueData), "api/Citation/IssueCitation"},
 
         };
         public static Dictionary<Type, string> GetEntityRouteAssignment { get; } = new Dictionary<Type, string>

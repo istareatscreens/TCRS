@@ -8,6 +8,8 @@ namespace TCRS.Shared.Objects.CourseManagement
 {
     public class CourseManagementData
     {
+        // Get request, get object
+        // Parameters(JWT)
         public int course_id { get; set; }
         public string type { get; set; }
         public string address { get; set; }

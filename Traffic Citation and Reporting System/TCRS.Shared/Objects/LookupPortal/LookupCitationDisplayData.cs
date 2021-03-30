@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TCRS.Shared.Objects.Lookup
 {
-    class LookupCitationDisplayData
+    public class LookupCitationDisplayData
     {
         // citation
         public int citation_id { get; set; }

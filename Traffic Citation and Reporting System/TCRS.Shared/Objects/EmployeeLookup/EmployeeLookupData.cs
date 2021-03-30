@@ -6,10 +6,13 @@ using System.Threading.Tasks;
 
 namespace TCRS.Shared.Objects.EmployeeLookup
 {
-    class EmployeeLookupData
+    public class EmployeeLookupData
     {
-        // person
+        // get object
+        // person id is passed as parameter
         public int person_id { get; set; }
+
+        // return that person's name, email, etc
         public string first_name { get; set; } = "";
         public string last_name { get; set; } = "";
         public string email { get; set; } = "";
