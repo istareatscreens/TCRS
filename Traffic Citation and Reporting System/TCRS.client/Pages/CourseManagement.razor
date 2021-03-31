@@ -1,41 +1,41 @@
 ﻿@page "/Coursemanagement"
-@*@attribute [Authorize(Roles = Roles.SchoolRep)]
-@inherits CourseManagementBase*@
+@*@attribute [Authorize(Roles = Roles.SchoolRep)]*@
+@inherits CourseManagementBase
 @using System.ComponentModel.DataAnnotations
 
 <MudText Typo="Typo.h3">Course Management</MudText>
 
 <div class="citation-body">
     <div style="max-width: 400px;">
-        <EditForm Model="@model" OnValidSubmit="OnValidSubmit">
+        <EditForm Model="@EditContext" OnValidSubmit="OnValidSubmit">
             <DataAnnotationsValidator />
             <MudCard>
                 <MudCardContent>
-                    <MudTextField @bind-Value="GetPersonName" Label="Instructor Name:" ReadOnly="true" Variant="Variant.Filled" />
-                    <MudTextField @bind-Value="GetPersonID" Label="Person ID:" ReadOnly="true" Variant="Variant.Filled" />
+                    <MudTextField @bind-Value="PersonName" Label="Instructor Name:" ReadOnly="true" Variant="Variant.Filled" />
+                    <MudTextField @bind-Value="PersonID" Label="Person ID:" ReadOnly="true" Variant="Variant.Filled" />
 
                     <MudTextField Label="Course ID" Variant="Variant.Outlined"
-                                  @bind-Value="model.course_id" For="@(() => model.course_id)" />
+                                  @bind-Value="CourseData.course_id" For="@(() => CourseData.course_id)" />
                     <MudTextField Label="Course Type" Variant="Variant.Outlined"
-                                  @bind-Value="model.type" For="@(() => model.type)" />
+                                  @bind-Value="CourseData.type" For="@(() => CourseData.type)" />
                     <MudTextField Label="Course Address" Variant="Variant.Outlined"
-                                  @bind-Value="model.address" For="@(() => model.address)" />
+                                  @bind-Value="CourseData.address" For="@(() => CourseData.address)" />
                     <MudTextField Label="Course Name" Variant="Variant.Outlined"
-                                  @bind-Value="model.name" For="@(() => model.name)" />
+                                  @bind-Value="CourseData.name" For="@(() => CourseData.name)" />
                     <MudTextField Label="Course Scheduled Date and Time" Variant="Variant.Outlined"
-                                  @bind-Value="model.scheduled" For="@(() => model.scheduled)" />
+                                  @bind-Value="CourseData.scheduled" For="@(() => CourseData.scheduled)" />
                     <MudTextField Label="Course Price" Variant="Variant.Outlined"
-                                  @bind-Value="model.price" For="@(() => model.price)" />
+                                  @bind-Value="CourseData.price" For="@(() => CourseData.price)" />
                     <MudTextField Label="Course Description" Variant="Variant.Outlined"
-                                  @bind-Value="model.description" For="@(() => model.description)" />
+                                  @bind-Value="CourseData.description" For="@(() => CourseData.description)" />
                     <MudTextField Label="Course Title" Variant="Variant.Outlined"
-                                  @bind-Value="model.title" For="@(() => model.title)" />
+                                  @bind-Value="CourseData.title" For="@(() => CourseData.title)" />
+                    <MudTextField Label="Course Instructor" Variant="Variant.Outlined"
+                                  @bind-Value="CourseData.instructor" For="@(() => CourseData.instructor)" />
                     <MudTextField Label="Citation Capacity" Variant="Variant.Outlined"
-                                  @bind-Value="model.capacity" For="@(() => model.capacity)" />
+                                  @bind-Value="CourseData.capacity" For="@(() => CourseData.capacity)" />
                     <MudTextField Label="Citation Type ID" Variant="Variant.Outlined"
-                                  @bind-Value="model.citation_type_id" For="@(() => model.citation_type_id)" />
-                    <MudTextField Label="School ID" Variant="Variant.Outlined"
-                                  @bind-Value="model.school_id" For="@(() => model.school_id)" />
+                                  @bind-Value="CourseData.citation_type_id" For="@(() => CourseData.citation_type_id)" />
                 </MudCardContent>
                 <MudCardActions>
                     <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Post Class</MudButton>
@@ -43,73 +43,4 @@
             </MudCard>
         </EditForm>
     </div>
-
-    @code {
-        RegisterAccountForm model = new RegisterAccountForm();
-        bool success;
-
-        public class RegisterAccountForm
-        {
-            [Required]
-            [StringLength(8, ErrorMessage = "Invalid course_id")]
-            public string course_id { get; set; }
-
-            [Required]
-            [StringLength(8, ErrorMessage = "Invalid type")]
-            public string type { get; set; }
-
-            [Required]
-            [StringLength(8, ErrorMessage = "Invalid address")]
-            public string address { get; set; }
-
-            [Required]
-            [StringLength(8, ErrorMessage = "Invalid name")]
-            public string name { get; set; }
-
-            [Required]
-            [StringLength(8, ErrorMessage = "Invalid Scheduled Time")]
-            public string scheduled { get; set; }
-
-            [Required]
-            [StringLength(8, ErrorMessage = "Invalid price")]
-            public string price { get; set; }
-
-            [Required]
-            [StringLength(8, ErrorMessage = "Invalid description")]
-            public string description { get; set; }
-
-            [Required]
-            [StringLength(8, ErrorMessage = "Invalid title")]
-            public string title { get; set; }
-
-            [Required]
-            [StringLength(8, ErrorMessage = "Invalid instructor")]
-            public string instructor { get; set; }
-
-            [Required]
-            [StringLength(8, ErrorMessage = "Invalid capacity")]
-            public string capacity { get; set; }
-
-            [Required]
-            [StringLength(8, ErrorMessage = "Invalid citation type id")]
-            public string citation_type_id { get; set; }
-
-            [Required]
-            [StringLength(8, ErrorMessage = "Invalid school id")]
-            public string school_id { get; set; }
-
-        }
-
-        private void OnValidSubmit(EditContext context)
-        {
-            success = true;
-            StateHasChanged();
-        }
-
-        public string Disabled { get; set; }
-
-        public string GetPersonName { get; set; } = "Instructor Name Here";
-        public string GetPersonID { get; set; } = "Person ID Here";
-    }
-
 </div>

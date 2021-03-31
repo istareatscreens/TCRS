@@ -1,4 +1,5 @@
-﻿using TCRS.Shared.Contracts;
+﻿using System.Threading.Tasks;
+using TCRS.Shared.Contracts;
 using TCRS.Shared.Contracts.CourseManagement;
 using TCRS.Shared.Objects.CourseManagement;
 
@@ -12,10 +13,9 @@ namespace TCRS.Business
             _api = api;
         }
 
-        public async void CreateCourse(CourseManagementData courseManagementData)
+        public async Task CreateCourse(CourseManagementData courseManagementData)
         {
-            await _api.PostAsync<CourseManagementData, CourseManagementDisplayData>(courseManagementData);
-
+            await _api.PostAsync<CourseManagementData>(courseManagementData);
         }
 
     }

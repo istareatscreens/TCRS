@@ -1,9 +1,10 @@
-﻿using TCRS.Shared.Objects.CourseManagement;
+﻿using System.Threading.Tasks;
+using TCRS.Shared.Objects.CourseManagement;
 
 namespace TCRS.Shared.Contracts.CourseManagement
 {
     public interface ICourseManager
     {
-        public void CreateCourse(CourseManagementData courseManagementData);
+        Task CreateCourse(CourseManagementData courseManagementData);
     }
 }

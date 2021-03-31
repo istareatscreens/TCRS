@@ -10,6 +10,11 @@ namespace TCRS.Shared.Helper
             return list.ToList().FirstOrDefault();
         }
 
+        public static List<T> UnpackIEnumerableToList<T>(IEnumerable<T> list)
+        {
+            return list.ToList();
+        }
+
         public static List<T> PackageInList<T>(T data)
         {
             var list = new List<T>();
