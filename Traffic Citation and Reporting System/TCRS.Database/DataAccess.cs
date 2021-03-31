@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
 
-//Main
 namespace TCRS.Database
 {
+    //Main
     public partial class DataAccess : IDataAccess
     {
         //get Data queries

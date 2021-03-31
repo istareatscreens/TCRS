@@ -13,8 +13,8 @@ namespace TCRS.Database
         private IEnumerable<Citation> PostCitation(Citation Citation, string connectionString)
         {
             SaveData<DynamicParameters>("INSERT INTO `Citation` " +
-                "(`citation_number`, `date_recieved`, `citation_type_id`, `officer_id`)" +
-                " VALUES (@citation_number, @date, @citation_type_id, @officer_id)",
+                "(`citation_number`, `date_recieved`, `citation_type_id`, `officer_id`) " +
+                "VALUES (@citation_number, @date, @citation_type_id, @officer_id)",
                 new DynamicParameters(new { citation_number = Citation.citation_number, date = Citation.date_recieved, citation_type_id = Citation.citation_type_id, officer_id = Citation.officer_id }),
                 connectionString);
             return SyncLoadData<Citation, DynamicParameters>("SELECT * FROM Citation WHERE citation_number=@citation_number", new DynamicParameters(new { citation_number = Citation.citation_number }), connectionString);
@@ -72,8 +72,8 @@ namespace TCRS.Database
         }
         public IEnumerable<Citation> GetCitationByNumber(string citation_number, string connectionString)
         {
-            var sql = "SELECT * FROM (SELECT citation_id, date_recieved, citation_type_id as type_id, officer_id FROM citation WHERE citation_number = @citation_number) as cit" +
-                    " LEFT JOIN citation_type ON citation_type.citation_type_id = cit.type_id";
+            var sql = "SELECT * FROM (SELECT citation_id, date_recieved, citation_type_id as type_id, officer_id FROM citation WHERE citation_number = @citation_number) as cit " +
+                    "LEFT JOIN citation_type ON citation_type.citation_type_id = cit.type_id";
 
             using (IDbConnection connection = new MySqlConnection(connectionString))
             {
