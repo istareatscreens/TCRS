@@ -18,11 +18,11 @@ namespace TCRS.APIAccess
         {
             /* ***** Citations ***** */
             // Returns CitationIssueData
-            {typeof(CitationIssueData), "api/Citation/IssueCitation"},
+            {typeof(CitationIssueData), "api/Citations/IssueCitation"},
 
             /* ***** CitationResolution ***** */
             // citation_id XOR plate_number should be passed
-            {typeof(CitationResolutionLoginData), "api/CitationResolution/Login" },
+            {typeof(CitationResolutionLoginData), "api/Citations/Login" },
 
             /* ***** CourseEnrollmentBookingData ***** */
             // CourseEnrollmentBookingDataController : JWT for current signed in citizen_id should be passed
@@ -38,7 +38,7 @@ namespace TCRS.APIAccess
 
             /* ***** Payment ***** */
             // citation_id should be passed
-            {typeof(PaymentData), "api/Payment/SubmitPayment" }            
+            {typeof(PaymentData), "api/Payment/SubmitPayment" }
 
         };
         public static Dictionary<Type, string> GetEntityRouteAssignment { get; } = new Dictionary<Type, string>
@@ -53,11 +53,11 @@ namespace TCRS.APIAccess
 
             /* ***** CitationResolution ***** */
             // CitationResolutionController: get(citation_id)
-            {typeof(CitationResolutionData), "api/CitationResolution" },
+            {typeof(CitationResolutionData), "api/Citations" },
 
             /* ***** EmployeeLookup ***** */
             // EmployeeLookupData: get()
-            {typeof(EmployeeLookupData), "api/EmployeeLookup" },
+            {typeof(EmployeeLookupData), "api/Employee" },
 
             /* ***** LookupPortal ***** */
             // CitationController: get(citation_id)
@@ -68,7 +68,7 @@ namespace TCRS.APIAccess
 
             // VehicleController: get(vehicle_id)
             {typeof(LookupVehicleDisplayData), "api/Vehicle" },
-            
+
         };
 
     }

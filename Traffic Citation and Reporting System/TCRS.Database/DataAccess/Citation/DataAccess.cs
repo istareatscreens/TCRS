@@ -100,6 +100,14 @@ namespace TCRS.Database
             }
         }
 
+        public IEnumerable<Citation_Type> GetCitationTypeById(int citation_type_id, string connectionString)
+        {
+            return SyncLoadData<Citation_Type, Citation_Type>(
+                "SELECT * FROM citation_type WHERE citation_type_id = @citation_type_id",
+                new Citation_Type { citation_type_id = citation_type_id },
+                connectionString
+                );
+        }
 
 
     }

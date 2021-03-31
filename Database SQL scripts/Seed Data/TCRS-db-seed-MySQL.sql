@@ -6054,3 +6054,8 @@ ADD COLUMN `due_date_month` INT(2) NOT NULL DEFAULT 3 AFTER `training_eligable`;
 
 ALTER TABLE `tcrs-db`.`citation` 
 CHANGE COLUMN `citation_number` `citation_number` VARCHAR(36) NOT NULL ;
+
+INSERT INTO `tcrs-db`.`citation_type` (`citation_type_id`, `name`, `fine`) VALUES ('11', 'Fix it ticket', '100');
+INSERT INTO `tcrs-db`.`citation_type` (`citation_type_id`, `name`, `fine`) VALUES ('12', 'Parking citation', '100');
+INSERT INTO `tcrs-db`.`citation_type` (`citation_type_id`, `name`, `fine`) VALUES ('13', 'Moving vehicle code warning', '100');
+INSERT INTO `tcrs-db`.`citation_type` (`citation_type_id`, `name`, `fine`) VALUES ('14', 'Moving vehicle code violation', '100');
