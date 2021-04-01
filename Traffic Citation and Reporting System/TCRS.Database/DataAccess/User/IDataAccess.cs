@@ -8,6 +8,5 @@ namespace TCRS.Database
     {
         void SaveRefreshToken(RefreshToken refreshToken, string connectionString);
         Task<Person> GetUser(Person person, string connectionString);
-
     }
 }

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -19,6 +19,7 @@ namespace TCRS.Database.Model
         public int capacity { get; set; }
         public int citation_type_id { get; set; }
         public int school_id { get; set; }
+        public bool is_full { get; set; }
 
         //Relationships
         //one to

@@ -12,5 +12,9 @@ namespace TCRS.Database
         IEnumerable<Citation> GetCitationByNumber(string citation_number, string connectionString);
         IEnumerable<T> GetAllCitationType<T>(string connectionString, T Model);
         IEnumerable<Citation_Type> GetCitationTypeById(int citation_type_id, string connectionString);
+        bool CheckIfCitationIsResolved(int citation_id, string connectionString);
+        void UpdateCitationToResolved(int citation_id, string connectionString);
+        bool CitationBelongsToVehicle(int citation_id, int vehicle_id, string connectionString);
+        bool CitationBelongsToCitizen(int citation_id, int citizen_id, string connectionString);
     }
 }

@@ -6061,3 +6061,14 @@ INSERT INTO `tcrs-db`.`citation_type` (`citation_type_id`, `name`, `fine`) VALUE
 INSERT INTO `tcrs-db`.`citation_type` (`citation_type_id`, `name`, `fine`) VALUES ('14', 'Moving vehicle code violation', '100');
 
 UPDATE `tcrs-db`.`person` SET `active` = '1' WHERE (`person_id` = '9');
+
+INSERT INTO `tcrs-db`.`person` (`person_id`, `first_name`, `last_name`, `email`, `password`) VALUES ('51', 'Ree', 'Rep', 'schoolrep@school.org', '1234');
+INSERT INTO `tcrs-db`.`school_rep` (`person_id`, `school_id`) VALUES ('51', '1');
+UPDATE `tcrs-db`.`person` SET `active` = '1' WHERE (`person_id` = '51');
+
+ALTER TABLE `tcrs-db`.`citation` 
+ADD COLUMN `is_resolved` TINYINT NOT NULL DEFAULT 0 AFTER `officer_id`;
+
+ALTER TABLE `tcrs-db`.`course` 
+ADD COLUMN `is_full` TINYINT NOT NULL DEFAULT 0 AFTER `school_id`;
+
