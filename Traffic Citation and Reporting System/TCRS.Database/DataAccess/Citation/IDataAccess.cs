@@ -11,5 +11,6 @@ namespace TCRS.Database
         IEnumerable<Citation> GetCitationsByLicensePlate(string plate_number, string connectionString);
         IEnumerable<Citation> GetCitationByNumber(string citation_number, string connectionString);
         IEnumerable<T> GetAllCitationType<T>(string connectionString, T Model);
+        IEnumerable<Citation_Type> GetCitationTypeById(int citation_type_id, string connectionString);
     }
 }

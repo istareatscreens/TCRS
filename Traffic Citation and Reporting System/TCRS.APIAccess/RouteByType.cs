@@ -18,15 +18,15 @@ namespace TCRS.APIAccess
         {
             /* ***** Citations ***** */
             // Returns CitationIssueData
-            {typeof(CitationIssueData), "api/Citation/IssueCitation"},
+            {typeof(CitationIssueData), "api/Citations/IssueCitation"},
 
             /* ***** CitationResolution ***** */
             // citation_id XOR plate_number should be passed
-            {typeof(CitationResolutionLoginData), "api/CitationResolution/Login" },
+            {typeof(CitationResolutionLoginData), "api/Citations/Login" },
 
             /* ***** CourseEnrollmentBookingData ***** */
             // CourseEnrollmentBookingDataController : JWT for current signed in citizen_id should be passed
-            {typeof(CourseEnrollmentBookingData), "api/Course/Book" },
+            {typeof(CourseEnrollmentBookingData), "api/CourseEnrollment/Book" },
 
             /* ***** CourseManagement ***** */
             // JWT should be passed for the logged in instructor's id
@@ -34,7 +34,7 @@ namespace TCRS.APIAccess
 
             /* ***** EmployeeLookup ***** */
             // Returns EmployeeLookupData 
-            {typeof(EmployeeLookupData), "api/Employee/Lookup" },
+            {typeof(EmployeeLookupData), "api/EmployeeLookup/Lookup" },
 
             /* ***** Payment ***** */
             // citation_id should be passed
@@ -49,11 +49,11 @@ namespace TCRS.APIAccess
 
             /* ***** CourseEnrollmentData ***** */
             // CourseEnrollmentDataController : get(course_id, citation_id)
-            {typeof(CourseEnrollmentData), "api/Course" },
+            {typeof(CourseEnrollmentData), "api/CourseEnrollmentData" },
 
             /* ***** CitationResolution ***** */
             // CitationResolutionController: get(citation_id)
-            {typeof(CitationResolutionData), "api/Citation" },
+            {typeof(CitationResolutionData), "api/Citations" },
 
             /* ***** EmployeeLookup ***** */
             // EmployeeLookupData: get()

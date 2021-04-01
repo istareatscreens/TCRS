@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -6,12 +7,13 @@ using TCRS.Database;
 using TCRS.Database.Model;
 using TCRS.Server.Tokens;
 using TCRS.Shared.Helper;
+using TCRS.Shared.Objects.Auth;
 using TCRS.Shared.Objects.Citations;
 
 namespace TCRS.Server.Controllers
 {
-    [ApiController]
     [Route("api/[controller]")]
+    [ApiController]
     public class CitationsController : Controller
     {
 
@@ -63,20 +65,28 @@ namespace TCRS.Server.Controllers
         }
 
         [HttpPost("IssueCitation")]
-        public ActionResult<IEnumerable<CitationIssuingDisplayData>> PostCitation([FromBody] CitationIssueData citationIssueData)
+        [Authorize(Roles = Roles.HighwayPatrolOfficer + ", " + Roles.MunicipalOfficer)]
+        public ActionResult<IEnumerable<CitationIssuingDisplayData>> PostCitation([FromHeader] string authorization, [FromBody] CitationIssueData citationIssueData)
         {
+
+            if (_db.GetCitationTypeById(citationIssueData.citation_type_id, _databaseContext.Server) == null)
+            {
+                return BadRequest("Invalid Citation Type");
+            }
+
             Citation Citation = new Citation
             {
                 citation_number = Guid.NewGuid().ToString(), //Generate GUID
                 date_recieved = DateTime.Now,
                 citation_type_id = citationIssueData.citation_type_id,
-                officer_id = citationIssueData.person_id
+                officer_id = (new User(authorization)).person_id
             };
 
             //Check data
             License FoundLicense = null;
             License_Plate FoundPlate = null;
             Citation NewCitation = null;
+
             try
             {
                 //Get Data For Citizen or License Plate

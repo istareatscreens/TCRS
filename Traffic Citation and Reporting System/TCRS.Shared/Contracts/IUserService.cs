@@ -5,5 +5,6 @@ namespace TCRS.Shared.Contracts
     public interface IUserService
     {
         public User User { get; set; }
+        string GetFullName();
     }
 }

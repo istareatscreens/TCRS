@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -58,9 +59,14 @@ namespace TCRS.APIAccess
         public async Task<IEnumerable<U>> PostAsync<T, U>(T data, List<KeyValuePair<string, string>> parametersList)
         {
             var requestUrl = RouteByType.PostEntityRouteAssignment[typeof(T)] + stringifyParameter(parametersList);
+            var request = await _httpClient.PostAsJsonAsync(requestUrl, data);
+            if (!request.IsSuccessStatusCode)
+            {
+                Console.WriteLine(request.Content);
+            }
 
             return JsonConvert.DeserializeObject<IEnumerable<U>>(
-               await (await _httpClient.PostAsJsonAsync(requestUrl, data))
+               await (request)
                    .Content
                    .ReadAsStringAsync(), _settings);
         }

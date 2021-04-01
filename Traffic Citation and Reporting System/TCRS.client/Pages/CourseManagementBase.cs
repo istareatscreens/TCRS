@@ -1,26 +1,36 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using TCRS.Shared.Contracts;
 using TCRS.Shared.Contracts.CourseManagement;
+using TCRS.Shared.Objects.CourseManagement;
 
 namespace TCRS.Client.Pages
 {
     public class CourseManagementBase : ComponentBase
     {
-        //protected CourseManagementData CourseData { get; set; } = new CourseManagementData();
+        protected CourseManagementData CourseData { get; set; } = new CourseManagementData();
 
         protected EditContext EditContext { get; set; }
+
+        [Inject]
+        private ICourseManager CourseManager { get; set; }
+
+        [Inject]
+        private IUserService CurrentUser { get; set; }
+
+        public string PersonName { get; set; }
+        public string PersonID { get; set; }
 
         protected override void OnInitialized()
         {
             base.OnInitialized();
-            //EditContext = new EditContext(CourseData);
+            EditContext = new EditContext(CourseData);
 
+            PersonName = CurrentUser.GetFullName();
+            
         }
 
         bool success;
-
-        [Inject]
-        private ICourseManager CourseManager { get; set; }
 
         protected async void OnValidSubmit(EditContext context)
         {
@@ -30,15 +40,16 @@ namespace TCRS.Client.Pages
                 return;
             }
 
-            //CourseManager.CreateCourse(CourseData);
+            await CourseManager.CreateCourse(CourseData);
 
             success = true;
             StateHasChanged();
         }
 
-        public string Disabled { get; set; }
-        public string GetPersonName { get; set; } = "Instructor Name Here";
 
-        //protected CourseManagementDisplayData data = new CourseManagementDisplayData();
+        public string Disabled { get; set; }
+       
+        
+
     }
 }

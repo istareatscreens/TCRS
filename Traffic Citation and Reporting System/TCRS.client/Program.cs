@@ -11,6 +11,7 @@ using TCRS.Business;
 using TCRS.Client.AuthStateProvider;
 using TCRS.Shared.Contracts;
 using TCRS.Shared.Contracts.CitationManagement;
+using TCRS.Shared.Contracts.CourseManagement;
 
 namespace TCRS.Client
 {
@@ -37,6 +38,7 @@ namespace TCRS.Client
             builder.Services.AddScoped<IUserManager, UserManager>();
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddTransient<ICitationManager, CitationManager>();
+            builder.Services.AddTransient<ICourseManager, CourseManager>();
 
             //Load User Authentication services
             builder.Services.AddAuthorizationCore();
