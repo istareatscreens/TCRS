@@ -53,7 +53,8 @@ namespace TCRS.Server.Controllers
                             training_eligable = citation.Citation_Type.training_eligable,
                             plate_number = plate_number,
                             //If Citation is not resolved then check in database if it has been resolved and update if necessary
-                            is_resolved = (citation.is_resolved) ? true : _db.CheckIfCitationIsResolved(citation.citation_id, _databaseContext.Server)
+                            is_resolved = (citation.is_resolved) ? true : _db.CheckIfCitationIsResolved(citation.citation_id, _databaseContext.Server),
+                            is_registered = false
 
                         }
                         );
@@ -100,8 +101,6 @@ namespace TCRS.Server.Controllers
             {
                 return NotFound("Invalid Parameters Error");
             }
-
-            return NotFound("Unreachable Error");
         }
 
         [HttpPost("IssueCitation")]
