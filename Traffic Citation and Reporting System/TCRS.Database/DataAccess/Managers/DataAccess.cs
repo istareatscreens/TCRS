@@ -48,5 +48,23 @@ namespace TCRS.Database
                 return rows;
             }
         }
+
+        public IEnumerable<Person> GetCitationIssuedByOfficers(int person_id, string connectionString)
+        {
+            var sql = @$"SELECT * FROM (SELECT * FROM PERSON WHERE person_id = @person_id) as person
+		            LEFT JOIN citation ON citation.officer_id = person.person_id
+                    LEFT JOIN citation_type ON citation_type.citation_type_id = citation.citation_type_id;";
+            using (IDbConnection connection = new MySqlConnection(connectionString))
+            {
+                var rows = connection.Query<Person, Citation, Citation_Type, Person>(sql, (Person, Citation, Citation_Type) =>
+                {
+                    Person.Citation = Citation;
+                    Person.Citation_Type = Citation_Type;
+                    return Person;
+                }, new { person_id= person_id }, splitOn: "person_id, citation_id, citation_type_id");
+
+                return rows;
+            }
+        }
     }
 }

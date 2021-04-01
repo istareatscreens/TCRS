@@ -26,6 +26,8 @@ namespace TCRS.Database.Model
         public Police_Dept? Police_Dept { get; set; }
         public Municipality? Municipality { get; set; }
 
+        public Citation? Citation { get; set; }
+        public Citation_Type? Citation_Type { get; set; }
 #nullable disable
 
 

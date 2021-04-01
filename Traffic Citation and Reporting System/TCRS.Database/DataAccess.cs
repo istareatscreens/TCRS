@@ -51,6 +51,21 @@ namespace TCRS.Database
 
         }
 
+        public int GetCount<T>(string sql, T parameters, string connectionString)
+        {
+            using (IDbConnection connection = new MySqlConnection(connectionString))
+            {
+                return connection.ExecuteScalar<int>(sql, parameters);
+            }
+        }
+
+        public void UpdateData<T>(string sql, T parameters, string connectionString)
+        {
+            using (IDbConnection connection = new MySqlConnection(connectionString))
+            {
+                connection.Execute(sql, parameters);
+            }
+        }
 
 
     }

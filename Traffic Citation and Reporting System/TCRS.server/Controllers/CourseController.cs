@@ -31,6 +31,10 @@ namespace TCRS.Server.Controllers
             try
             {
                 User user = new User(authorization);
+                if (!user.isSchool_Rep)
+                {
+                    return BadRequest("Incorrect credentials");
+                }
 
                 _db.PostCourse(new Course
                 {
@@ -60,16 +64,16 @@ namespace TCRS.Server.Controllers
         {
             try
             {
-                var courseList = _db.GetCoursesByCitationType(citation_type_id, _databaseContext.Server).ToList();
+                var courseList = _db.GetCoursesByCitationType(citation_type_id, DateTime.Now, _databaseContext.Server).ToList();
                 if (courseList == null)
                 {
                     throw new NullReferenceException("No Courses Available");
                 }
-                return courseList.Select(course =>
-                {
-                    //TODO: Check Capacity
-                    return new CourseEnrollmentData { address = course.address, course_id = course.course_id, scheduled = course.scheduled };
-                }).ToList();
+                //Return all courses that are not full, then convert to CourseEnrollmentData
+                return courseList.FindAll(course => !course.is_full).Select(course =>
+                  {
+                      return new CourseEnrollmentData { address = course.address, course_id = course.course_id, scheduled = course.scheduled };
+                  }).ToList();
             }
             catch (NullReferenceException e)
             {
@@ -101,14 +105,43 @@ namespace TCRS.Server.Controllers
                 var citation = IEnumerableHandler.UnpackIEnumerable<Citation>(citationList);
                 var course = IEnumerableHandler.UnpackIEnumerable<Course>(courseList);
 
-                //TODO Write endpoint to check if citation has been resolved, and if Citizen owns citation and if citizen is already registered
                 //Check if request is valid
-                if (!citation.Citation_Type.training_eligable && citation.citation_type_id == course.citation_type_id)
+                if (!citation.Citation_Type.training_eligable && citation.citation_type_id == course.citation_type_id && course.scheduled < DateTime.Now)
                 {
                     return BadRequest("Invalid Registration Details");
                 }
 
+                //Check if Citation belongs to Citizen 
+                if (!_db.CitationBelongsToCitizen(citation.citation_id, citizen.citizen_id, _databaseContext.Server))
+                {
+                    return BadRequest("Invalid Parameters");
+                }
+
+                //check if already registered for course
+                if (!_db.CitationIsRegisteredToCourse(citation.citation_id, _databaseContext.Server))
+                {
+                    return BadRequest("Invalid Parameters");
+                }
+
+                var NumberOfSpacesLeft = course.capacity - _db.GetEnrollmentNumberForCourse(course.course_id, _databaseContext.Server);
+                //Check if course is already full
+                if (NumberOfSpacesLeft <= 0)
+                {
+                    return BadRequest("Course is Full");
+                }
+
+                //Check if citation is marked as resolved, if not check in the database and update citation to be resolved if it is resolved
+                if (!citation.is_resolved && _db.CheckIfCitationIsResolved(citation.citation_id, _databaseContext.Server))
+                {
+                    return BadRequest("Already resolved");
+                }
+
+                //Passed all checks enroll in course
                 _db.RegisterCitizenInCourse(citizen.citizen_id, citation.citation_id, course.course_id, _databaseContext.Server);
+                if (NumberOfSpacesLeft == 1)
+                {
+                    _db.UpdateCourseToFull(course.course_id, _databaseContext.Server);
+                }
 
             }
             catch

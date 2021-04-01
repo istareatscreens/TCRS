@@ -1,7 +1,9 @@
 ﻿using Dapper;
 using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using TCRS.Database.Model;
 using TCRS.Shared.Helper;
 
@@ -70,6 +72,31 @@ namespace TCRS.Database
                 return rows;
             }
         }
+
+        public IEnumerable<Citation> GetCitationsByLicense(string license_id, string connectionString)
+        {
+            var sql = @$"SELECT * FROM (SELECT license_id, citizen_id as license_citizen_id, expiration_date, is_revoked, is_suspended, license_class FROM license where license_id = @license_id) as lic
+                LEFT JOIN driver_record ON driver_record.citizen_id = lic.license_citizen_id
+                LEFT JOIN citation ON citation.citation_id = driver_record.citation_id
+                LEFT JOIN citation_type ON citation_type.citation_type_id = citation.citation_type_id";
+
+            using (IDbConnection connection = new MySqlConnection(connectionString))
+            {
+                //Not returning directly to allow for easier debugging
+                var rows = connection.Query<License, Driver_Record, Citation, Citation_Type, Citation>(sql, (License, Driver_Record, Citation, Citation_Type) =>
+              {
+                  Citation.Driver_Record = Driver_Record;
+                  Citation.Citation_Type = Citation_Type;
+                  return Citation;
+              }, new { license_id = license_id }, splitOn: "license_id, citizen_id, citation_id, citation_type_id");
+
+                return rows;
+            }
+        }
+
+
+
+
         public IEnumerable<Citation> GetCitationByNumber(string citation_number, string connectionString)
         {
             var sql = "SELECT * FROM (SELECT citation_id, date_recieved, citation_type_id as type_id, officer_id FROM citation WHERE citation_number = @citation_number) as cit " +
@@ -100,6 +127,53 @@ namespace TCRS.Database
             }
         }
 
+        public bool CheckIfCitationIsResolved(int citation_id, string connectionString)
+        {
+            var sql = "SELECT * FROM (SELECT * FROM citation WHERE citation_id = @citation_id) as cit " +
+                    "LEFT JOIN payment ON payment.citation_id = cit.citation_id " +
+                    "LEFT JOIN registration ON payment.citation_id = cit.citation_id";
+
+            using (IDbConnection connection = new MySqlConnection(connectionString))
+            {
+                //Not returning directly to allow for easier debugging
+                var rows = connection.Query<Citation, Payment, IEnumerable<Registration>, Citation>(sql, (Citation, Payment, Registrations) =>
+              {
+                  Citation.Payment = Payment;
+                  Citation.Registrations = Registrations;
+                  return Citation;
+              }, new { citation_id = citation_id }, splitOn: "citation_id, citation_id, citizen_id");
+
+                var Citation = IEnumerableHandler.UnpackIEnumerable<Citation>(rows);
+                if (Citation.Payment != null || (Citation.Registrations.ToList().Exists(registration => registration.passed)))
+                {
+                    UpdateCitationToResolved(citation_id, connectionString); //set course to resolved
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        public bool CitationBelongsToCitizen(int citation_id, int citizen_id, string connectionString)
+        {
+            var sql = "SELECT * FROM driver_record WHERE citation_id = @citation_id AND citizen_id = @citizen_id";
+            return LoadData<Driver_Record, DynamicParameters>(sql, new DynamicParameters(new { citation_id = citation_id, citizen_id = citizen_id }), connectionString) != null;
+        }
+
+        public bool CitationBelongsToVehicle(int citation_id, int vehicle_id, string connectionString)
+        {
+            var sql = "SELECT * FROM vehicle_record WHERE citation_id = @citation_id AND vehicle_id = @vehicle_id";
+            return LoadData<Vehicle_Record, DynamicParameters>(sql, new DynamicParameters(new { citation_id = citation_id, vehicle_id = vehicle_id }), connectionString) != null;
+
+        }
+        public void UpdateCitationToResolved(int citation_id, string connectionString)
+        {
+            var sql = @"UPDATE citation SET is_resolved = '1' WHERE (citation_id = @citation_id)"; //set course as resolved
+            UpdateData<DynamicParameters>(sql, new DynamicParameters(new { citation_id = citation_id }), connectionString);
+        }
+
         public IEnumerable<Citation_Type> GetCitationTypeById(int citation_type_id, string connectionString)
         {
             return SyncLoadData<Citation_Type, Citation_Type>(
@@ -108,7 +182,19 @@ namespace TCRS.Database
                 connectionString
                 );
         }
+        public bool CitationIsRegisteredToCourse(int citation_id, string connectionString)
+        {
+            var sql = @"SELECT COUNT(*) FROM (SELECT * FROM registration WHERE citation_id = @citation_id) as reg " +
+                      "LEFT JOIN course ON course.course_id = reg.course_id AND course.scheduled > @date ";
+            return 0 > GetCount<DynamicParameters>(sql, new DynamicParameters(new { citation_id = citation_id, date = DateTime.Now }), connectionString);
+        }
 
+        public void PayForCitation(Payment Payment, string connectionString)
+        {
+            var sql = @"INSERT INTO Payment (`citation_id`, `payment`, `payment_date`, `made_by`, `payment_method`) " +
+                       "VALUES (@citation_id, @payment, @payment_date, @made_by, @payment_method)";
+            SaveData<Payment>(sql, Payment, connectionString);
+        }
 
     }
 }

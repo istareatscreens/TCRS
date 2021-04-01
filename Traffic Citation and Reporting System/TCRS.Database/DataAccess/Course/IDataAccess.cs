@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using TCRS.Database.Model;
 
 namespace TCRS.Database
@@ -10,6 +11,9 @@ namespace TCRS.Database
         void PostCourse(Course Course, string connectionString);
         IEnumerable<Course> GetCourseById(int course_id, string connectionString);
         IEnumerable<School_Rep> GetSchoolRep(int person_id, string connectionString);
-        IEnumerable<Course> GetCoursesByCitationType(int citation_type_id, string connectionString);
+        IEnumerable<Course> GetCoursesByCitationType(int citation_type_id, DateTime date, string connectionString);
+        int GetEnrollmentNumberForCourse(int course_id, string connectionString);
+        void UpdateCourseToFull(int course_id, string connectionString);
+
     }
 }

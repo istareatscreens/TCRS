@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -12,6 +12,7 @@ namespace TCRS.Database.Model
         public DateTime date_recieved { get; set; }
         public int citation_type_id { get; set; }
         public int officer_id { get; set; }
+        public bool is_resolved { get; set; }
 
         //Relationships
         //One to
@@ -23,9 +24,8 @@ namespace TCRS.Database.Model
         public Vehicle_Record? Vehicle_Record { get; set; }
 
         //Many to
-        public ICollection<Registration>? Registrations { get; set; }
+        public IEnumerable<Registration>? Registrations { get; set; }
 
 
     }
 }
-
