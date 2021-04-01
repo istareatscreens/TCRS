@@ -31,7 +31,7 @@ namespace TCRS.Server.Controllers
             var User = new User(authorization);
 
             IEnumerable<EmployeeLookupData> EmployeeData = null;
-            IEnumerable<Police_Dept> PoliceEmployee  = null;
+            IEnumerable<Police_Dept> PoliceEmployee = null;
             IEnumerable<Municipality> MunicipalEmployee = null;
 
 
@@ -50,9 +50,10 @@ namespace TCRS.Server.Controllers
                 return BadRequest("Invalid User Credentials");
             }
 
-            if(PoliceEmployee != null)
+            if (PoliceEmployee != null)
             {
-                return Ok(PoliceEmployee.ToList().Select(employee => new EmployeeLookupData { 
+                return Ok(PoliceEmployee.ToList().Select(employee => new EmployeeLookupData
+                {
                     first_name = employee.Persons.first_name,
                     last_name = employee.Persons.last_name,
                     email = employee.Persons.email,
@@ -61,7 +62,7 @@ namespace TCRS.Server.Controllers
                 }));
             }
 
-            else if(MunicipalEmployee != null)
+            else if (MunicipalEmployee != null)
             {
                 return Ok(MunicipalEmployee.ToList().Select(employee => new EmployeeLookupData
                 {
@@ -74,6 +75,47 @@ namespace TCRS.Server.Controllers
             }
 
             return BadRequest("Database Error");
+        }
+
+        [HttpGet("GetCitationsByOfficer")]
+        public ActionResult<IEnumerable<EmployeeCitationsLookup>> GetCitationIssuedByOfficers([FromQuery] int person_id)
+        {
+            //Return type is wrapped in action result to allow NotFond to be returned
+
+            //I pull licenseplate url query parameter here to be passed to database query
+            if (person_id == 0 || person_id > 1000)
+            {
+                return NotFound("No License Plate Specified");
+            }
+            try
+            {
+                var citations = new List<EmployeeCitationsLookup>();
+                foreach (var citation in _db.GetCitationIssuedByOfficers(person_id, _databaseContext.Server))
+                {
+                    citations.Add(
+                        new EmployeeCitationsLookup
+                        {
+                            person_id = citation.person_id,
+                            first_name = citation.first_name,
+                            last_name = citation.last_name,
+                            email = citation.email,
+                            citation_number = citation.Citation.citation_number,
+                            date_recieved = citation.Citation.date_recieved,
+                            name = citation.Citation_Type.name,
+                            fine = citation.Citation_Type.fine,
+                            training_eligable = citation.Citation_Type.training_eligable,
+                            due_date_month = citation.Citation_Type.due_date_month
+                        }
+                        );
+
+                };
+
+                return citations;
+            }
+            catch (Exception)
+            {
+                return NotFound("Not found");
+            }
         }
     }
 }

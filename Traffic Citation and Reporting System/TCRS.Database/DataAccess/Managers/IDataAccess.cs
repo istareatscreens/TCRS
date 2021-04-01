@@ -12,5 +12,6 @@ namespace TCRS.Database
     {
         IEnumerable<Police_Dept> GetPoliceDeptEmployeesByManager(int manager_id, string connectionString);
         IEnumerable<Municipality> GetMunicipalOfficersByManager(int manager_id, string connectionString);
+        IEnumerable<Person> GetCitationIssuedByOfficers(int person_id, string connectionString);
     }
 }

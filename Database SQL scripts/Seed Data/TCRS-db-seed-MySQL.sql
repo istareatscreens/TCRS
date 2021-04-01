@@ -6059,3 +6059,5 @@ INSERT INTO `tcrs-db`.`citation_type` (`citation_type_id`, `name`, `fine`) VALUE
 INSERT INTO `tcrs-db`.`citation_type` (`citation_type_id`, `name`, `fine`) VALUES ('12', 'Parking citation', '100');
 INSERT INTO `tcrs-db`.`citation_type` (`citation_type_id`, `name`, `fine`) VALUES ('13', 'Moving vehicle code warning', '100');
 INSERT INTO `tcrs-db`.`citation_type` (`citation_type_id`, `name`, `fine`) VALUES ('14', 'Moving vehicle code violation', '100');
+
+UPDATE `tcrs-db`.`person` SET `active` = '1' WHERE (`person_id` = '9');
