@@ -16,8 +16,12 @@
 
                     <MudTextField Label="Course ID" Variant="Variant.Outlined"
                                   @bind-Value="CourseData.course_id" For="@(() => CourseData.course_id)" />
-                    <MudTextField Label="Course Type" Variant="Variant.Outlined"
-                                  @bind-Value="CourseData.type" For="@(() => CourseData.type)" />
+                    <MudSelect Label="Select type" @bind-Value="typeValue" Variant="Variant.Outlined">
+                        @foreach (Type item in Enum.GetValues(typeof(Type)))
+                        {
+                            <MudSelectItem Value="@item">@item</MudSelectItem>
+                        }
+                    </MudSelect>
                     <MudTextField Label="Course Address" Variant="Variant.Outlined"
                                   @bind-Value="CourseData.address" For="@(() => CourseData.address)" />
                     <MudTextField Label="Course Name" Variant="Variant.Outlined"

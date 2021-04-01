@@ -18,7 +18,28 @@ namespace TCRS.Client.Pages
             EditContext = new EditContext(CitationData);
         }
 
-        bool success;
+        //bool success;
+
+        // TEMP DATA
+        public Type typeValue { get; set; }
+        public enum Type
+        {
+            RunningRed,
+            SeatBeltViolation,
+            FailureToFollowRightOfWay,
+            FailureToSignalWhenChangingLanes,
+            Speeding,
+            DrivingOverAMedian,
+            DrivingIllegally,
+            RunningOverAPedestrianLane,
+            DrivingPastASchoolBuswhenUnloadingLoading,
+            FailureToDriveWithinASpecifiedLane,
+
+            FixItTicket,
+            ParkingCitation,
+            MovingVehicleCodeWarning,
+            MovingVehicleCodeViolation
+        }
 
         [Inject]
         private ICitationManager CitationManager { get; set; }
@@ -33,7 +54,7 @@ namespace TCRS.Client.Pages
 
             data = await CitationManager.IssueCitation(CitationData);
 
-            success = true;
+            //success = true;
             StateHasChanged();
         }
 

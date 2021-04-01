@@ -24,7 +24,6 @@
     </div>
 
     <MudPaper Class="pa-1 ma-2" Elevation="3">
-
         <MudText Typo="Typo.h6">Person Information</MudText>
         <div style="max-width: 400px;">
             <MudTextField Value="data.GetOffenderName()" Label="Offender Name:" ReadOnly="true" Variant="Variant.Filled" />
@@ -34,6 +33,14 @@
 
         <MudText Typo="Typo.h6">Citation Input Fields</MudText>
         <MudGrid>
+            <MudItem xs="12" sm="6" md="3">
+                <MudSelect Label="Select type" @bind-Value="typeValue" Variant="Variant.Outlined">
+                    @foreach (Type item in Enum.GetValues(typeof(Type)))
+                    {
+                        <MudSelectItem Value="@item">@item</MudSelectItem>
+                    }
+                </MudSelect>
+            </MudItem>
             <MudItem xs="12" sm="6" md="3">
                 <MudTextField @bind-Value="data.citation_number" Label="Citation Number" Variant="Variant.Outlined" />
             </MudItem>

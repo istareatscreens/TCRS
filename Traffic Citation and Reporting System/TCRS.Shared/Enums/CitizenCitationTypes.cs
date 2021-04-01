@@ -5,7 +5,6 @@ namespace TCRS.Shared.Enums
     public enum CitizenCitationTypes
     {
         //Citizen
-
         [Description("Running a red light")]
         RunningRed = 1,
         [Description("Seat belt violations")]

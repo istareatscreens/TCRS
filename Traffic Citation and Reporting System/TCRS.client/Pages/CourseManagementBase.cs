@@ -21,6 +21,21 @@ namespace TCRS.Client.Pages
         public string PersonName { get; set; }
         public string PersonID { get; set; }
 
+        // TEMP DATA
+        public Type typeValue { get; set; }
+        public enum Type {
+            RunningRed,
+            SeatBeltViolation,
+            FailureToFollowRightOfWay,
+            FailureToSignalWhenChangingLanes,
+            Speeding,
+            DrivingOverAMedian,
+            DrivingIllegally,
+            RunningOverAPedestrianLane,
+            DrivingPastASchoolBuswhenUnloadingLoading,
+            FailureToDriveWithinASpecifiedLane
+        }
+
         protected override void OnInitialized()
         {
             base.OnInitialized();
@@ -30,7 +45,7 @@ namespace TCRS.Client.Pages
             
         }
 
-        bool success;
+        //bool success;
 
         protected async void OnValidSubmit(EditContext context)
         {
@@ -42,7 +57,7 @@ namespace TCRS.Client.Pages
 
             await CourseManager.CreateCourse(CourseData);
 
-            success = true;
+            //success = true;
             StateHasChanged();
         }
 

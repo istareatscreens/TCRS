@@ -1,4 +1,5 @@
 ﻿@inject IDialogService DialogService
+@inherits CourseEnrollmentDialogBase
 
 <MudDialog>
     <DialogContent>
@@ -29,24 +30,10 @@
         <MudButton OnClick="Cancel" Variant="Variant.Filled" Color="Color.Secondary">Cancel</MudButton>
     </DialogActions>
 </MudDialog>
+
 @code {
     private void OpenPayDialog()
     {
         DialogService.Show<PayDialog>("Course Payment");
     }
-
-    [CascadingParameter]
-    MudDialogInstance MudDialog { get; set; }
-
-    void Cancel() => MudDialog.Cancel();
-
-    string[] headings = { "Course ID", "Date", "Location" };
-    string[] rows = {
-        @"1 Date1 Location1",
-        @"2 Date2 Location2",
-        @"3 Date3 Location3",
-        @"4 Date4 Location4",
-        @"5 Date5 Location5"
-    };
-
 }
