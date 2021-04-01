@@ -6054,3 +6054,6 @@ ADD COLUMN `due_date_month` INT(2) NOT NULL DEFAULT 3 AFTER `training_eligable`;
 
 ALTER TABLE `tcrs-db`.`citation` 
 CHANGE COLUMN `citation_number` `citation_number` VARCHAR(36) NOT NULL ;
+
+#UPDATE
+UPDATE `tcrs-db`.`person` SET `active` = '1' WHERE (`person_id` = '9');
