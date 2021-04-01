@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -71,6 +72,31 @@ namespace TCRS.Database
                 return rows;
             }
         }
+
+        public IEnumerable<Citation> GetCitationsByLicense(string license_id, string connectionString)
+        {
+            var sql = @$"SELECT * FROM (SELECT license_id, citizen_id as license_citizen_id, expiration_date, is_revoked, is_suspended, license_class FROM license where license_id = @license_id) as lic
+                LEFT JOIN driver_record ON driver_record.citizen_id = lic.license_citizen_id
+                LEFT JOIN citation ON citation.citation_id = driver_record.citation_id
+                LEFT JOIN citation_type ON citation_type.citation_type_id = citation.citation_type_id";
+
+            using (IDbConnection connection = new MySqlConnection(connectionString))
+            {
+                //Not returning directly to allow for easier debugging
+                var rows = connection.Query<License, Driver_Record, Citation, Citation_Type, Citation>(sql, (License, Driver_Record, Citation, Citation_Type) =>
+              {
+                  Citation.Driver_Record = Driver_Record;
+                  Citation.Citation_Type = Citation_Type;
+                  return Citation;
+              }, new { license_id = license_id }, splitOn: "license_id, citizen_id, citation_id, citation_type_id");
+
+                return rows;
+            }
+        }
+
+
+
+
         public IEnumerable<Citation> GetCitationByNumber(string citation_number, string connectionString)
         {
             var sql = "SELECT * FROM (SELECT citation_id, date_recieved, citation_type_id as type_id, officer_id FROM citation WHERE citation_number = @citation_number) as cit " +
@@ -156,7 +182,19 @@ namespace TCRS.Database
                 connectionString
                 );
         }
+        public bool CitationIsRegisteredToCourse(int citation_id, string connectionString)
+        {
+            var sql = @"SELECT COUNT(*) FROM (SELECT * FROM registration WHERE citation_id = @citation_id) as reg " +
+                      "LEFT JOIN course ON course.course_id = reg.course_id AND course.scheduled > @date ";
+            return 0 > GetCount<DynamicParameters>(sql, new DynamicParameters(new { citation_id = citation_id, date = DateTime.Now }), connectionString);
+        }
 
+        public void PayForCitation(Payment Payment, string connectionString)
+        {
+            var sql = @"INSERT INTO Payment (`citation_id`, `payment`, `payment_date`, `made_by`, `payment_method`) " +
+                       "VALUES (@citation_id, @payment, @payment_date, @made_by, @payment_method)";
+            SaveData<Payment>(sql, Payment, connectionString);
+        }
 
     }
 }

@@ -117,6 +117,11 @@ namespace TCRS.Server.Controllers
                     return BadRequest("Invalid Parameters");
                 }
 
+                //check if already registered for course
+                if (!_db.CitationIsRegisteredToCourse(citation.citation_id, _databaseContext.Server))
+                {
+                    return BadRequest("Invalid Parameters");
+                }
 
                 var NumberOfSpacesLeft = course.capacity - _db.GetEnrollmentNumberForCourse(course.course_id, _databaseContext.Server);
                 //Check if course is already full

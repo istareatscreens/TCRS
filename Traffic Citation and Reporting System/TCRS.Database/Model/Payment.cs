@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace TCRS.Database.Model
@@ -9,7 +9,7 @@ namespace TCRS.Database.Model
         public int citation_id { get; set; }
         public double payment { get; set; }
         public DateTime payment_date { get; set; }
-        public int made_by { get; set; }
+        public string made_by { get; set; }
         public string payment_method { get; set; }
 
 
@@ -19,4 +19,3 @@ namespace TCRS.Database.Model
 
     }
 }
-

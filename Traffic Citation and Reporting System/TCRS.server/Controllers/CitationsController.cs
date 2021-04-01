@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TCRS.Database;
 using TCRS.Database.Model;
 using TCRS.Server.Tokens;
@@ -26,7 +27,7 @@ namespace TCRS.Server.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<CitizenVehicleCitation>> GetCitationByLicense([FromQuery] String plate_number)
+        public ActionResult<IEnumerable<CitizenVehicleCitation>> GetCitationByLicensePlate([FromQuery] String plate_number)
         {
             //Return type is wrapped in action result to allow NotFond to be returned
 
@@ -50,7 +51,10 @@ namespace TCRS.Server.Controllers
                             date_recieved = citation.date_recieved,
                             vehicle_id = citation.Vehicle_Record.vehicle_id,
                             training_eligable = citation.Citation_Type.training_eligable,
-                            plate_number = plate_number
+                            plate_number = plate_number,
+                            //If Citation is not resolved then check in database if it has been resolved and update if necessary
+                            is_resolved = (citation.is_resolved) ? true : _db.CheckIfCitationIsResolved(citation.citation_id, _databaseContext.Server)
+
                         }
                         );
 
@@ -62,6 +66,42 @@ namespace TCRS.Server.Controllers
             {
                 return NotFound("Not found");
             }
+        }
+
+        [HttpGet]
+        public ActionResult<IEnumerable<CitizenVehicleCitation>> GetCitationByLicense([FromQuery] String license_id)
+        {
+
+            if (license_id == null || license_id.Length > 40)
+            {
+                return NotFound("No License Plate Specified");
+            }
+            try
+            {
+                var citations = _db.GetCitationsByLicense(license_id, _databaseContext.Server);
+
+                return citations.ToList().Select(citation => new CitizenVehicleCitation
+                {
+                    citation_id = citation.citation_id,
+                    citation_number = citation.citation_number,
+                    name = citation.Citation_Type.name,
+                    fine = Double.Parse(citation.Citation_Type.fine),
+                    date_recieved = citation.date_recieved,
+                    vehicle_id = citation.Vehicle_Record.vehicle_id,
+                    training_eligable = citation.Citation_Type.training_eligable,
+                    license = license_id,
+                    //If Citation is not resolved then check in database if it has been resolved and update if necessary
+                    is_resolved = (citation.is_resolved) ? true : _db.CheckIfCitationIsResolved(citation.citation_id, _databaseContext.Server),
+                    is_registered = _db.CitationIsRegisteredToCourse(citation.citation_id, _databaseContext.Server)
+                }).ToList();
+
+            }
+            catch
+            {
+                return NotFound("Invalid Parameters Error");
+            }
+
+            return NotFound("Unreachable Error");
         }
 
         [HttpPost("IssueCitation")]
