@@ -8,8 +8,8 @@ using TCRS.Shared.Objects.Payment;
 
 namespace TCRS.Server.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class PaymentController : Controller
     {
 
@@ -22,7 +22,7 @@ namespace TCRS.Server.Controllers
         }
 
         //TEST IMPLEMENTATION (Need to integrate payment API)
-        [HttpGet]
+        [HttpGet("PostPayment")]
         public ActionResult PostPayment(PaymentData paymentData)
         {
             var Payment = new Payment

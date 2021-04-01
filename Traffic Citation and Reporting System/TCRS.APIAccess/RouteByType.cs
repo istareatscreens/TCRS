@@ -26,7 +26,7 @@ namespace TCRS.APIAccess
 
             /* ***** CourseEnrollmentBookingData ***** */
             // CourseEnrollmentBookingDataController : JWT for current signed in citizen_id should be passed
-            {typeof(CourseEnrollmentBookingData), "api/CourseEnrollment/Book" },
+            {typeof(CourseEnrollmentBookingData), "api/Course/EnrollInCourse" },
 
             /* ***** CourseManagement ***** */
             // JWT should be passed for the logged in instructor's id
@@ -34,26 +34,26 @@ namespace TCRS.APIAccess
 
             /* ***** EmployeeLookup ***** */
             // Returns EmployeeLookupData 
-            {typeof(EmployeeLookupData), "api/EmployeeLookup/Lookup" },
+            {typeof(EmployeeLookupData), "api/Employee" },
 
             /* ***** Payment ***** */
             // citation_id should be passed
-            {typeof(PaymentData), "api/Payment/SubmitPayment" }
+            {typeof(PaymentData), "api/Payment" }
 
         };
         public static Dictionary<Type, string> GetEntityRouteAssignment { get; } = new Dictionary<Type, string>
         {
-            /* ***** Citations ***** */
-            {typeof(CitizenVehicleCitation), "api/Citations"},
+
+            /* ***** On page refresh valid credentials check ***** */
             {typeof(User), "api/Users/getUser"},
 
-            /* ***** CourseEnrollmentData ***** */
+            /* ***** Get All Courses ***** */
             // CourseEnrollmentDataController : get(course_id, citation_id)
-            {typeof(CourseEnrollmentData), "api/CourseEnrollmentData" },
+            {typeof(CourseEnrollmentData), "api/GetCourses" },
 
             /* ***** CitationResolution ***** */
             // CitationResolutionController: get(citation_id)
-            {typeof(CitationResolutionData), "api/Citations" },
+            {typeof(CitizenVehicleCitation), "api/Citations" },
 
             /* ***** EmployeeLookup ***** */
             // EmployeeLookupData: get()
@@ -64,10 +64,12 @@ namespace TCRS.APIAccess
             {typeof(LookupCitationDisplayData), "api/Citations" },
 
             // CitizenController: get(licence_id)
+            //Warrent implementation needs to be done
             {typeof(LookupCitizenDisplayData), "api/Citizen" },
 
             // VehicleController: get(vehicle_id)
             {typeof(LookupVehicleDisplayData), "api/Vehicle" },
+
 
         };
 
