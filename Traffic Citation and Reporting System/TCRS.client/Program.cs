@@ -39,6 +39,8 @@ namespace TCRS.Client
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddTransient<ICitationManager, CitationManager>();
             builder.Services.AddTransient<ICourseManager, CourseManager>();
+            builder.Services.AddTransient<IResolveCitationManager, ResolveCitationManager>();
+
 
             //Load User Authentication services
             builder.Services.AddAuthorizationCore();

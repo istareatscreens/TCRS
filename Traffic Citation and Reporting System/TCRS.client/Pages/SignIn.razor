@@ -7,23 +7,26 @@
 @using TCRS.Shared.Objects
 @*TODO: Clean this up, add proper validation checks etc*@
 <div class="sign-in">
-    <MudCard >
-        <EditForm EditContext="@EditContext" OnSubmit="@HandleSubmit">
-        <MudCardContent>
-            <MudForm  @bind-IsValid="@success" @bind-Errors="@errors">
-                <MudTextField @bind-value="UserCredentials.Email" T="string" Label="Email" Required="true"
-                    RequiredError="Email is required!"
-                    Validation="@(new EmailAddressAttribute() {ErrorMessage = "The email address is invalid"})" />
-                <MudTextField @bind-value="UserCredentials.Password" T="string" Label="Password" Required="true"
-                    InputType="InputType.Password" RequiredError="Password is required!" />
-            </MudForm>
-        </MudCardContent>
-        <MudCardActions>
-            <MudButton OnClick="@HandleSubmit" Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)"
-                Class="ml-auto">
-                Sign in
-            </MudButton>
-        </MudCardActions>
-</EditForm>
-    </MudCard>
+    <div style="max-width: 400px;">
+
+        <MudCard>
+            <EditForm EditContext="@EditContext" OnSubmit="@HandleSubmit">
+                <MudCardContent>
+                    <MudForm @bind-IsValid="@success" @bind-Errors="@errors">
+                        <MudTextField @bind-value="UserCredentials.Email" Variant="Variant.Outlined" T="string" Label="Email" Required="true"
+                                      RequiredError="Email is required!"
+                                      Validation="@(new EmailAddressAttribute() {ErrorMessage = "The email address is invalid"})" />
+                        <MudTextField @bind-value="UserCredentials.Password" Variant="Variant.Outlined" T="string" Label="Password" Required="true"
+                                      InputType="InputType.Password" RequiredError="Password is required!" />
+                    </MudForm>
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton OnClick="@HandleSubmit" Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)"
+                               Class="ml-auto">
+                        Sign in
+                    </MudButton>
+                </MudCardActions>
+            </EditForm>
+        </MudCard>
+    </div>
 </div>
