@@ -11,6 +11,17 @@ namespace TCRS.Client.Pages
 {
     public class CitationResolutionBase : ComponentBase
     {
+        protected string[] headings = { "Citation #", "Status", "Date Issued", "Date Due", "Fine Amount", "Payment", "Schedule Training" };
+        // temp data
+
+        protected string[] rows = {
+            @"1 Date1 Location1 due1 fine1",
+            @"2 Date2 Location2 due2 fine2",
+            @"3 Date3 Location3 due3 fine3",
+            @"4 Date4 Location4 due4 fine4",
+            @"5 Date5 Location5 due5 fine5"
+        };
+        /*
         protected CitationResolutionData CitationData { get; set; } = new CitationResolutionData();
         protected EditContext EditContext { get; set; }
 
@@ -121,5 +132,6 @@ namespace TCRS.Client.Pages
 
             }
         }
+        */
     }
 }

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TCRS.Shared.Contracts;
 using TCRS.Shared.Objects.CourseEnrollment;
 
 namespace TCRS.Client.Pages
@@ -18,6 +19,17 @@ namespace TCRS.Client.Pages
 
         protected void Cancel() => MudDialog.Cancel();
 
+        //[Inject]
+        //private ICourseEnrollmentDialogManager CourseManager { get; set; }
+        /*
+        protected override void OnInitialized()
+        {
+            base.OnInitialized();
+
+            //var data = CourseManager.GetCourseData();
+
+        }
+        */
         // TEMP DATA
         protected string[] headings = { "Course ID", "Date", "Location" };
         protected string[] rows = {
