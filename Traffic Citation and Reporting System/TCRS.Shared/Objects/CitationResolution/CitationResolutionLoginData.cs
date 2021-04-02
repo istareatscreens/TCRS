@@ -10,9 +10,6 @@ namespace TCRS.Shared.Objects.CitationResolution
     {
 #nullable enable
         // licence plate
-        public string? plate_number { get; set; }
-        // licence
-        public string? licence_number { get; set; }
-
+        public string? citation_number { get; set; }
     }
 }

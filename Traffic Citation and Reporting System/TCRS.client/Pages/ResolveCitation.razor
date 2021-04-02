@@ -12,13 +12,11 @@
             <DataAnnotationsValidator />
             <MudCard>
                 <MudCardContent>
-                    <MudTextField Label="Licence ID" Variant="Variant.Outlined"
-                                  @bind-Value="LoginData.plate_number" For="@(() => LoginData.plate_number)" />
-                    <MudTextField Label="Licence Plate" Variant="Variant.Outlined"
-                                  @bind-Value="LoginData.licence_number" For="@(() => LoginData.licence_number)" />
+                    <MudTextField Label="Citation Number" Variant="Variant.Outlined"
+                                  @bind-Value="LoginData.citation_number" For="@(() => LoginData.citation_number)" />
                 </MudCardContent>
                 <MudCardActions>
-                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Sign in</MudButton>
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Resolve</MudButton>
                 </MudCardActions>
             </MudCard>
         </EditForm>

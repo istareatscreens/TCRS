@@ -20,13 +20,9 @@ namespace TCRS.Business
 
             var parameters = new List<KeyValuePair<string, string>>();
 
-            if(citationResolutionLoginData.plate_number != null)
+            if (citationResolutionLoginData.citation_number != null)
             {
-                parameters.Add(new KeyValuePair<string, string>("plate_number", citationResolutionLoginData.plate_number));
-            }
-            else if (citationResolutionLoginData.licence_number != null)
-            {
-                parameters.Add(new KeyValuePair<string, string>("licence_number", citationResolutionLoginData.licence_number));
+                parameters.Add(new KeyValuePair<string, string>("citation_number", citationResolutionLoginData.citation_number));
             }
             else
             {
