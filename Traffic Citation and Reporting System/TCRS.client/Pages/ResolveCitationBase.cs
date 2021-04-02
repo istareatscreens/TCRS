@@ -16,6 +16,9 @@ namespace TCRS.Client.Pages
         protected EditContext EditContext { get; set; }
 
         [Inject]
+        private NavigationManager NavigationManager { get; set; }
+
+        [Inject]
         private IResolveCitationManager CitationManager { get; set; }
 
         protected override void OnInitialized()
@@ -32,7 +35,9 @@ namespace TCRS.Client.Pages
                 return;
             }
 
-            var data = await CitationManager.CitizenLogin(LoginData);
+            //var data = await CitationManager.CitizenLogin(LoginData);
+            var data = "123456789";
+            NavigationManager.NavigateTo($"/Citationresolution/{data}");
 
             //success = true;
             StateHasChanged();

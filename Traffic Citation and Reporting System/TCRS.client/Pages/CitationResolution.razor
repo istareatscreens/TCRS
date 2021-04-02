@@ -1,32 +1,35 @@
-﻿@page "/Citationresolution"
+﻿@page "/Citationresolution/{citation_id}"
 @inject IDialogService DialogService
 @layout UnAuthLayout
 @inherits CitationResolutionBase
 
 <MudText Typo="Typo.h3">Citation Resolution</MudText>
 
+<MudText Typo="Typo.h4">Citation Number: @citation_id</MudText>
+
+
 <MudSimpleTable Hover="true" Dense="true" FixedHeader="true" Style="height:300px">
-<thead>
-    <tr>
-        @foreach (var h in headings)
+    <thead>
+        <tr>
+            @foreach (var h in headings)
+            {
+                <th>@h</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var row in rows)
         {
-            <th>@h</th>
+            <tr>
+                @foreach (var x in row.Split())
+                {
+                    <td>@x</td>
+                }
+                <td><MudButton @onclick="OpenPayDialog" Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary" Class="ma-2">Pay</MudButton></td>
+                <td><MudButton @onclick="OpenCourseEnrollmentDialog" Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary" Class="ma-2">Enroll in Course</MudButton></td>
+            </tr>
         }
-    </tr>
-</thead>
-<tbody>
-    @foreach (var row in rows)
-    {
-    <tr>
-        @foreach (var x in row.Split())
-        {
-            <td>@x</td>
-        }
-        <td><MudButton @onclick="OpenPayDialog" Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary" Class="ma-2">Pay</MudButton></td>
-        <td><MudButton @onclick="OpenCourseEnrollmentDialog" Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary" Class="ma-2">Enroll in Course</MudButton></td>
-    </tr>
-    }
-</tbody>
+    </tbody>
 </MudSimpleTable>
 
 @code {
@@ -38,4 +41,5 @@
     {
         DialogService.Show<CourseEnrollmentDialog>("Course Enrollment");
     }
+
 }

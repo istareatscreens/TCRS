@@ -20,7 +20,7 @@
                     {
                         <td>@x</td>
                     }
-                    <MudButton @onclick="OpenPayDialog" Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary" Class="ma-2">Book</MudButton>
+                    <MudButton @onclick="BookDialogPress" Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary" Class="ma-2">Book</MudButton>
                 </tr>
                 }
             </tbody>
@@ -32,8 +32,8 @@
 </MudDialog>
 
 @code {
-    private void OpenPayDialog()
+    private void BookDialogPress()
     {
-        DialogService.Show<PayDialog>("Course Payment");
+        //DialogService.Show<PayDialog>("Course Payment");
     }
 }

@@ -11,6 +11,9 @@ namespace TCRS.Client.Pages
 {
     public class CitationResolutionBase : ComponentBase
     {
+        [Parameter]
+        public string citation_id { get; set; }
+
         protected string[] headings = { "Citation #", "Status", "Date Issued", "Date Due", "Fine Amount", "Payment", "Schedule Training" };
         // temp data
 
