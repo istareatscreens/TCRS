@@ -61,5 +61,18 @@ namespace TCRS.Client.Pages
         protected string Disabled { get; set; }
         protected CitationIssuingDisplayData data = new CitationIssuingDisplayData();
 
+        protected string WarrantInfo()
+        {
+            if(HasWarrant())
+            {
+                return "Warrant info";
+            }
+            return "";
+        }
+        protected bool HasWarrant()
+        {
+            return false;
+        }
+
     }
 }

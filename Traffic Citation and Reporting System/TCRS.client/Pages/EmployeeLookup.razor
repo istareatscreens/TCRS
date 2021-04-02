@@ -1,5 +1,6 @@
 ﻿@page "/Employeelookup"
 @*@attribute [Authorize(Roles = Roles.Manager)]*@
+
 @inherits EmployeeLookupBase
 
 @using System.ComponentModel.DataAnnotations
@@ -8,24 +9,30 @@
 
 <div class="citation-body">
     <div style="max-width: 400px;">
-        <EditForm Model="@model" OnValidSubmit="OnValidSubmit">
+        <EditForm Model="@EditContext" OnValidSubmit="OnValidSubmit">
             <DataAnnotationsValidator />
             <MudCard>
                 <MudCardContent>
-                    <MudTextField Label="Name (person_id)" Variant="Variant.Outlined"
-                                  @bind-Value="model.person_id" For="@(() => model.person_id)" />
+                    <MudSelect Label="Select type" @bind-Value="typeValue" Variant="Variant.Outlined">
+                        @foreach (Type item in Enum.GetValues(typeof(Type)))
+                        {
+                            <MudSelectItem Value="@item">@item</MudSelectItem>
+                        }
+                    </MudSelect>
+                    <MudTextField Label="Start date" Variant="Variant.Outlined" Placeholder="yyyy/mm/dd"
+                                  @bind-Value="startDate" For="@(() => startDate)" />
+                    <MudTextField Label="End date" Variant="Variant.Outlined" Placeholder="yyyy/mm/dd"
+                                  @bind-Value="endDate" For="@(() => endDate)" />
+                    <MudCardActions>
+                        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Search</MudButton>
+                    </MudCardActions>
                 </MudCardContent>
-                <MudCardActions>
-                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Search</MudButton>
-                </MudCardActions>
             </MudCard>
         </EditForm>
+
     </div>
-
-    <MudPaper Class="pa-1 ma-2" Elevation="3">
-        <div style="max-width: 400px;">
-            <MudTextField @bind-Value="GetEmployeeName" Label="Employee information for:" ReadOnly="true" Variant="Variant.Outlined" />
-
+    <div style="max-width: 400px;">
+        <MudPaper Class="pa-1 ma-2" Elevation="3">
             <MudText Typo="Typo.h6">Employee Information</MudText>
 
             <MudTextField @bind-Value="GetEmployeeName" Label="Employee Name:" ReadOnly="true" Variant="Variant.Filled" />
@@ -33,37 +40,35 @@
             <MudTextField @bind-Value="GetEmployeeActive" Label="Employee Active:" ReadOnly="true" Variant="Variant.Filled" />
             <MudTextField @bind-Value="GetEmployeeDepartment" Label="Employee Department:" ReadOnly="true" Variant="Variant.Filled" />
             <MudTextField @bind-Value="GetEmployeeRole" Label="Employee Role:" ReadOnly="true" Variant="Variant.Filled" />
+        </MudPaper>
+    </div>
 
-        </div>
+    <div style="max-width: 400px;">
+        <MudPaper Class="pa-1 ma-2" Elevation="3">
+            <MudText Typo="Typo.h6">Citation Count Information</MudText>
 
-    </MudPaper>
-
-    @code {
-        RegisterAccountForm model = new RegisterAccountForm();
-        //bool success;
-
-        public class RegisterAccountForm
-        {
-            [Required]
-            [StringLength(8, ErrorMessage = "Invalid person_id")]
-            public string person_id { get; set; }
-
-        }
-
-        private void OnValidSubmit(EditContext context)
-        {
-            //success = true;
-            StateHasChanged();
-        }
-
-        public string Disabled { get; set; }
-
-        public string GetEmployeeName { get; set; } = "Employee Name Here";
-        public string GetEmployeeEmail { get; set; } = "Employee Email Here";
-        public string GetEmployeeActive { get; set; } = "Employee Name Here";
-        public string GetEmployeeDepartment { get; set; } = "Employee Department Here";
-        public string GetEmployeeRole { get; set; } = "Employee Role Here";
-
-    }
+            <MudSimpleTable Hover="true" Dense="true" FixedHeader="true" Style="height:300px">
+                <thead>
+                    <tr>
+                        @foreach (var h in headings)
+                        {
+                            <th>@h</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var row in rows)
+                    {
+                        <tr>
+                            @foreach (var x in row.Split())
+                            {
+                                <td>@x</td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </MudSimpleTable>
+        </MudPaper>
+    </div>
 
 </div>
