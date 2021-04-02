@@ -85,7 +85,7 @@ namespace TCRS.Server.Controllers
             //I pull licenseplate url query parameter here to be passed to database query
             if (person_id == 0 || person_id > 1000)
             {
-                return NotFound("No License Plate Specified");
+                return NotFound("Employee with this ID does not exist");
             }
             try
             {
