@@ -20,7 +20,7 @@
             <tr>
                 @foreach (var prop in ObjectPrinter.PropertiesOfType(data))
                 {
-                    if (prop.Value != null)
+                    if (prop.Value != null && prop.Key != "citation_type_id")
                     {
                         <td>@prop.Value</td>
                     }

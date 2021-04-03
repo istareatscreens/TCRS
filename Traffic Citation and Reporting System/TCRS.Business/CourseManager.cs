@@ -21,12 +21,12 @@ namespace TCRS.Business
             await _api.PostAsync<CourseManagementData>(courseManagementData);
         }
 
-        public async Task<List<CourseManagementData>> GetCourses(string citation_type_id)
+        public async Task<List<CourseEnrollmentData>> GetCourses(string citation_type_id)
         {
             var parameters = new List<KeyValuePair<string, string>>();
             parameters.Add(new KeyValuePair<string, string>("citation_type_id", citation_type_id));
 
-            var data = await _api.GetAsync<CourseManagementData>(parameters);
+            var data = await _api.GetAsync<CourseEnrollmentData>(parameters);
             return data.ToList();
         }
 

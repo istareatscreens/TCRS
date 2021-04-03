@@ -96,13 +96,14 @@ namespace TCRS.Server.Controllers
                     {
                         citation_number = citation.citation_number,
                         name = citation.Citation_Type.name,
+                        citation_type_id = citation.citation_type_id,
                         fine = Double.Parse(citation.Citation_Type.fine),
                         date_due = CalculateDueDate(citation),
                         date_recieved = citation.date_recieved,
                         training_eligable = citation.Citation_Type.training_eligable,
                         //If Citation is not resolved then check in database if it has been resolved and update if necessary
                         is_resolved = IsCitationResolved(citation),
-                        is_registered = false
+                        is_registered = false,
                     }));
 
                     return Ok(result);
@@ -117,6 +118,7 @@ namespace TCRS.Server.Controllers
                     {
                         citation_number = citation.citation_number,
                         name = citation.Citation_Type.name,
+                        citation_type_id = citation.citation_type_id,
                         date_recieved = citation.date_recieved,
                         training_eligable = citation.Citation_Type.training_eligable,
                         date_due = CalculateDueDate(citation),

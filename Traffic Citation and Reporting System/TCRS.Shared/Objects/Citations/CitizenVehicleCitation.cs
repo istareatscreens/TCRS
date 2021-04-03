@@ -9,6 +9,7 @@ namespace TCRS.Shared.Objects.Citations
         // Takes in parameter(vehicle_id)
         public string citation_number { get; set; }
         public string name { get; set; }
+        public int citation_type_id { get; set; }
         public DateTime date_recieved { get; set; }
         public bool training_eligable { get; set; }
         public DateTime date_due { get; set; }
