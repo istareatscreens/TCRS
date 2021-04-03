@@ -18,10 +18,10 @@ namespace TCRS.Shared.Objects.Lookup
         }
 
         // licence
-        public string licence_id { get; set; }
+        public string license_id { get; set; }
         public DateTime expiration_date { get; set; }
-        public int is_revoked { get; set; }
-        public int is_suspended { get; set; }
-        public string licence_class { get; set; }
+        public bool is_revoked { get; set; }
+        public bool is_suspended { get; set; }
+        public string license_class { get; set; }
     }
 }
