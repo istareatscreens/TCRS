@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TCRS.Shared.Contracts;
 using TCRS.Shared.Objects.CitationResolution;
+using TCRS.Shared.Objects.Citations;
 
 namespace TCRS.Business
 {
@@ -15,12 +16,12 @@ namespace TCRS.Business
         {
             _api = api;
         }
-        public async Task<List<CitationResolutionLoginData>> CitizenLogin(CitationResolutionLoginData citationResolutionLoginData)
+        public async Task<List<CitizenVehicleCitation>> CitizenLogin(CitationResolutionLoginData citationResolutionLoginData)
         {
 
             var parameters = new List<KeyValuePair<string, string>>();
 
-            if (citationResolutionLoginData.citation_number != null)
+            if (citationResolutionLoginData.citation_number != "")
             {
                 parameters.Add(new KeyValuePair<string, string>("citation_number", citationResolutionLoginData.citation_number));
             }
@@ -29,7 +30,7 @@ namespace TCRS.Business
                 throw new NullReferenceException();
             }
 
-            var crld = await _api.GetAsync<CitationResolutionLoginData>(parameters);
+            var crld = await _api.GetAsync<CitizenVehicleCitation>(parameters);
             return crld.ToList();
         }
     }

@@ -35,9 +35,8 @@ namespace TCRS.Client.Pages
                 return;
             }
 
-            //var data = await CitationManager.CitizenLogin(LoginData);
-            var data = "123456789";
-            NavigationManager.NavigateTo($"/Citationresolution/{data}");
+            var data = await CitationManager.CitizenLogin(LoginData);
+            NavigationManager.NavigateTo($"/Citationresolution");
 
             //success = true;
             StateHasChanged();

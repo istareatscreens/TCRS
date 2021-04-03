@@ -44,6 +44,7 @@ namespace TCRS.Client
             builder.Services.AddTransient<IResolveCitationManager, ResolveCitationManager>();
             builder.Services.AddTransient<IEmployeeLookupManager, EmployeeLookupManager>();
             builder.Services.AddTransient<ILookupPortalManager, LookupPortalManager>();
+            builder.Services.AddTransient<ICitationService, CitationService>();
 
             //Load User Authentication services
             builder.Services.AddAuthorizationCore();

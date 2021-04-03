@@ -5,14 +5,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TCRS.Shared.Contracts;
 using TCRS.Shared.Objects.CitationResolution;
+using TCRS.Shared.Objects.Citations;
 
 namespace TCRS.Client.Pages
 {
     public class CitationResolutionBase : ComponentBase
     {
-        [Parameter]
-        public string citation_id { get; set; }
+        [Inject]
+        public ICitationService CitationService { get; set; }
+
+
 
         protected string[] headings = { "Citation #", "Status", "Date Issued", "Date Due", "Fine Amount", "Payment", "Schedule Training" };
         // temp data
