@@ -13,6 +13,7 @@ using TCRS.Shared.Contracts;
 using TCRS.Shared.Contracts.CitationManagement;
 using TCRS.Shared.Contracts.CourseManagement;
 using TCRS.Shared.Contracts.EmployeeLookup;
+using TCRS.Shared.Contracts.LookupPortal;
 
 namespace TCRS.Client
 {
@@ -42,8 +43,7 @@ namespace TCRS.Client
             builder.Services.AddTransient<ICourseManager, CourseManager>();
             builder.Services.AddTransient<IResolveCitationManager, ResolveCitationManager>();
             builder.Services.AddTransient<IEmployeeLookupManager, EmployeeLookupManager>();
-
-
+            builder.Services.AddTransient<ILookupPortalManager, LookupPortalManager>();
 
             //Load User Authentication services
             builder.Services.AddAuthorizationCore();

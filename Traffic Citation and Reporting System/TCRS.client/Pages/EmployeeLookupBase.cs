@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components.Forms;
 using MudBlazor;
 using System;
+using System.Collections.Generic;
 using TCRS.Shared.Contracts.EmployeeLookup;
 using TCRS.Shared.Objects.EmployeeLookup;
 
@@ -10,14 +11,14 @@ namespace TCRS.Client.Pages
     public class EmployeeLookupBase : ComponentBase
     {
 
-        protected EmployeeLookupData CitationData { get; set; } = new EmployeeLookupData();
+        protected EmployeeLookupData EmployeeData { get; set; } = new EmployeeLookupData();
 
         protected EditContext EditContext { get; set; }
 
         protected override void OnInitialized()
         {
             base.OnInitialized();
-            EditContext = new EditContext(CitationData);
+            EditContext = new EditContext(EmployeeData);
         }
 
         [Inject]
@@ -31,11 +32,13 @@ namespace TCRS.Client.Pages
                 return;
             }
 
-            //data = await CitationManager.IssueCitation(CitationData);
+            data = await EmployeeManager.GetEmployeeLookup();
 
             //success = true;
             StateHasChanged();
         }
+
+        protected List<EmployeeLookupData> data = new List<EmployeeLookupData>();
 
         public DateTime? startDate { get; set; }
 

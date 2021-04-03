@@ -9,9 +9,9 @@ namespace TCRS.Shared.Objects.Lookup
     public class LookupDisplayData
     {
 
-        public LookupCitizenDisplayData citizenData { get; set; } = null;
-        public LookupCitationDisplayData citationData { get; set; } = null;
-        public LookupVehicleDisplayData vehicleData { get; set; } = null;
+        public string CitizenData { get; set; }
+        public string CitationData { get; set; }
+        public string VehicleData { get; set; }
 
     }
 }
