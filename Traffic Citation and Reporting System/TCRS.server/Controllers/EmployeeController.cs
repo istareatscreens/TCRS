@@ -107,7 +107,6 @@ namespace TCRS.Server.Controllers
                             due_date_month = citation.Citation_Type.due_date_month
                         }
                         );
-
                 };
 
                 return citations;
