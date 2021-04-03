@@ -12,6 +12,8 @@ namespace TCRS.Client.Pages
 
         protected EditContext EditContext { get; set; }
 
+
+
         [Inject]
         private ICourseManager CourseManager { get; set; }
 
@@ -21,9 +23,12 @@ namespace TCRS.Client.Pages
         public string PersonName { get; set; }
         public string PersonID { get; set; }
 
+
         // TEMP DATA
         public Type typeValue { get; set; }
-        public enum Type {
+
+        public enum Type
+        {
             RunningRed,
             SeatBeltViolation,
             FailureToFollowRightOfWay,
@@ -40,9 +45,6 @@ namespace TCRS.Client.Pages
         {
             base.OnInitialized();
             EditContext = new EditContext(CourseData);
-
-            PersonName = CurrentUser.GetFullName();
-            
         }
 
         //bool success;
@@ -55,6 +57,9 @@ namespace TCRS.Client.Pages
                 return;
             }
 
+            //Convert type to int
+            CourseData.citation_type_id = (int)CourseData.CitizenCitationType;
+
             await CourseManager.CreateCourse(CourseData);
 
             //success = true;
@@ -63,8 +68,8 @@ namespace TCRS.Client.Pages
 
 
         public string Disabled { get; set; }
-       
-        
+
+
 
     }
 }
