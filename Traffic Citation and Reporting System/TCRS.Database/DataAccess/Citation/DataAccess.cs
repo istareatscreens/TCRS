@@ -95,8 +95,6 @@ namespace TCRS.Database
         }
 
 
-
-
         public IEnumerable<Citation> GetCitationByNumber(string citation_number, string connectionString)
         {
             var sql = "SELECT * FROM (SELECT citation_id, date_recieved, citation_type_id as type_id, officer_id FROM citation WHERE citation_number = @citation_number) as cit " +
@@ -106,14 +104,89 @@ namespace TCRS.Database
             {
                 //Not returning directly to allow for easier debugging
                 var rows = connection.Query<Citation, Citation_Type, Citation>(sql, (Citation, Citation_Type) =>
-              {
-                  Citation.Citation_Type = Citation_Type;
-                  Citation.citation_type_id = Citation_Type.citation_type_id;
-                  return Citation;
-              }, new { citation_number = citation_number }, splitOn: "citation_id, citation_type_id");
+                {
+                    Citation.Citation_Type = Citation_Type;
+                    Citation.citation_type_id = Citation_Type.citation_type_id;
+                    return Citation;
+                }, new { citation_number = citation_number }, splitOn: "citation_id, citation_type_id");
 
                 return rows;
             }
+        }
+
+        public IEnumerable<Citation> GetCitationAllInformationByNumber(string citation_number, string connectionString)
+        {
+            var citation_id = (SyncLoadData<Citation, Citation>(
+                "SELECT citation_id FROM citation WHERE citation_number = @citation_number", new Citation { citation_number = citation_number }, connectionString)).ToList().FirstOrDefault().citation_id;
+
+            var Vehicle_Record = (SyncLoadData<Vehicle_Record, Citation>(
+                "SELECT * FROM vehicle_record WHERE citation_id = @citation_id", new Citation { citation_id = citation_id }, connectionString));
+
+            var Driver_Record = (SyncLoadData<Driver_Record, Citation>(
+                "SELECT * FROM driver_record WHERE citation_id = @citation_id", new Citation { citation_id = citation_id }, connectionString));
+
+            if (Vehicle_Record.Count() != 0)
+            {
+
+                var sql = "SELECT * FROM (SELECT citation_id, date_recieved, citation_type_id as type_id, officer_id FROM citation WHERE citation_id = @citation_id) as cit " +
+                        "LEFT JOIN citation_type ON citation_type.citation_type_id = cit.type_id " +
+                        "LEFT JOIN (SELECT * FROM vehicle_record WHERE vehicle_record.citation_id = @citation_id) as v_record ON v_record.citation_id = cit.citation_id " +
+                        "LEFT JOIN vehicle ON vehicle.vehicle_id = v_record.vehicle_id " +
+                        "LEFT JOIN license_plate ON license_plate.vehicle_id = vehicle.vehicle_id";
+
+                using (IDbConnection connection = new MySqlConnection(connectionString))
+                {
+                    //Not returning directly to allow for easier debugging
+                    var rows = connection.Query<Citation, Citation_Type, Vehicle_Record, Vehicle, License_Plate, Citation>(sql, (Citation, Citation_Type, Vehicle_Record, Vehicle, License_Plate) =>
+                      {
+                          Citation.Citation_Type = Citation_Type;
+                          Citation.citation_type_id = Citation_Type.citation_type_id;
+                          Citation.Vehicle_Record = Vehicle_Record;
+                          if (Citation.Vehicle_Record != null)
+                          {
+                              Citation.Vehicle_Record.Vehicle = Vehicle;
+                              Citation.Vehicle_Record.Vehicle.License_Plate = License_Plate;
+                          }
+                          return Citation;
+                      }, new { citation_number = citation_number }, splitOn: "citation_id, citation_type_id, vehicle_id, vehicle_id, plate_number");
+
+                    return rows;
+                }
+
+            }
+            else if (Driver_Record.Count() != 0)
+            {
+
+                var sql = "SELECT * FROM (SELECT citation_id, date_recieved, citation_type_id as type_id, officer_id FROM citation WHERE citation_id = @citation_id) as cit " +
+                       "LEFT JOIN citation_type ON citation_type.citation_type_id = cit.type_id " +
+                       "LEFT JOIN (SELECT * FROM driver_record WHERE driver_record.citation_id = @citation_id) as d_record ON d_record.citation_id = cit.citation_id " +
+                       "LEFT JOIN citizen ON citizen.citizen_id = d_record.citizen_id " +
+                       "LEFT JOIN license ON license.citizen_id = citizen.citizen_id ";
+
+                using (IDbConnection connection = new MySqlConnection(connectionString))
+                {
+                    //Not returning directly to allow for easier debugging
+                    var rows = connection.Query<Citation, Citation_Type, Driver_Record, Citizen, License, Citation>(sql, (Citation, Citation_Type, Driver_Record, Citizen, License) =>
+                      {
+                          Citation.Citation_Type = Citation_Type;
+                          Citation.citation_type_id = Citation_Type.citation_type_id;
+                          Citation.Driver_Record = Driver_Record;
+                          if (Driver_Record != null)
+                          {
+                              Citation.Driver_Record.Citizen = Citizen;
+                              Citation.Driver_Record.Citizen.License = License;
+                          }
+                          return Citation;
+                      }, new { citation_id = citation_id }, splitOn: "citation_id, citation_type_id, citizen_id, citizen_id, license_id");
+
+                    return rows;
+                }
+            }
+            else
+            {
+                throw new Exception("Invalid citation number passed");
+            }
+
         }
 
         public IEnumerable<T> GetAllCitationType<T>(string connectionString, T Model)

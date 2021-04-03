@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -18,9 +18,12 @@ namespace TCRS.Database.Model
 
         //Relationship 
         //One to
-        public Driver_Record Driver_Record { get; set; }
-        public Insurer Insurer { get; set; }
+#nullable enable
+        public Driver_Record? Driver_Record { get; set; }
+        public Insurer? Insurer { get; set; }
+        public License? License { get; set; }
 
+#nullable restore
         //Many to
         public ICollection<Registration> Registrations { get; set; }
         public ICollection<License> Licences { get; set; }

@@ -27,26 +27,25 @@ namespace TCRS.Server.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<CitizenVehicleCitation>> GetCitationByLicensePlateOrLicense([FromQuery] String plate_number, [FromQuery] String license_id)
+        public ActionResult<IEnumerable<CitizenVehicleCitation>> GetCitationByLicensePlateOrLicense([FromQuery] String citation_number)
         {
             //Return type is wrapped in action result to allow NotFond to be returned
 
             //I pull licenseplate url query parameter here to be passed to database query
-            if (plate_number == null || plate_number.Length > 8)
+            if (citation_number == null || citation_number.Length > 36)
             {
-                return NotFound("No License Plate Specified");
+                return NotFound("Invalid");
             }
-            else if (license_id == null || license_id.Length > 40)
-            {
-                return NotFound("No License Plate Specified");
-            }
+
+            var Citation = _db.GetCitationAllInformationByNumber(citation_number, _databaseContext.Server).ToList().FirstOrDefault();
 
             try
             {
-                if (plate_number != null)
+                if (Citation.Vehicle_Record != null)
                 {
+                    var plate_number = Citation.Vehicle_Record.Vehicle.License_Plate.plate_number;
                     var citations = _db.GetCitationsByLicensePlate(plate_number, _databaseContext.Server);
-                    return Ok(citations.ToList().Select(citation => new CitizenVehicleCitation
+                    var result = (citations.Select(citation => new CitizenVehicleCitation
                     {
                         citation_id = citation.citation_id,
                         citation_number = citation.citation_number,
@@ -61,25 +60,33 @@ namespace TCRS.Server.Controllers
                         is_registered = false
                     }));
 
+                    return Ok(result);
+
                 }
                 else
                 {
+                    var license_id = Citation.Driver_Record.Citizen.License.license_id;
                     var citations = _db.GetCitationsByLicense(license_id, _databaseContext.Server);
 
-                    return Ok(citations.ToList().Select(citation => new CitizenVehicleCitation
+                    var result = citations.Select(citation => new CitizenVehicleCitation
                     {
                         citation_id = citation.citation_id,
                         citation_number = citation.citation_number,
                         name = citation.Citation_Type.name,
-                        fine = Double.Parse(citation.Citation_Type.fine),
+                        /*
+                        //fine = Double.Parse(citation.Citation_Type.fine),
                         date_recieved = citation.date_recieved,
                         vehicle_id = citation.Vehicle_Record.vehicle_id,
-                        training_eligable = citation.Citation_Type.training_eligable,
                         license = license_id,
+                        training_eligable = citation.Citation_Type.training_eligable,
                         //If Citation is not resolved then check in database if it has been resolved and update if necessary
                         is_resolved = (citation.is_resolved) ? true : _db.CheckIfCitationIsResolved(citation.citation_id, _databaseContext.Server),
                         is_registered = _db.CitationIsRegisteredToCourse(citation.citation_id, _databaseContext.Server)
-                    }).ToList());
+                        */
+                    });
+
+                    return Ok(result);
+
 
                 }
             }

@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace TCRS.Database.Model
@@ -21,9 +21,10 @@ namespace TCRS.Database.Model
 
         //Relationships
         //One to
-        public Citizen Citizen { get; set; }
-        public Insurer Insurer { get; set; }
-        public Vehicle_Record Vehicle_Record { get; set; }
+        public Citizen? Citizen { get; set; }
+        public Insurer? Insurer { get; set; }
+        public Vehicle_Record? Vehicle_Record { get; set; }
+        public License_Plate? License_Plate { get; set; }
 
         //Many to
         public ICollection<Wanted_Vehicle> Wanted_Vehicles { get; set; }
