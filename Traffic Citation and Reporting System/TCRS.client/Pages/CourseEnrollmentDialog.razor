@@ -1,5 +1,4 @@
 ﻿@inject IDialogService DialogService
-@inherits CourseEnrollmentDialogBase
 
 <MudDialog>
     <DialogContent>
@@ -15,13 +14,13 @@
             <tbody>
                 @foreach (var row in rows)
                 {
-                <tr>
-                    @foreach (var x in row.Split())
-                    {
-                        <td>@x</td>
-                    }
-                    <MudButton @onclick="BookDialogPress" Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary" Class="ma-2">Book</MudButton>
-                </tr>
+                    <tr>
+                        @foreach (var x in row.Split())
+                        {
+                            <td>@x</td>
+                        }
+                        <MudButton @onclick="BookDialogPress" Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary" Class="ma-2">Book</MudButton>
+                    </tr>
                 }
             </tbody>
         </MudSimpleTable>
@@ -31,9 +30,40 @@
     </DialogActions>
 </MudDialog>
 
+@using TCRS.Shared.Objects.Citations;
 @code {
+
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; }
+
+    [Parameter]
+    public CitizenVehicleCitation data { get; set; }
+
+    protected void Cancel() => MudDialog.Cancel();
+
+    //[Inject]
+    //private ICourseEnrollmentDialogManager CourseManager { get; set; }
+    /*
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        //var data = CourseManager.GetCourseData();
+
+    }
+    */
+    // TEMP DATA
+    protected string[] headings = { "Course ID", "Date", "Location" };
+    protected string[] rows = {
+            @"1 Date1 Location1",
+            @"2 Date2 Location2",
+            @"3 Date3 Location3",
+            @"4 Date4 Location4",
+            @"5 Date5 Location5"
+        };
+
     private void BookDialogPress()
     {
-        //DialogService.Show<PayDialog>("Course Payment");
+        // register the user right here
     }
 }

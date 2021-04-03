@@ -1,6 +1,6 @@
 ﻿<MudDialog>
     <DialogContent>
-        <MudTextField @bind-Value="GetPaymentAmount" Label="Payment Amount:" ReadOnly="true" Variant="Variant.Filled" />
+        <MudTextField @bind-Value="data.fine" Label="Payment Amount:" ReadOnly="true" Variant="Variant.Filled" />
 
         <MudTextField @bind-Value="CreditCardNumber" Label="Credit Card Number" Placeholder="1111-1111-1111-1111" Variant="Variant.Outlined" />
         <MudTextField @bind-Value="CVCNumber" Label="CVC Number" Placeholder="123" Variant="Variant.Outlined" />
@@ -11,11 +11,15 @@
         <MudButton OnClick="Submit" Variant="Variant.Filled" Color="Color.Primary">Pay</MudButton>
     </DialogActions>
 </MudDialog>
+
+@using TCRS.Shared.Objects.Citations;
 @code {
     [CascadingParameter]
     MudDialogInstance MudDialog { get; set; }
 
-    public string GetPaymentAmount { get; set; } = "Payment Amount Here";
+    [Parameter]
+    public CitizenVehicleCitation data { get; set; }
+    //public string GetPaymentAmount { get; set; } = "Payment Amount Here";
 
     public string CreditCardNumber { get; set; } = "";
     public string CVCNumber { get; set; } = "";

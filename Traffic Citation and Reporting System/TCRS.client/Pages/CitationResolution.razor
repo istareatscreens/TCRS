@@ -17,37 +17,55 @@
     <tbody>
         @foreach (var data in CitizenVehicleCitation)
         {
-        <tr>
-            @foreach (var prop in ObjectPrinter.PropertiesOfType(data))
-            {
-                if (prop.Value != null)
+            <tr>
+                @foreach (var prop in ObjectPrinter.PropertiesOfType(data))
                 {
-                    <td>@prop.Value</td>
+                    if (prop.Value != null)
+                    {
+                        <td>@prop.Value</td>
+                    }
                 }
-            }
 
-            @if (data.fine > 0)
-            {
-                <td><MudButton @onclick="@OpenPayDialog" Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary">Pay</MudButton></td>
+                @if (data.fine > 0)
+                {
+                    <td><MudButton @onclick="@((e) => OpenPayDialog(data))" Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary">Pay</MudButton></td>
 
-            }
-            @if (data.training_eligable == true)
-            {
-                <td><MudButton @onclick="OpenCourseEnrollmentDialog" Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary">Enroll in Course</MudButton></td>
-            }
+                }
+                @if (data.training_eligable == true)
+                {
+                    <td><MudButton @onclick="((e) => OpenCourseEnrollmentDialog(data))" Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary">Enroll in Course</MudButton></td>
+                }
 
-        </tr>
+            </tr>
         }
     </tbody>
 
 </MudSimpleTable>
 
-@code { private void OpenPayDialog()
+@using TCRS.Shared.Objects.Citations;
+@code { private async void OpenPayDialog(CitizenVehicleCitation data)
     {
-        DialogService.Show<PayDialog>("Fine Payment");
+        var parameters = new DialogParameters { ["data"] = data };
+        var dialog = DialogService.Show<PayDialog>("Fine Payment", parameters);
+        var result = await dialog.Result;
+
+        if (!result.Cancelled)
+        {
+            // successful
+        }
+
     }
-    private void OpenCourseEnrollmentDialog()
+
+    private async void OpenCourseEnrollmentDialog(CitizenVehicleCitation data)
     {
-        DialogService.Show<CourseEnrollmentDialog>("Course Enrollment");
-    } 
+        var parameters = new DialogParameters { ["data"] = data };
+        var dialog = DialogService.Show<CourseEnrollmentDialog>("Course Enrollment", parameters);
+        var result = await dialog.Result;
+
+        if (!result.Cancelled)
+        {
+            // successful
+        }
+
+    }
 }
