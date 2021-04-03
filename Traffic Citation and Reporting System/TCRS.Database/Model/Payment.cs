@@ -6,7 +6,7 @@ namespace TCRS.Database.Model
     public class Payment
     {
         [Key]
-        public int citation_id { get; set; }
+        public int citation_number { get; set; }
         public double payment { get; set; }
         public DateTime payment_date { get; set; }
         public string made_by { get; set; }
