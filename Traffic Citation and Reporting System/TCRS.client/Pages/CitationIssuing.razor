@@ -15,11 +15,10 @@
                                   @bind-Value="CitationData.licence_id" For="@(() => CitationData.licence_id)" />
                     <MudTextField Label="Licence Plate" Variant="Variant.Outlined"
                                   @bind-Value="CitationData.licencePlate" For="@(() => CitationData.licencePlate)" />
-                    <MudSelect Label="Select type" @bind-Value="typeValue" Variant="Variant.Outlined">
-                        @foreach (Type item in Enum.GetValues(typeof(Type)))
+                    <MudSelect Label="Select type" @bind-Value="CitationData.CitationType" Variant="Variant.Outlined">
+                        @foreach (CitationTypes item in CitationTypes.GetValues(typeof(CitationTypes)))
                         {
-                            <MudSelectItem Value="@item">@item</MudSelectItem>
-                        }
+<MudSelectItem Value="@item">@item.ToDescriptionString()</MudSelectItem>}
                     </MudSelect>
                 </MudCardContent>
                 <MudCardActions>

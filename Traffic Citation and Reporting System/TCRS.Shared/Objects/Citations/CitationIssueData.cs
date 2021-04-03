@@ -1,4 +1,6 @@
-﻿namespace TCRS.Shared.Objects.Citations
+﻿using TCRS.Shared.Enums;
+
+namespace TCRS.Shared.Objects.Citations
 {
     public class CitationIssueData
     {
@@ -6,6 +8,8 @@
 #nullable enable
         public string? licence_id { get; set; }
         public string? licencePlate { get; set; }
+
+        public CitationTypes CitationType { get; set; } = CitationTypes.ParkingCitation;
 
     }
 }
