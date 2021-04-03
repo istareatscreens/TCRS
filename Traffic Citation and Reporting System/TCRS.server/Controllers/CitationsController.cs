@@ -99,7 +99,6 @@ namespace TCRS.Server.Controllers
                         fine = Double.Parse(citation.Citation_Type.fine),
                         date_due = CalculateDueDate(citation),
                         date_recieved = citation.date_recieved,
-                        vehicle_id = citation.Vehicle_Record.vehicle_id,
                         training_eligable = citation.Citation_Type.training_eligable,
                         //If Citation is not resolved then check in database if it has been resolved and update if necessary
                         is_resolved = IsCitationResolved(citation),
