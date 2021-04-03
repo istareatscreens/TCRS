@@ -19,5 +19,6 @@ namespace TCRS.Database
         bool CitationBelongsToCitizen(int citation_id, int citizen_id, string connectionString);
         bool CitationIsRegisteredToCourse(int citation_id, string connectionString);
         void PayForCitation(Payment Payment, string connectionString);
+        public IEnumerable<Citation> GetCitationAllInformationByNumber(string citation_number, string connectionString);
     }
 }
