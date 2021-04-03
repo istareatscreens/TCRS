@@ -1,9 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using TCRS.Shared.Contracts;
 using TCRS.Shared.Objects.CitationResolution;
 
@@ -21,6 +17,9 @@ namespace TCRS.Client.Pages
         [Inject]
         private IResolveCitationManager CitationManager { get; set; }
 
+        [Inject]
+        private ICitationService CitationService { get; set; }
+
         protected override void OnInitialized()
         {
             base.OnInitialized();
@@ -35,8 +34,8 @@ namespace TCRS.Client.Pages
                 return;
             }
 
-            var data = await CitationManager.CitizenLogin(LoginData);
-            NavigationManager.NavigateTo($"/Citationresolution");
+            CitationService.SetCitizenVehicleCitations(await CitationManager.CitizenLogin(LoginData));
+            NavigationManager.NavigateTo($"/Citationresolution/{LoginData.citation_number}");
 
             //success = true;
             StateHasChanged();

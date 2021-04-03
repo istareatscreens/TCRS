@@ -209,15 +209,15 @@ namespace TCRS.Database
             using (IDbConnection connection = new MySqlConnection(connectionString))
             {
                 //Not returning directly to allow for easier debugging
-                var rows = connection.Query<Citation, Payment, IEnumerable<Registration>, Citation>(sql, (Citation, Payment, Registrations) =>
+                var rows = connection.Query<Citation, Payment, Registration, Citation>(sql, (Citation, Payment, Registration) =>
               {
                   Citation.Payment = Payment;
-                  Citation.Registrations = Registrations;
+                  Citation.Registration = Registration;
                   return Citation;
               }, new { citation_id = citation_id }, splitOn: "citation_id, citation_id, citizen_id");
 
                 var Citation = IEnumerableHandler.UnpackIEnumerable<Citation>(rows);
-                if (Citation.Payment != null || (Citation.Registrations.ToList().Exists(registration => registration.passed)))
+                if (Citation.Payment != null || (Citation.Registration != null && (rows.ToList().Exists(citation => citation.Registration.passed))))
                 {
                     UpdateCitationToResolved(citation_id, connectionString); //set course to resolved
                     return true;

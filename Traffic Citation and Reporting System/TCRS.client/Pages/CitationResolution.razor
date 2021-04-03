@@ -1,4 +1,4 @@
-﻿@page "/Citationresolution"
+﻿@page "/Citationresolution/{citation_number}"
 @inject IDialogService DialogService
 @layout UnAuthLayout
 @inherits CitationResolutionBase
@@ -10,33 +10,36 @@
         <tr>
             @foreach (var h in headings)
             {
-                <th>@h</th>
-            }
+<th>@h</th>
+}
         </tr>
     </thead>
     <tbody>
-        @foreach (var row in rows)
+        @*        @foreach (var row in rows)*@
+        @foreach (var data in CitizenVehicleCitation)
         {
-            <tr>
-                @foreach (var x in row.Split())
-                {
-                    <td>@x</td>
-                }
-                <td><MudButton @onclick="OpenPayDialog" Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary" Class="ma-2">Pay</MudButton></td>
-                <td><MudButton @onclick="OpenCourseEnrollmentDialog" Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary" Class="ma-2">Enroll in Course</MudButton></td>
-            </tr>
-        }
+<tr>
+
+
+    @foreach (var prop in ObjectPrinter.PropertiesOfType(data))
+    {
+<td>@prop.Value</td>}
+    @*
+            @foreach (var x in row.Split())
+            {
+        <td>@x</td>
+        }*@
+    <td><MudButton @onclick="OpenPayDialog" Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary" Class="ma-2">Pay</MudButton></td>
+    <td><MudButton @onclick="OpenCourseEnrollmentDialog" Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary" Class="ma-2">Enroll in Course</MudButton></td>
+</tr>}
     </tbody>
 </MudSimpleTable>
 
-@code {
-    private void OpenPayDialog()
+@code { private void OpenPayDialog()
     {
         DialogService.Show<PayDialog>("Fine Payment");
     }
     private void OpenCourseEnrollmentDialog()
     {
         DialogService.Show<CourseEnrollmentDialog>("Course Enrollment");
-    }
-
-}
+    } }

@@ -61,7 +61,7 @@ namespace TCRS.APIAccess
 
             /* ***** LookupPortal ***** */
             // CitationController: get(citation_id)
-            {typeof(LookupCitationDisplayData), "api/Citations" },
+            {typeof(LookupCitationDisplayData), "api/Citations/Lookup" },
 
             // CitizenController: get(licence_id)
             //Warrent implementation needs to be done

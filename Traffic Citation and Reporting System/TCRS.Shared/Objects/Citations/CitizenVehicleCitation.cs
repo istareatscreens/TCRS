@@ -12,7 +12,7 @@ namespace TCRS.Shared.Objects.Citations
         public string name { get; set; }
         public DateTime date_recieved { get; set; }
         public bool training_eligable { get; set; }
-
+        public DateTime date_due { get; set; }
         public int vehicle_id { get; set; }
         public double fine { get; set; }
         public string plate_number { get; set; }

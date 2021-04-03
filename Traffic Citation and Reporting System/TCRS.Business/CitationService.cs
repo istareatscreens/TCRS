@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using TCRS.Shared.Contracts;
 using TCRS.Shared.Objects.Citations;
 
@@ -11,11 +7,29 @@ namespace TCRS.Business
     public class CitationService : ICitationService
     {
 
-        public List<CitizenVehicleCitation> GetCitizenVehicleCitations() 
+        public List<CitizenVehicleCitation> CitizenVehicleCitations = null;
+
+        public void SetCitizenVehicleCitations(List<CitizenVehicleCitation> CitizenVehicleCitation)
         {
-            return CitizenVehicleCitations;
+            this.CitizenVehicleCitations = CitizenVehicleCitation;
         }
-        public List<CitizenVehicleCitation> CitizenVehicleCitations { get; set; }
+        public List<CitizenVehicleCitation> GetCitizenVehicleCitations()
+        {
+            if (CitizenVehicleCitations != null)
+            {
+                return CitizenVehicleCitations;
+            }
+            else
+            {
+                /*
+                var citizenVehicleCitations = new List<CitizenVehicleCitation>();
+                citizenVehicleCitations.Add(new CitizenVehicleCitation());
+                return citizenVehicleCitations;
+                */
+                return null;
+            }
+        }
+
 
     }
 }

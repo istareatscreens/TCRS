@@ -15,12 +15,6 @@ namespace TCRS.Business
         public async Task<UserTokens> UserSignIn(UserLoginCredentials userLoginCredentials)
         {
             return await _api.AuthenticateAndGetUserAsync(userLoginCredentials);
-            /*
-            return await Task.FromResult(new UserWithToken
-            {
-                email=userLoginCredentials.Email
-            });
-            */
         }
 
     }

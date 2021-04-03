@@ -10,6 +10,7 @@ using TCRS.Server.Tokens;
 using TCRS.Shared.Helper;
 using TCRS.Shared.Objects.Auth;
 using TCRS.Shared.Objects.Citations;
+using TCRS.Shared.Objects.Lookup;
 
 namespace TCRS.Server.Controllers
 {
@@ -26,13 +27,59 @@ namespace TCRS.Server.Controllers
             _databaseContext = databaseContext.Value;
         }
 
-        [HttpGet]
-        public ActionResult<IEnumerable<CitizenVehicleCitation>> GetCitationByLicensePlateOrLicense([FromQuery] String citation_number)
-        {
-            //Return type is wrapped in action result to allow NotFond to be returned
 
-            //I pull licenseplate url query parameter here to be passed to database query
-            if (citation_number == null || citation_number.Length > 36)
+        [HttpGet("/Lookup")]
+        public ActionResult<IEnumerable<LookupCitationDisplayData>> CitationLookup([FromQuery] string citation_number)
+        {
+            if (IsValidCitationNumber(citation_number))
+            {
+                return NotFound("Invalid");
+            }
+
+            try
+            {
+                var Citation = _db.GetCitationAllInformationByNumber(citation_number, _databaseContext.Server);
+                return Ok(Citation.Select(citation => new LookupCitationDisplayData
+                {
+                    //common
+                    officer_id = citation.officer_id,
+                    date_recieved = citation.date_recieved,
+                    date_due = CalculateDueDate(citation),
+                    citation_number = citation.citation_number,
+                    name = citation.Citation_Type.name,
+                    is_resolved = IsCitationResolved(citation),
+                    //Citizen
+                    first_name = (citation.Driver_Record == null) ? "" : citation.Driver_Record.Citizen.first_name,
+                    last_name = (citation.Driver_Record == null) ? "" : citation.Driver_Record.Citizen.last_name,
+                    middle_name = (citation.Driver_Record == null) ? "" : citation.Driver_Record.Citizen.middle_name,
+                    license = (citation.Driver_Record == null) ? "" : citation.Driver_Record.Citizen.License.license_id,
+                    license_class = (citation.Driver_Record == null) ? "" : citation.Driver_Record.Citizen.License.license_class,
+                    //Vehicle
+                    model = (citation.Vehicle_Record == null) ? "" : citation.Vehicle_Record.Vehicle.model,
+                    plate_number = (citation.Vehicle_Record == null) ? "" : citation.Vehicle_Record.Vehicle.License_Plate.plate_number,
+                }));
+            }
+            catch
+            {
+                return NotFound("Invalid Citation");
+            }
+
+        }
+
+        private bool IsCitationResolved(Citation citation)
+        {
+            return (citation.is_resolved) ? true : citation.is_resolved ? true : _db.CheckIfCitationIsResolved(citation.citation_id, _databaseContext.Server);
+        }
+
+        private bool IsValidCitationNumber(string citation_number)
+        {
+            return citation_number == null || citation_number.Length > 36;
+        }
+
+        [HttpGet]
+        public ActionResult<IEnumerable<CitizenVehicleCitation>> GetCitationListByCitationNumber([FromQuery] String citation_number)
+        {
+            if (IsValidCitationNumber(citation_number))
             {
                 return NotFound("Invalid");
             }
@@ -47,16 +94,15 @@ namespace TCRS.Server.Controllers
                     var citations = _db.GetCitationsByLicensePlate(plate_number, _databaseContext.Server);
                     var result = (citations.Select(citation => new CitizenVehicleCitation
                     {
-                        citation_id = citation.citation_id,
                         citation_number = citation.citation_number,
                         name = citation.Citation_Type.name,
                         fine = Double.Parse(citation.Citation_Type.fine),
+                        date_due = CalculateDueDate(citation),
                         date_recieved = citation.date_recieved,
                         vehicle_id = citation.Vehicle_Record.vehicle_id,
                         training_eligable = citation.Citation_Type.training_eligable,
-                        plate_number = plate_number,
                         //If Citation is not resolved then check in database if it has been resolved and update if necessary
-                        is_resolved = citation.is_resolved ? true : _db.CheckIfCitationIsResolved(citation.citation_id, _databaseContext.Server),
+                        is_resolved = IsCitationResolved(citation),
                         is_registered = false
                     }));
 
@@ -70,19 +116,15 @@ namespace TCRS.Server.Controllers
 
                     var result = citations.Select(citation => new CitizenVehicleCitation
                     {
-                        citation_id = citation.citation_id,
                         citation_number = citation.citation_number,
                         name = citation.Citation_Type.name,
-                        /*
-                        //fine = Double.Parse(citation.Citation_Type.fine),
                         date_recieved = citation.date_recieved,
-                        vehicle_id = citation.Vehicle_Record.vehicle_id,
-                        license = license_id,
                         training_eligable = citation.Citation_Type.training_eligable,
+                        date_due = CalculateDueDate(citation),
+                        fine = Double.Parse(citation.Citation_Type.fine),
                         //If Citation is not resolved then check in database if it has been resolved and update if necessary
-                        is_resolved = (citation.is_resolved) ? true : _db.CheckIfCitationIsResolved(citation.citation_id, _databaseContext.Server),
+                        is_resolved = IsCitationResolved(citation),
                         is_registered = _db.CitationIsRegisteredToCourse(citation.citation_id, _databaseContext.Server)
-                        */
                     });
 
                     return Ok(result);
@@ -157,7 +199,7 @@ namespace TCRS.Server.Controllers
                 return NotFound("Connection Error" + e.Message);
             }
 
-            Func<Citation, DateTime> calculateDueDate = (Citation citation) => citation.date_recieved.AddMonths(citation.Citation_Type.due_date_month);
+            //Func<Citation, DateTime> calculateDueDate = (Citation citation) => citation.date_recieved.AddMonths(citation.Citation_Type.due_date_month);
 
             return IEnumerableHandler.PackageInList<CitationIssuingDisplayData>(
             (FoundLicense != null) ?
@@ -169,7 +211,7 @@ namespace TCRS.Server.Controllers
                 //common data
                 citation_number = Citation.citation_number,
                 date_recieved = Citation.date_recieved,
-                DateDue = calculateDueDate(NewCitation),
+                DateDue = CalculateDueDate(NewCitation),
                 fine = NewCitation.Citation_Type.fine
             } : new CitationIssuingDisplayData
             {
@@ -177,11 +219,13 @@ namespace TCRS.Server.Controllers
                 //common data
                 citation_number = Citation.citation_number,
                 date_recieved = Citation.date_recieved,
-                DateDue = calculateDueDate(NewCitation),
+                DateDue = CalculateDueDate(NewCitation),
                 fine = NewCitation.Citation_Type.fine
             }
             );
         }
+
+        private Func<Citation, DateTime> CalculateDueDate = (Citation citation) => citation.date_recieved.AddMonths(citation.Citation_Type.due_date_month);
 
         [HttpGet("All")]
         public IEnumerable<Citation_Type> GetCitationType()

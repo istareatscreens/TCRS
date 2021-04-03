@@ -22,6 +22,7 @@ namespace TCRS.Database.Model
         public Payment? Payment { get; set; }
         public Driver_Record? Driver_Record { get; set; }
         public Vehicle_Record? Vehicle_Record { get; set; }
+        public Registration? Registration { get; set; }
 
         //Many to
         public IEnumerable<Registration>? Registrations { get; set; }

@@ -46,20 +46,20 @@
                     <tr>
                         @foreach (var h in headings)
                         {
-                            <th>@h</th>
-                        }
+    <th>@h</th>
+}
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var row in rows)
                     {
-                        <tr>
-                            @foreach (var x in row.Split())
-                            {
-                                <td>@x</td>
-                            }
-                        </tr>
-                    }
+<tr>
+    @foreach (var x in row.Split())
+    {
+<td>@x</td>
+}
+</tr>
+}
                 </tbody>
             </MudSimpleTable>
 
@@ -81,7 +81,7 @@
 
         <MudText Typo="Typo.h6">Citation Information</MudText>
         <div style="max-width: 400px;">
-            <MudTextField Value="citationData.citation_id" Label="Citation ID" ReadOnly="true" Variant="Variant.Filled" />
+            <MudTextField Value="citationData.citation_number" Label="Citation ID" ReadOnly="true" Variant="Variant.Filled" />
             <MudTextField Value="citationData.GetOffenderName()" Label="Offender Name:" ReadOnly="true" Variant="Variant.Filled" />
             <MudTextField Value="citationData.plate_number" Label="Offender Licence Plate:" ReadOnly="true" Variant="Variant.Filled" />
             <MudTextField Value="citationData.officer_id" Label="Officer ID:" ReadOnly="true" Variant="Variant.Filled" />
