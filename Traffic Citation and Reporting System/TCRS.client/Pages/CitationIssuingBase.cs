@@ -54,6 +54,8 @@ namespace TCRS.Client.Pages
             CitationData.citation_type_id = (int)CitationData.CitationType;
             data = await CitationManager.IssueCitation(CitationData);
 
+            //Clear data from form
+            CitationData = new CitationIssueData();
             //success = true;
             StateHasChanged();
         }

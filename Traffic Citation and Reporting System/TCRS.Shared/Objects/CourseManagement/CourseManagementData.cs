@@ -18,8 +18,8 @@ namespace TCRS.Shared.Objects.CourseManagement
         public string title { get; set; }
         public string instructor { get; set; }
         public int capacity { get; set; }
-        public int citation_type_id { get; set; }
-        public CitizenCitationTypes CitizenCitationType { get; set; } = CitizenCitationTypes.RunningRed;
+        public int citation_type_id { get; set; } = (int)CitizenCitationTypes.Speeding;
+        public CitizenCitationTypes CitizenCitationType { get; set; } = CitizenCitationTypes.Speeding;
 
     }
 }
