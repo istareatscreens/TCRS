@@ -51,9 +51,11 @@ namespace TCRS.Client.Pages
                 // Print out invalid input message
                 return;
             }
-
+            CitationData.citation_type_id = (int)CitationData.CitationType;
             data = await CitationManager.IssueCitation(CitationData);
 
+            //Clear data from form
+            CitationData = new CitationIssueData();
             //success = true;
             StateHasChanged();
         }
@@ -63,7 +65,7 @@ namespace TCRS.Client.Pages
 
         protected string WarrantInfo()
         {
-            if(HasWarrant())
+            if (HasWarrant())
             {
                 return "Warrant info";
             }

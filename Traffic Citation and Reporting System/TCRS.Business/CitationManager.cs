@@ -14,10 +14,12 @@ namespace TCRS.Business
         {
             _api = api;
         }
+
         public async Task<CitationIssuingDisplayData> IssueCitation(CitationIssueData citationIssueData)
         {
             IEnumerable<CitationIssuingDisplayData> cidd = await _api.PostAsync<CitationIssueData, CitationIssuingDisplayData>(citationIssueData);
             return cidd.ToList<CitationIssuingDisplayData>().FirstOrDefault();
         }
+
     }
 }

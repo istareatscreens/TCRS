@@ -1,5 +1,6 @@
 ﻿
 using System;
+using TCRS.Shared.Enums;
 
 namespace TCRS.Shared.Objects.CourseManagement
 {
@@ -17,6 +18,8 @@ namespace TCRS.Shared.Objects.CourseManagement
         public string title { get; set; }
         public string instructor { get; set; }
         public int capacity { get; set; }
-        public int citation_type_id { get; set; }
+        public int citation_type_id { get; set; } = (int)CitizenCitationTypes.Speeding;
+        public CitizenCitationTypes CitizenCitationType { get; set; } = CitizenCitationTypes.Speeding;
+
     }
 }

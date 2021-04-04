@@ -7,87 +7,124 @@
 
 <div class="citation-body">
 
-    <div style="max-width: 400px;">
-        <EditForm Model="@EditContext" OnValidSubmit="@OnValidSubmit">
-            <DataAnnotationsValidator />
-            <MudCard>
-                <MudCardContent>
-                    <MudTextField Label="Licence ID" Variant="Variant.Outlined"
-                                  @bind-Value="LookupData.CitizenData" For="@(() => LookupData.CitizenData)" />
-                    <MudTextField Label="Licence Plate" Variant="Variant.Outlined"
-                                  @bind-Value="LookupData.VehicleData" For="@(() => LookupData.VehicleData)" />
-                    <MudTextField Label="Citation ID" Variant="Variant.Outlined"
-                                  @bind-Value="LookupData.CitationData" For="@(() => LookupData.CitationData)" />
-                </MudCardContent>
-                <MudCardActions>
-                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Search</MudButton>
-                </MudCardActions>
-            </MudCard>
-        </EditForm>
-    </div>
-
     <MudPaper Class="pa-1 ma-2" Elevation="3">
 
-        <MudText Typo="Typo.h6">Person Information</MudText>
-        <div style="max-width: 400px;">
-            <MudTextField Value="citizenData.GetOffenderName()" Label="Person Name:" ReadOnly="true" Variant="Variant.Filled" />
-            <MudTextField Value="citizenData.license_id" Label="Person Licence ID:" ReadOnly="true" Variant="Variant.Filled" />
-            <MudTextField Value="citizenData.expiration_date" Label="Licence Expiration :" ReadOnly="true" Variant="Variant.Filled" />
-            <MudTextField Value="citizenData.is_revoked" Label="Licence Revoked?:" ReadOnly="true" Variant="Variant.Filled" />
-            <MudTextField Value="citizenData.is_suspended" Label="Licence Suspended?" ReadOnly="true" Variant="Variant.Filled" />
-            <MudTextField Value="citizenData.license_class" Label="Licence Class:" ReadOnly="true" Variant="Variant.Filled" />
+        <MudTabs Elevation="4" Rounded="true" Centered="true" Color="@Color.Primary">
 
-            <MudTextField Label="Issue Warrant" Variant="Variant.Outlined" Placeholder="Warrant Reference Number"
-                          @bind-Value="IssueWarrant" For="@(() => IssueWarrant)" />
-            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Issue Warrant</MudButton>
+            <MudTabPanel Text="Person Information">
 
-            <MudSimpleTable Hover="true" Dense="true" FixedHeader="true" Style="height:300px">
-                <thead>
-                    <tr>
-                        @foreach (var h in headings)
-                        {
-    <th>@h</th>
-}
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var row in rows)
-                    {
-<tr>
-    @foreach (var x in row.Split())
-    {
-<td>@x</td>
-}
-</tr>
-}
-                </tbody>
-            </MudSimpleTable>
+                <div style="max-width: 400px;">
+                    <EditForm Model="@EditContext" OnValidSubmit="@OnValidSubmit">
+                        <DataAnnotationsValidator />
+                        <MudCard>
+                            <MudCardContent>
+                                <MudTextField Label="Licence ID" Variant="Variant.Outlined"
+                                              @bind-Value="LookupData.CitizenData" For="@(() => LookupData.CitizenData)" />
+                            </MudCardContent>
+                            <MudCardActions>
+                                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Search</MudButton>
+                            </MudCardActions>
+                        </MudCard>
+                    </EditForm>
+                </div>
 
-        </div>
+                <MudText Typo="Typo.h6">Person Information</MudText>
+                <div style="max-width: 400px;">
+                    <MudTextField Value="citizenData.GetOffenderName()" Label="Person Name:" ReadOnly="true" Variant="Variant.Filled" />
+                    <MudTextField Value="citizenData.licence_id" Label="Person Licence ID:" ReadOnly="true" Variant="Variant.Filled" />
+                    <MudTextField Value="citizenData.expiration_date" Label="Licence Expiration :" ReadOnly="true" Variant="Variant.Filled" />
+                    <MudTextField Value="citizenData.is_revoked" Label="Licence Revoked?:" ReadOnly="true" Variant="Variant.Filled" />
+                    <MudTextField Value="citizenData.is_suspended" Label="Licence Suspended?" ReadOnly="true" Variant="Variant.Filled" />
+                    <MudTextField Value="citizenData.licence_class" Label="Licence Class:" ReadOnly="true" Variant="Variant.Filled" />
 
-        <MudText Typo="Typo.h6">Vehicle Information</MudText>
-        <div style="max-width: 400px;">
-            <MudTextField Value="vehicleData.vehicle_id" Label="Vehicle ID:" ReadOnly="true" Variant="Variant.Filled" />
-            <MudTextField Value="vehicleData.vin" Label="Vehicle VIN:" ReadOnly="true" Variant="Variant.Filled" />
-            <MudTextField Value="vehicleData.name" Label="Vehicle Name:" ReadOnly="true" Variant="Variant.Filled" />
-            <MudTextField Value="vehicleData.stolen" Label="vehicle Stolen:" ReadOnly="true" Variant="Variant.Filled" />
-            <MudTextField Value="vehicleData.make" Label="Vehicle Make:" ReadOnly="true" Variant="Variant.Filled" />
-            <MudTextField Value="vehicleData.model" Label="Vehicle Model:" ReadOnly="true" Variant="Variant.Filled" />
-            <MudTextField Value="vehicleData.year_made" Label="Vehicle Year Made:" ReadOnly="true" Variant="Variant.Filled" />
-            <MudTextField Value="vehicleData.citizen_id" Label="Vehicle Citizen ID Relation:" ReadOnly="true" Variant="Variant.Filled" />
-            <MudTextField Value="vehicleData.insurer_id" Label="Vehicle Insured ID Relation:" ReadOnly="true" Variant="Variant.Filled" />
-        </div>
+                    <MudTextField Label="Issue Warrant" Variant="Variant.Outlined" Placeholder="Warrant Reference Number"
+                                  @bind-Value="IssueWarrant" For="@(() => IssueWarrant)" />
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Issue Warrant</MudButton>
 
+                    <MudSimpleTable Hover="true" Dense="true" FixedHeader="true" Style="height:300px">
+                        <thead>
+                            <tr>
+                                @foreach (var h in headings)
+                                {
+                                    <th>@h</th>
+                                }
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var row in rows)
+                            {
+                                <tr>
+                                    @foreach (var x in row.Split())
+                                    {
+                                        <td>@x</td>
+                                    }
+                                </tr>
+                            }
+                        </tbody>
+                    </MudSimpleTable>
+                </div>
+            </MudTabPanel>
 
-        <MudText Typo="Typo.h6">Citation Information</MudText>
-        <div style="max-width: 400px;">
-            <MudTextField Value="citationData.citation_number" Label="Citation ID" ReadOnly="true" Variant="Variant.Filled" />
-            <MudTextField Value="citationData.GetOffenderName()" Label="Offender Name:" ReadOnly="true" Variant="Variant.Filled" />
-            <MudTextField Value="citationData.plate_number" Label="Offender Licence Plate:" ReadOnly="true" Variant="Variant.Filled" />
-            <MudTextField Value="citationData.officer_id" Label="Officer ID:" ReadOnly="true" Variant="Variant.Filled" />
-            <MudTextField Value="citationData.date_recieved" Label="Date of Offence:" ReadOnly="true" Variant="Variant.Filled" />
-        </div>
+            <MudTabPanel Text="Vehicle Information">
 
+                <div style="max-width: 400px;">
+                    <EditForm Model="@EditContext" OnValidSubmit="@OnValidSubmit">
+                        <DataAnnotationsValidator />
+                        <MudCard>
+                            <MudCardContent>
+                                <MudTextField Label="Licence Plate" Variant="Variant.Outlined"
+                                              @bind-Value="LookupData.VehicleData" For="@(() => LookupData.VehicleData)" />
+                            </MudCardContent>
+                            <MudCardActions>
+                                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Search</MudButton>
+                            </MudCardActions>
+                        </MudCard>
+                    </EditForm>
+                </div>
+
+                <MudText Typo="Typo.h6">Vehicle Information</MudText>
+
+                <div style="max-width: 400px;">
+                    <MudTextField Value="vehicleData.vehicle_id" Label="Vehicle ID:" ReadOnly="true" Variant="Variant.Filled" />
+                    <MudTextField Value="vehicleData.vin" Label="Vehicle VIN:" ReadOnly="true" Variant="Variant.Filled" />
+                    <MudTextField Value="vehicleData.name" Label="Vehicle Name:" ReadOnly="true" Variant="Variant.Filled" />
+                    <MudTextField Value="vehicleData.stolen" Label="vehicle Stolen:" ReadOnly="true" Variant="Variant.Filled" />
+                    <MudTextField Value="vehicleData.make" Label="Vehicle Make:" ReadOnly="true" Variant="Variant.Filled" />
+                    <MudTextField Value="vehicleData.model" Label="Vehicle Model:" ReadOnly="true" Variant="Variant.Filled" />
+                    <MudTextField Value="vehicleData.year_made" Label="Vehicle Year Made:" ReadOnly="true" Variant="Variant.Filled" />
+                    <MudTextField Value="vehicleData.citizen_id" Label="Vehicle Citizen ID Relation:" ReadOnly="true" Variant="Variant.Filled" />
+                    <MudTextField Value="vehicleData.insurer_id" Label="Vehicle Insured ID Relation:" ReadOnly="true" Variant="Variant.Filled" />
+                </div>
+            </MudTabPanel>
+
+            <MudTabPanel Text="Citation Information">
+
+                <div style="max-width: 400px;">
+                    <EditForm Model="@EditContext" OnValidSubmit="@OnValidSubmit">
+                        <DataAnnotationsValidator />
+                        <MudCard>
+                            <MudCardContent>
+                                <MudTextField Label="Citation ID" Variant="Variant.Outlined"
+                                              @bind-Value="LookupData.CitationData" For="@(() => LookupData.CitationData)" />
+                            </MudCardContent>
+                            <MudCardActions>
+                                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Search</MudButton>
+                            </MudCardActions>
+                        </MudCard>
+                    </EditForm>
+                </div>
+                <MudText Typo="Typo.h6">Citation Information</MudText>
+                <div style="max-width: 400px;">
+                    <MudTextField Value="citationData.citation_number" Label="Citation ID" ReadOnly="true" Variant="Variant.Filled" />
+                    <MudTextField Value="citationData.GetOffenderName()" Label="Offender Name:" ReadOnly="true" Variant="Variant.Filled" />
+                    <MudTextField Value="citationData.plate_number" Label="Offender Licence Plate:" ReadOnly="true" Variant="Variant.Filled" />
+                    <MudTextField Value="citationData.officer_id" Label="Officer ID:" ReadOnly="true" Variant="Variant.Filled" />
+                    <MudTextField Value="citationData.date_recieved" Label="Date of Offence:" ReadOnly="true" Variant="Variant.Filled" />
+                </div>
+            </MudTabPanel>
+
+        </MudTabs>
+        
     </MudPaper>
 
 </div>

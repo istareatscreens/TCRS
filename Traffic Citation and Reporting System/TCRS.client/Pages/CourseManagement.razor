@@ -11,35 +11,30 @@
             <DataAnnotationsValidator />
             <MudCard>
                 <MudCardContent>
-                    <MudTextField @bind-Value="PersonName" Label="Instructor Name:" ReadOnly="true" Variant="Variant.Filled" />
-                    <MudTextField @bind-Value="PersonID" Label="Person ID:" ReadOnly="true" Variant="Variant.Filled" />
-
-                    <MudTextField Label="Course ID" Variant="Variant.Outlined"
-                                  @bind-Value="CourseData.course_id" For="@(() => CourseData.course_id)" />
-                    <MudSelect Label="Select type" @bind-Value="typeValue" Variant="Variant.Outlined">
-                        @foreach (Type item in Enum.GetValues(typeof(Type)))
+                    <MudDatePicker Label="Course Scheduled Date and Time" Variant="Variant.Outlined" @bind-Date="dateSelect" />
+                    <MudSelect Label="Select type" @bind-Value="CourseData.CitizenCitationType" Variant="Variant.Outlined">
+                        @foreach (CitizenCitationTypes item in Enum.GetValues(typeof(CitizenCitationTypes)))
                         {
-                            <MudSelectItem Value="@item">@item</MudSelectItem>
+                            <MudSelectItem Value="@item">@item.ToDescriptionString()</MudSelectItem>
                         }
+
                     </MudSelect>
                     <MudTextField Label="Course Address" Variant="Variant.Outlined"
                                   @bind-Value="CourseData.address" For="@(() => CourseData.address)" />
                     <MudTextField Label="Course Name" Variant="Variant.Outlined"
                                   @bind-Value="CourseData.name" For="@(() => CourseData.name)" />
-                    <MudTextField Label="Course Scheduled Date and Time" Variant="Variant.Outlined"
-                                  @bind-Value="CourseData.scheduled" For="@(() => CourseData.scheduled)" />
+                    <MudTextField Label="Course Type" Variant="Variant.Outlined"
+                                  @bind-Value="CourseData.type" For="@(() => CourseData.type)" />
                     <MudTextField Label="Course Price" Variant="Variant.Outlined"
                                   @bind-Value="CourseData.price" For="@(() => CourseData.price)" />
-                    <MudTextField Label="Course Description" Variant="Variant.Outlined"
-                                  @bind-Value="CourseData.description" For="@(() => CourseData.description)" />
+                    <MudTextField T="string" Label="Course Description" Variant="Variant.Outlined" 
+                                 @bind-Value="CourseData.description" For="@(() => CourseData.description)" Lines="3" />
                     <MudTextField Label="Course Title" Variant="Variant.Outlined"
                                   @bind-Value="CourseData.title" For="@(() => CourseData.title)" />
                     <MudTextField Label="Course Instructor" Variant="Variant.Outlined"
                                   @bind-Value="CourseData.instructor" For="@(() => CourseData.instructor)" />
                     <MudTextField Label="Citation Capacity" Variant="Variant.Outlined"
                                   @bind-Value="CourseData.capacity" For="@(() => CourseData.capacity)" />
-                    <MudTextField Label="Citation Type ID" Variant="Variant.Outlined"
-                                  @bind-Value="CourseData.citation_type_id" For="@(() => CourseData.citation_type_id)" />
                 </MudCardContent>
                 <MudCardActions>
                     <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Post Class</MudButton>
@@ -48,3 +43,6 @@
         </EditForm>
     </div>
 </div>
+
+@code {
+}

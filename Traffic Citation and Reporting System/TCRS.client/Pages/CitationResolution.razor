@@ -10,36 +10,55 @@
         <tr>
             @foreach (var h in headings)
             {
-<th>@h</th>
-}
+<th>@h</th>}
         </tr>
     </thead>
     <tbody>
-        @*        @foreach (var row in rows)*@
         @foreach (var data in CitizenVehicleCitation)
         {
 <tr>
-
-
     @foreach (var prop in ObjectPrinter.PropertiesOfType(data))
     {
+        if (prop.Value != null && prop.Key != "citation_type_id" && prop.Key != "is_resolved" && prop.Key != "is_registered")
+        {
 <td>@prop.Value</td>}
-    @*
-            @foreach (var x in row.Split())
-            {
-        <td>@x</td>
-        }*@
-    <td><MudButton @onclick="OpenPayDialog" Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary" Class="ma-2">Pay</MudButton></td>
-    <td><MudButton @onclick="OpenCourseEnrollmentDialog" Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary" Class="ma-2">Enroll in Course</MudButton></td>
+                    }
+
+    @if (data.fine > 0)
+    {
+<td><MudButton @onclick="@((e) => OpenPayDialog(data))" Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary">Pay</MudButton></td>}
+    @if (data.training_eligable == true)
+    {
+<td><MudButton @onclick="((e) => OpenCourseEnrollmentDialog(data))" Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary">Enroll in Course</MudButton></td>}
+
 </tr>}
     </tbody>
+
 </MudSimpleTable>
 
-@code { private void OpenPayDialog()
+@using TCRS.Shared.Objects.Citations;
+@code { private async void OpenPayDialog(CitizenVehicleCitation data)
     {
-        DialogService.Show<PayDialog>("Fine Payment");
+        var parameters = new DialogParameters { ["data"] = data };
+        var dialog = DialogService.Show<PayDialog>("Fine Payment", parameters);
+        var result = await dialog.Result;
+
+        if (!result.Cancelled)
+        {
+            // successful
+        }
+
     }
-    private void OpenCourseEnrollmentDialog()
+
+    private async void OpenCourseEnrollmentDialog(CitizenVehicleCitation data)
     {
-        DialogService.Show<CourseEnrollmentDialog>("Course Enrollment");
+        var parameters = new DialogParameters { ["data"] = data };
+        var dialog = DialogService.Show<CourseEnrollmentDialog>("Course Enrollment", parameters);
+        var result = await dialog.Result;
+
+        if (!result.Cancelled)
+        {
+            // successful
+        }
+
     } }

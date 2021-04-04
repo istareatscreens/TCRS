@@ -36,7 +36,7 @@ namespace TCRS.Server.Controllers
                     return BadRequest("Incorrect credentials");
                 }
 
-                _db.PostCourse(new Course
+                var Course = new Course
                 {
                     type = courseManagementData.type,
                     address = courseManagementData.address,
@@ -49,11 +49,15 @@ namespace TCRS.Server.Controllers
                     capacity = courseManagementData.capacity,
                     citation_type_id = courseManagementData.citation_type_id,
                     school_id = IEnumerableHandler.UnpackIEnumerable<School_Rep>(_db.GetSchoolRep(user.person_id, _databaseContext.Server)).school_id
-                }, _databaseContext.Server);
+                };
+
+                _db.PostCourse(Course
+
+                    , _databaseContext.Server);
             }
-            catch
+            catch (Exception e)
             {
-                return BadRequest("Failed to post object, potential database issue");
+                return BadRequest("Failed to post object, potential database issue" + e);
             }
 
             return Accepted("Course Posted");

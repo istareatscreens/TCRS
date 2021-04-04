@@ -49,7 +49,7 @@ namespace TCRS.APIAccess
 
             /* ***** Get All Courses ***** */
             // CourseEnrollmentDataController : get(course_id, citation_id)
-            {typeof(CourseEnrollmentData), "api/GetCourses" },
+            {typeof(CourseEnrollmentData), "api/Course/GetCourses" },
 
             /* ***** CitationResolution ***** */
             // CitationResolutionController: get(citation_id)

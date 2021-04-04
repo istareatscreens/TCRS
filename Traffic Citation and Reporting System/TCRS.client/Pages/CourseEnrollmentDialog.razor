@@ -1,5 +1,4 @@
 ﻿@inject IDialogService DialogService
-@inherits CourseEnrollmentDialogBase
 
 <MudDialog>
     <DialogContent>
@@ -13,12 +12,16 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var row in rows)
+                @foreach (var data in CourseData)
                 {
                 <tr>
-                    @foreach (var x in row.Split())
+                    @foreach (var prop in ObjectPrinter.PropertiesOfType(data))
                     {
-                        <td>@x</td>
+                        //if (prop.Key == "course_id" || prop.Key == "scheduled" || prop.Key == "address")
+                        //{
+                            <td>@prop.Value</td>
+                        //}
+
                     }
                     <MudButton @onclick="BookDialogPress" Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary" Class="ma-2">Book</MudButton>
                 </tr>
@@ -31,9 +34,37 @@
     </DialogActions>
 </MudDialog>
 
+@using TCRS.Shared.Objects.Citations;
+@using TCRS.Shared.Contracts.CourseManagement; 
+@using TCRS.Shared.Objects.CourseEnrollment; 
 @code {
+
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; }
+
+    [Parameter]
+    public CitizenVehicleCitation data { get; set; }
+
+    protected List<CourseEnrollmentData> CourseData { get; set; } = new List<CourseEnrollmentData>();
+
+    protected void Cancel() => MudDialog.Cancel();
+
+    [Inject]
+    private ICourseManager CourseManager { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitialized();
+
+        var courseInformation = await CourseManager.GetCourses(data.citation_type_id + "");
+
+        this.CourseData = courseInformation;
+    }
+
+    protected string[] headings = { "Course ID", "Date", "Location" };
+  
     private void BookDialogPress()
     {
-        //DialogService.Show<PayDialog>("Course Payment");
+        // register the user right here
     }
 }

@@ -27,7 +27,7 @@ namespace TCRS.Server.Controllers
         {
             var Payment = new Payment
             {
-                citation_id = paymentData.citation_id,
+                citation_number = paymentData.citation_number,
                 payment = 3.50,
                 payment_date = DateTime.Now,
                 made_by = "Joey joe joe",
