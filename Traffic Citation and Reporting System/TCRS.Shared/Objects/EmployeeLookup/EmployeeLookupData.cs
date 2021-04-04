@@ -14,7 +14,9 @@ namespace TCRS.Shared.Objects.EmployeeLookup
         public int police_dept_id { get; set; }
         public int munic_id { get; set; }
 
-
+        // Key = 0, value = sum(citations)
+        // Key = citation_type_id 
+        // Value = count(citation_type_id)
         public IEnumerable<KeyValuePair<int, int>> CitationCountbyType { get; set; }
 
 

@@ -11,14 +11,16 @@ namespace TCRS.Client.Pages
 {
     public class EmployeeLookupBase : ComponentBase
     {
+        public Employee selectedEmployee { get; set; }
+        protected MudDateRangePicker _picker;
+        protected DateRange dateRange = new DateRange(DateTime.Now.Date, DateTime.Now.AddDays(5).Date);
+        protected List<Employee> EmployeeNames { get; set; } = new List<Employee>();
+        protected List<EmployeeLookupData> EmployeeLookupData { get; set; } = new List<EmployeeLookupData>();
+        protected EditContext EditContext { get; set; }
 
         [Inject]
         private IEmployeeLookupManager EmployeeManager { get; set; }
 
-        protected List<Employee> EmployeeNames { get; set; } = new List<Employee>();
-
-        protected EditContext EditContext { get; set; }
-        
         protected override async Task OnInitializedAsync()
         {
             base.OnInitialized();
@@ -29,13 +31,10 @@ namespace TCRS.Client.Pages
         protected override void OnInitialized()
         {
             base.OnInitialized();
-            EditContext = new EditContext(EmployeeNames);
+            EditContext = new EditContext(dateRange);
         }
 
-        public EmployeeLookupData selectedEmployee { get; set; }
-        protected MudDateRangePicker _picker;
-        protected DateRange dateRange = new DateRange(DateTime.Now.Date, DateTime.Now.AddDays(5).Date);
-
+      
         protected async void OnValidSubmit(EditContext context)
         {
             if (!EditContext.Validate())
@@ -44,6 +43,11 @@ namespace TCRS.Client.Pages
                 return;
             }
 
+            DateTime start_date = (DateTime)dateRange.Start;
+            DateTime end_date = (DateTime)dateRange.End;
+
+            var data = await EmployeeManager.GetEmployeeLookup(start_date, end_date);
+            this.EmployeeLookupData = data;
             //success = true;
             StateHasChanged();
         }

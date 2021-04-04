@@ -60,7 +60,7 @@ namespace TCRS.APIAccess
             {typeof(EmployeeLookupData), "api/Employee" },
 
             // EmployeeNames: get()
-            {typeof(Employee), "api/Employee" },
+            {typeof(Employee), "api/Employee/EmployeeNames" },
 
             /* ***** LookupPortal ***** */
             // CitationController: get(citation_id)

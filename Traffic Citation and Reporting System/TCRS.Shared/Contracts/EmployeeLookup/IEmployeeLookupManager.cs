@@ -9,7 +9,7 @@ namespace TCRS.Shared.Contracts.EmployeeLookup
 {
     public interface IEmployeeLookupManager
     {
-        Task<List<EmployeeLookupData>> GetEmployeeLookup();
         Task<List<Employee>> GetEmployeeNames();
+        Task<List<EmployeeLookupData>> GetEmployeeLookup(DateTime start_date, DateTime end_date);
     }
 }
