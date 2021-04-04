@@ -14,7 +14,7 @@
             <MudCard>
                 <MudCardContent>
                     <MudSelect Label="Select Employee" @bind-Value="selectedEmployee" Variant="Variant.Outlined">
-                        @foreach (var emp in EmployeeData)
+                        @foreach (var emp in EmployeeNames)
                         {
                             <MudSelectItem Value="@emp">@emp.GetEmployeeName()</MudSelectItem>
                         }

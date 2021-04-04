@@ -23,9 +23,9 @@ namespace TCRS.Business
             return empData.ToList();
         }
 
-        public async Task<List<EmployeeNames>> GetEmployeeNames()
+        public async Task<List<Employee>> GetEmployeeNames()
         {
-            var empData = await _api.GetAsync<EmployeeNames>();
+            var empData = await _api.GetAsync<Employee>();
             return empData.ToList();
         }
     }

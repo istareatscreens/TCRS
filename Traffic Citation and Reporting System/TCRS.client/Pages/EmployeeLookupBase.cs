@@ -15,21 +15,21 @@ namespace TCRS.Client.Pages
         [Inject]
         private IEmployeeLookupManager EmployeeManager { get; set; }
 
-        protected List<EmployeeLookupData> EmployeeData { get; set; } = new List<EmployeeLookupData>();
+        protected List<Employee> EmployeeNames { get; set; } = new List<Employee>();
 
         protected EditContext EditContext { get; set; }
         
         protected override async Task OnInitializedAsync()
         {
             base.OnInitialized();
-            //var employeeList = await EmployeeManager.GetEmployeeLookup();
-            //this.EmployeeData = employeeList;
+            var employeeList = await EmployeeManager.GetEmployeeNames();
+            this.EmployeeNames = employeeList;
         }
         
         protected override void OnInitialized()
         {
             base.OnInitialized();
-            EditContext = new EditContext(EmployeeData);
+            EditContext = new EditContext(EmployeeNames);
         }
 
         public EmployeeLookupData selectedEmployee { get; set; }

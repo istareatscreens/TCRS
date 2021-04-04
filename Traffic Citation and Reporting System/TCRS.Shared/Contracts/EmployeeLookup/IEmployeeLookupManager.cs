@@ -10,6 +10,6 @@ namespace TCRS.Shared.Contracts.EmployeeLookup
     public interface IEmployeeLookupManager
     {
         Task<List<EmployeeLookupData>> GetEmployeeLookup();
-        Task<List<EmployeeNames>> GetEmployeeNames();
+        Task<List<Employee>> GetEmployeeNames();
     }
 }
