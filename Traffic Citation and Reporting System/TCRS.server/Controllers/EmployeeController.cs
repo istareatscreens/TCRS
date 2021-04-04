@@ -1,16 +1,14 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using TCRS.Database;
-using TCRS.Server.Tokens;
-using TCRS.Shared.Objects.EmployeeLookup;
-using TCRS.Shared.Objects.Auth;
 using TCRS.Database.Model;
+using TCRS.Server.Tokens;
 using TCRS.Shared.Enums;
+using TCRS.Shared.Objects.Auth;
+using TCRS.Shared.Objects.EmployeeLookup;
 
 namespace TCRS.Server.Controllers
 {
@@ -52,7 +50,7 @@ namespace TCRS.Server.Controllers
             }
 
             var CitationCountbyType = new List<KeyValuePair<int, int>>();
-            foreach(CitationTypes item in CitationTypes.GetValues(typeof(CitationTypes)))
+            foreach (CitationTypes item in CitationTypes.GetValues(typeof(CitationTypes)))
             {
                 CitationCountbyType.Add(new KeyValuePair<int, int>((int)item, _db.GetCitationCountforPersonbyTypeId(User.person_id, (int)item, start_date, end_date, _databaseContext.Server)));
             }
@@ -84,6 +82,12 @@ namespace TCRS.Server.Controllers
             }
 
             return BadRequest("Database Error");
+        }
+
+        [HttpGet("EmployeeNames")]
+        public ActionResult<IEnumerable<EmployeeName>> GetEmployeeName([FromHeader] string authorization)
+        {
+
         }
 
         [HttpGet("GetCitationsByOfficer")]
