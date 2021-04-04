@@ -22,8 +22,8 @@ namespace TCRS.Client.Pages
         protected override async Task OnInitializedAsync()
         {
             base.OnInitialized();
-            var employeeList = await EmployeeManager.GetEmployeeLookup();
-            this.EmployeeData = employeeList;
+            //var employeeList = await EmployeeManager.GetEmployeeLookup();
+            //this.EmployeeData = employeeList;
         }
         
         protected override void OnInitialized()
