@@ -46,20 +46,17 @@
                             <tr>
                                 @foreach (var h in headings)
                                 {
-                                    <th>@h</th>
-                                }
+    <th>@h</th>}
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (var row in rows)
                             {
-                                <tr>
-                                    @foreach (var x in row.Split())
-                                    {
-                                        <td>@x</td>
-                                    }
-                                </tr>
-                            }
+<tr>
+    @foreach (var x in row.Split())
+    {
+<td>@x</td>}
+</tr>}
                         </tbody>
                     </MudSimpleTable>
                 </div>
@@ -115,16 +112,29 @@
                 </div>
                 <MudText Typo="Typo.h6">Citation Information</MudText>
                 <div style="max-width: 400px;">
+                    @*citation information*@
                     <MudTextField Value="citationData.citation_number" Label="Citation ID" ReadOnly="true" Variant="Variant.Filled" />
-                    <MudTextField Value="citationData.GetOffenderName()" Label="Offender Name:" ReadOnly="true" Variant="Variant.Filled" />
-                    <MudTextField Value="citationData.plate_number" Label="Offender Licence Plate:" ReadOnly="true" Variant="Variant.Filled" />
+                    @*officer information*@
                     <MudTextField Value="citationData.officer_id" Label="Officer ID:" ReadOnly="true" Variant="Variant.Filled" />
-                    <MudTextField Value="citationData.date_recieved" Label="Date of Offence:" ReadOnly="true" Variant="Variant.Filled" />
+                    @*citizen*@
+                    <MudTextField Value="citationData.license" Label="License Number" ReadOnly="true" Variant="Variant.Filled" />
+                    <MudTextField Value="citationData.license_class" Label="License Class:" ReadOnly="true" Variant="Variant.Filled" />
+                    <MudTextField Value="citationData.first_name" Label="First Name" ReadOnly="true" Variant="Variant.Filled" />
+                    <MudTextField Value="citationData.middle_name" Label="Middle Name" ReadOnly="true" Variant="Variant.Filled" />
+                    <MudTextField Value="citationData.last_name" Label="Last Name" ReadOnly="true" Variant="Variant.Filled" />
+                    @*vehicle*@
+                    <MudTextField Value="citationData.plate_number" Label="Plate Number" ReadOnly="true" Variant="Variant.Filled" />
+                    <MudTextField Value="citationData.model" Label="Model" ReadOnly="true" Variant="Variant.Filled" />
+                    @*status*@
+                    <MudTextField Value="citationData.date_recieved" Label="Date Recieved" ReadOnly="true" Variant="Variant.Filled" />
+                    <MudTextField Value="citationData.date_due" Label="Date Due" ReadOnly="true" Variant="Variant.Filled" />
+                    <MudTextField Value="((CitationTypes)Int32.Parse(citationData.citation_type_id)).ToDescriptionString()" Label="Citation Type" ReadOnly="true" Variant="Variant.Filled" />
+
                 </div>
             </MudTabPanel>
 
         </MudTabs>
-        
+
     </MudPaper>
 
 </div>

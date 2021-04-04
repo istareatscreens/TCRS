@@ -36,13 +36,24 @@ namespace TCRS.Server.Controllers
                 return NotFound("Invalid");
             }
 
+
             try
             {
                 var Citation = _db.GetCitationAllInformationByNumber(citation_number, _databaseContext.Server);
+                var Person = _db.GetPersonInfo(Citation.ToList().FirstOrDefault().officer_id, _databaseContext.Server);
+
                 return Ok(Citation.Select(citation => new LookupCitationDisplayData
                 {
                     //common
                     officer_id = citation.officer_id,
+                    officer_first_name = Person.first_name,
+                    officer_last_name = Person.last_name,
+                    Is_Municipal_Officer = Person.Municipal_Officer != null,
+                    Is_Police_Officer = Person.Municipal_Officer != null,
+                    dept = (Person.Municipality != null) ? Person.Municipality.name : Person.Police_Dept.name,
+                    is_vehicle = citation.Vehicle_Record != null,
+                    is_citizen = citation.Driver_Record != null,
+                    //information
                     date_recieved = citation.date_recieved,
                     date_due = CalculateDueDate(citation),
                     citation_number = citation.citation_number,
@@ -53,10 +64,13 @@ namespace TCRS.Server.Controllers
                     last_name = (citation.Driver_Record == null) ? "" : citation.Driver_Record.Citizen.last_name,
                     middle_name = (citation.Driver_Record == null) ? "" : citation.Driver_Record.Citizen.middle_name,
                     license = (citation.Driver_Record == null) ? "" : citation.Driver_Record.Citizen.License.license_id,
+                    is_revoked = (citation.Driver_Record == null) ? false : citation.Driver_Record.Citizen.License.is_revoked,
+                    is_suspended = (citation.Driver_Record == null) ? false : citation.Driver_Record.Citizen.License.is_suspended,
                     license_class = (citation.Driver_Record == null) ? "" : citation.Driver_Record.Citizen.License.license_class,
                     //Vehicle
                     model = (citation.Vehicle_Record == null) ? "" : citation.Vehicle_Record.Vehicle.model,
                     plate_number = (citation.Vehicle_Record == null) ? "" : citation.Vehicle_Record.Vehicle.License_Plate.plate_number,
+                    is_stolen = (citation.Vehicle_Record == null) ? false : citation.Vehicle_Record.Vehicle.stolen,
                 }));
             }
             catch
