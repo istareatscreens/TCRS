@@ -13,14 +13,13 @@
             <DataAnnotationsValidator />
             <MudCard>
                 <MudCardContent>
-                    
-                    <MudSelect Label="Select user" @bind-Value="selectedEmployee" Variant="Variant.Outlined">
+                    <MudSelect Label="Select Employee" @bind-Value="selectedEmployee" Variant="Variant.Outlined">
                         @foreach (var emp in EmployeeData)
                         {
-                            <MudSelectItem Value="@selectedEmployee">@emp.GetEmployeeName()</MudSelectItem>
+                            <MudSelectItem Value="@emp">@emp.GetEmployeeName()</MudSelectItem>
                         }
                     </MudSelect>
-                        
+
                     <MudDateRangePicker Label="Citation Search Range" @bind-DateRange="dateRange" />
                     <MudCardActions>
                         <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Search</MudButton>

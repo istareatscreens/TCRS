@@ -32,6 +32,10 @@ namespace TCRS.Client.Pages
             EditContext = new EditContext(EmployeeData);
         }
 
+        public EmployeeLookupData selectedEmployee { get; set; }
+        protected MudDateRangePicker _picker;
+        protected DateRange dateRange = new DateRange(DateTime.Now.Date, DateTime.Now.AddDays(5).Date);
+
         protected async void OnValidSubmit(EditContext context)
         {
             if (!EditContext.Validate())
@@ -43,12 +47,9 @@ namespace TCRS.Client.Pages
             //success = true;
             StateHasChanged();
         }
-
-        protected MudDateRangePicker _picker;
-        protected DateRange dateRange = new DateRange(DateTime.Now.Date, DateTime.Now.AddDays(5).Date);
+        
 
         // TEMP DATA
-        public EmployeeLookupData selectedEmployee { get; set; }
         public enum Type
         {
             Emp1,
