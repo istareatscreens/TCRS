@@ -20,5 +20,6 @@ namespace TCRS.Business
             IEnumerable<CitationIssuingDisplayData> cidd = await _api.PostAsync<CitationIssueData, CitationIssuingDisplayData>(citationIssueData);
             return cidd.ToList<CitationIssuingDisplayData>().FirstOrDefault();
         }
+
     }
 }
