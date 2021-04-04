@@ -10,6 +10,7 @@ using TCRS.Server.Tokens;
 using TCRS.Shared.Objects.EmployeeLookup;
 using TCRS.Shared.Objects.Auth;
 using TCRS.Database.Model;
+using TCRS.Shared.Enums;
 
 namespace TCRS.Server.Controllers
 {
@@ -26,7 +27,7 @@ namespace TCRS.Server.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<EmployeeLookupData>> GetEmployeeData([FromHeader] string authorization)
+        public ActionResult<IEnumerable<EmployeeLookupData>> GetEmployeeData([FromHeader] string authorization, [FromQuery] DateTime start_date, [FromQuery] DateTime end_date)
         {
             var User = new User(authorization);
 
@@ -50,6 +51,12 @@ namespace TCRS.Server.Controllers
                 return BadRequest("Invalid User Credentials");
             }
 
+            var CitationCountbyType = new List<KeyValuePair<int, int>>();
+            foreach(CitationTypes item in CitationTypes.GetValues(typeof(CitationTypes)))
+            {
+                CitationCountbyType.Add(new KeyValuePair<int, int>((int)item, _db.GetCitationCountforPersonbyTypeId(User.person_id, (int)item, start_date, end_date, _databaseContext.Server)));
+            }
+
             if (PoliceEmployee != null)
             {
                 return Ok(PoliceEmployee.ToList().Select(employee => new EmployeeLookupData
@@ -58,7 +65,8 @@ namespace TCRS.Server.Controllers
                     last_name = employee.Persons.last_name,
                     email = employee.Persons.email,
                     active = employee.Persons.active,
-                    police_dept_id = employee.police_dept_id
+                    police_dept_id = employee.police_dept_id,
+                    CitationCountbyType = CitationCountbyType
                 }));
             }
 
@@ -70,7 +78,8 @@ namespace TCRS.Server.Controllers
                     last_name = employee.Person.last_name,
                     email = employee.Person.email,
                     active = employee.Person.active,
-                    munic_id = employee.munic_id
+                    munic_id = employee.munic_id,
+                    CitationCountbyType = CitationCountbyType
                 }));
             }
 
@@ -85,7 +94,7 @@ namespace TCRS.Server.Controllers
             //I pull licenseplate url query parameter here to be passed to database query
             if (person_id == 0 || person_id > 1000)
             {
-                return NotFound("No License Plate Specified");
+                return NotFound("Employee with this ID does not exist");
             }
             try
             {
@@ -107,7 +116,6 @@ namespace TCRS.Server.Controllers
                             due_date_month = citation.Citation_Type.due_date_month
                         }
                         );
-
                 };
 
                 return citations;

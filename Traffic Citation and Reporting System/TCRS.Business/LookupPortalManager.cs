@@ -28,7 +28,7 @@ namespace TCRS.Business
         public async Task<LookupCitizenDisplayData> LookupCitizenData(string licence_id)
         {
             var parameters = new List<KeyValuePair<string, string>>();
-            parameters.Add(new KeyValuePair<string, string>("licence_id", licence_id));
+            parameters.Add(new KeyValuePair<string, string>("license_id", licence_id));
             var data = await _api.GetAsync<LookupCitizenDisplayData>(parameters);
             return data.ToList().FirstOrDefault();
         }

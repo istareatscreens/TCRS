@@ -65,10 +65,10 @@ namespace TCRS.APIAccess
 
             // CitizenController: get(licence_id)
             //Warrent implementation needs to be done
-            {typeof(LookupCitizenDisplayData), "api/Citizen" },
+            {typeof(LookupCitizenDisplayData), "api/License" },
 
             // VehicleController: get(vehicle_id)
-            {typeof(LookupVehicleDisplayData), "api/Vehicle" },
+            {typeof(LookupVehicleDisplayData), "api/License/GetVehicleInfoByLicensePlate" },
 
 
         };

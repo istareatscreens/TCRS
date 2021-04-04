@@ -66,5 +66,14 @@ namespace TCRS.Database
                 return rows;
             }
         }
+
+        public int GetCitationCountforPersonbyTypeId(int person_id, int citation_type_id, DateTime start_date, DateTime end_date, string connectionString)
+        {
+            return GetCount<DynamicParameters>("SELECT COUNT(person_id) FROM person " +
+                "LEFT JOIN citation ON citation.officer_id = person.person_id" +
+                "LEFT JOIN citation_type ON citation_type.citation_type_id = citation.citation_type_id" +
+                "WHERE person.person_id = @person_id and citation_type.citation_type_id = @citation_type_id and citation.date_recieved >= @start_date and citation.date_recieved <= @end_date", 
+                new DynamicParameters(new { person_id = person_id, citation_type_id = citation_type_id, start_date = start_date, end_date = end_date }), connectionString);
+        }
     }
 }

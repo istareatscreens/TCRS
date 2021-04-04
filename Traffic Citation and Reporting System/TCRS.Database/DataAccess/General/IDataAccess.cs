@@ -9,5 +9,6 @@ namespace TCRS.Database
         IEnumerable<License> GetLicenseInfoByLicence(string license_id, string connectionString);
         IEnumerable<Citizen> GetCitizenById(int citizen_id, string connectionString);
         IEnumerable<License_Plate> GetVehicleInfoByLicencePlate(string licencePlate, string connectionString);
+        IEnumerable<Wanted_Citizen> GetWantedCitizenInfoByCitizenId(int citizen_id, string connectionString);
     }
 }

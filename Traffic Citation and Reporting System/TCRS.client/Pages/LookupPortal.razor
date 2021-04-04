@@ -31,11 +31,11 @@
                 <MudText Typo="Typo.h6">Person Information</MudText>
                 <div style="max-width: 400px;">
                     <MudTextField Value="citizenData.GetOffenderName()" Label="Person Name:" ReadOnly="true" Variant="Variant.Filled" />
-                    <MudTextField Value="citizenData.licence_id" Label="Person Licence ID:" ReadOnly="true" Variant="Variant.Filled" />
+                    <MudTextField Value="citizenData.license_id" Label="Person Licence ID:" ReadOnly="true" Variant="Variant.Filled" />
                     <MudTextField Value="citizenData.expiration_date" Label="Licence Expiration :" ReadOnly="true" Variant="Variant.Filled" />
                     <MudTextField Value="citizenData.is_revoked" Label="Licence Revoked?:" ReadOnly="true" Variant="Variant.Filled" />
                     <MudTextField Value="citizenData.is_suspended" Label="Licence Suspended?" ReadOnly="true" Variant="Variant.Filled" />
-                    <MudTextField Value="citizenData.licence_class" Label="Licence Class:" ReadOnly="true" Variant="Variant.Filled" />
+                    <MudTextField Value="citizenData.license_class" Label="Licence Class:" ReadOnly="true" Variant="Variant.Filled" />
 
                     <MudTextField Label="Issue Warrant" Variant="Variant.Outlined" Placeholder="Warrant Reference Number"
                                   @bind-Value="IssueWarrant" For="@(() => IssueWarrant)" />
