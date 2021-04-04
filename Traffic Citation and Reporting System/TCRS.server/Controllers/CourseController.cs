@@ -36,8 +36,6 @@ namespace TCRS.Server.Controllers
                     return BadRequest("Incorrect credentials");
                 }
 
-
-
                 var Course = new Course
                 {
                     type = courseManagementData.type,
@@ -52,8 +50,6 @@ namespace TCRS.Server.Controllers
                     citation_type_id = courseManagementData.citation_type_id,
                     school_id = IEnumerableHandler.UnpackIEnumerable<School_Rep>(_db.GetSchoolRep(user.person_id, _databaseContext.Server)).school_id
                 };
-
-
 
                 _db.PostCourse(Course
 

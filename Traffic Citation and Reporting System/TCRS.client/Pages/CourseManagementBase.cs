@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using MudBlazor;
+using System;
 using TCRS.Shared.Contracts;
 using TCRS.Shared.Contracts.CourseManagement;
 using TCRS.Shared.Objects.CourseManagement;
@@ -11,8 +13,6 @@ namespace TCRS.Client.Pages
         protected CourseManagementData CourseData { get; set; } = new CourseManagementData();
 
         protected EditContext EditContext { get; set; }
-
-
 
         [Inject]
         private ICourseManager CourseManager { get; set; }
@@ -47,7 +47,8 @@ namespace TCRS.Client.Pages
             EditContext = new EditContext(CourseData);
         }
 
-        //bool success;
+        public DateTime? dateSelect = DateTime.Today;
+        MudDatePicker _picker;
 
         protected async void OnValidSubmit(EditContext context)
         {
@@ -58,11 +59,14 @@ namespace TCRS.Client.Pages
             }
 
             //Convert type to int
+            CourseData.scheduled = (DateTime)dateSelect;
             CourseData.citation_type_id = (int)CourseData.CitizenCitationType;
 
             await CourseManager.CreateCourse(CourseData);
 
-            //success = true;
+            // reset the forms
+            CourseData = new CourseManagementData();
+            dateSelect = DateTime.Today;
             StateHasChanged();
         }
 
