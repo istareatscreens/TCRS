@@ -33,10 +33,11 @@
         <MudPaper Class="pa-1 ma-2" Elevation="3">
             <MudText Typo="Typo.h6">Employee Information</MudText>
 
-            <MudTextField @bind-Value="GetEmployeeEmail" Label="Employee Email:" ReadOnly="true" Variant="Variant.Filled" />
-            <MudTextField @bind-Value="GetEmployeeActive" Label="Employee Active:" ReadOnly="true" Variant="Variant.Filled" />
-            <MudTextField @bind-Value="GetEmployeeDepartment" Label="Employee Department:" ReadOnly="true" Variant="Variant.Filled" />
-            <MudTextField @bind-Value="GetEmployeeRole" Label="Employee Role:" ReadOnly="true" Variant="Variant.Filled" />
+            <MudTextField @bind-Value="@displayActiveEmployee.email" Label="Employee Email:" ReadOnly="true" Variant="Variant.Filled" />
+            <MudTextField @bind-Value="@displayActiveEmployee.active" Label="Employee Account Active:" ReadOnly="true" Variant="Variant.Filled" />
+            <MudTextField @bind-Value="@displayActiveEmployee.police_dept_id" Label="Police Department ID:" ReadOnly="true" Variant="Variant.Filled" />
+            <MudTextField @bind-Value="@displayActiveEmployee.munic_id" Label="Municipality Department ID:" ReadOnly="true" Variant="Variant.Filled" />
+
         </MudPaper>
     </div>
 
@@ -54,13 +55,15 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var row in rows)
+                    @foreach ((var key, var value) in displayActiveEmployee.CitationCountbyType)
                     {
                         <tr>
-                            @foreach (var x in row.Split())
+                            @if (key == 0)
                             {
-                                <td>@x</td>
+                                <td></td>
+
                             }
+
                         </tr>
                     }
                 </tbody>

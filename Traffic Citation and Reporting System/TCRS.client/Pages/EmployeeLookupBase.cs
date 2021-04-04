@@ -11,7 +11,8 @@ namespace TCRS.Client.Pages
 {
     public class EmployeeLookupBase : ComponentBase
     {
-        public Employee selectedEmployee { get; set; }
+        protected Employee selectedEmployee { get; set; }
+        protected EmployeeLookupData displayActiveEmployee { get; set; } = new EmployeeLookupData();
         protected MudDateRangePicker _picker;
         protected DateRange dateRange = new DateRange(DateTime.Now.Date, DateTime.Now.AddDays(5).Date);
         protected List<Employee> EmployeeNames { get; set; } = new List<Employee>();
@@ -48,6 +49,10 @@ namespace TCRS.Client.Pages
 
             var data = await EmployeeManager.GetEmployeeLookup(start_date, end_date);
             this.EmployeeLookupData = data;
+
+            // Set the selected employee to be active
+            displayActiveEmployee = EmployeeLookupData.Find(item => item.GetEmployeeName() == selectedEmployee.GetEmployeeName());
+
             //success = true;
             StateHasChanged();
         }
