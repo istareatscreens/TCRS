@@ -70,10 +70,7 @@ namespace TCRS.Client.Pages
             StateHasChanged();
         }
 
-
         public string Disabled { get; set; }
-
-
 
     }
 }

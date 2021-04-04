@@ -18,7 +18,7 @@
                     <MudSelect Label="Select type" @bind-Value="CitationData.CitationType" Variant="Variant.Outlined">
                         @foreach (CitationTypes item in CitationTypes.GetValues(typeof(CitationTypes)))
                         {
-<MudSelectItem Value="@item">@item.ToDescriptionString()</MudSelectItem>}
+                            <MudSelectItem Value="@item">@item.ToDescriptionString()</MudSelectItem>}
                     </MudSelect>
                 </MudCardContent>
                 <MudCardActions>

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components.Forms;
 using MudBlazor;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using TCRS.Shared.Contracts.EmployeeLookup;
 using TCRS.Shared.Objects.EmployeeLookup;
 
@@ -11,18 +12,25 @@ namespace TCRS.Client.Pages
     public class EmployeeLookupBase : ComponentBase
     {
 
-        protected EmployeeLookupData EmployeeData { get; set; } = new EmployeeLookupData();
+        [Inject]
+        private IEmployeeLookupManager EmployeeManager { get; set; }
+
+        protected List<EmployeeLookupData> EmployeeData { get; set; } = new List<EmployeeLookupData>();
 
         protected EditContext EditContext { get; set; }
-
+        
+        protected override async Task OnInitializedAsync()
+        {
+            base.OnInitialized();
+            var employeeList = await EmployeeManager.GetEmployeeLookup();
+            this.EmployeeData = employeeList;
+        }
+        
         protected override void OnInitialized()
         {
             base.OnInitialized();
             EditContext = new EditContext(EmployeeData);
         }
-
-        [Inject]
-        private IEmployeeLookupManager EmployeeManager { get; set; }
 
         protected async void OnValidSubmit(EditContext context)
         {
@@ -32,20 +40,15 @@ namespace TCRS.Client.Pages
                 return;
             }
 
-            data = await EmployeeManager.GetEmployeeLookup();
-
             //success = true;
             StateHasChanged();
         }
 
-        protected List<EmployeeLookupData> data = new List<EmployeeLookupData>();
-
-        public DateTime? startDate { get; set; }
-
-        public DateTime? endDate { get; set; }
+        protected MudDateRangePicker _picker;
+        protected DateRange dateRange = new DateRange(DateTime.Now.Date, DateTime.Now.AddDays(5).Date);
 
         // TEMP DATA
-        public Type typeValue { get; set; }
+        public EmployeeLookupData selectedEmployee { get; set; }
         public enum Type
         {
             Emp1,
