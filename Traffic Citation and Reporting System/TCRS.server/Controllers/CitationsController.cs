@@ -28,7 +28,7 @@ namespace TCRS.Server.Controllers
         }
 
 
-        [HttpGet("/Lookup")]
+        [HttpGet("Lookup")]
         public ActionResult<IEnumerable<LookupCitationDisplayData>> CitationLookup([FromQuery] string citation_number)
         {
             if (IsValidCitationNumber(citation_number))

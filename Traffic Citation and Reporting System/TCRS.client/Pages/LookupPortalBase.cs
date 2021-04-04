@@ -28,15 +28,15 @@ namespace TCRS.Client.Pages
                 return;
             }
 
-            if (LookupData.CitizenData != "")
+            if (LookupData.CitizenData != null)
             {
                 citizenData = await LookupPortalManager.LookupCitizenData(LookupData.CitizenData);
             }
-            else if (LookupData.VehicleData != "")
+            else if (LookupData.VehicleData != null)
             {
                 vehicleData = await LookupPortalManager.LookupVehicleData(LookupData.VehicleData);
             }
-            else if (LookupData.CitationData != "")
+            else if (LookupData.CitationData != null)
             {
                 citationData = await LookupPortalManager.LookupCitationData(LookupData.CitationData);
             }
@@ -54,7 +54,7 @@ namespace TCRS.Client.Pages
         public string Disabled { get; set; }
 
         // TEMP DATA
-        protected string[] headings = { "Wanted ID", "Reference Number", "Status", "Crime"};
+        protected string[] headings = { "Wanted ID", "Reference Number", "Status", "Crime" };
 
         protected string[] rows = {
             @"ID1 Reference1 Status1 Crime1",
