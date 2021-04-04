@@ -26,6 +26,8 @@ namespace TCRS.Shared.Objects.EmployeeLookup
             return first_name + " " + last_name;
         }
 
+        public IEnumerable<KeyValuePair<int, int>> CitationCountbyType { get; set; }
+
 
     }
 }
