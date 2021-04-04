@@ -38,5 +38,9 @@ namespace TCRS.Shared.Objects.Lookup
         }
         public bool is_vehicle { get; set; }
         public bool is_citizen { get; set; }
+        //Insurence
+        public bool is_insured { get; set; }
+        public string insurer { get; set; }
+
     }
 }

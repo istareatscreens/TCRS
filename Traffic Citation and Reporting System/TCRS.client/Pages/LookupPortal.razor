@@ -46,7 +46,8 @@
                             <tr>
                                 @foreach (var h in headings)
                                 {
-    <th>@h</th>}
+    <th>@h</th>
+}
                             </tr>
                         </thead>
                         <tbody>
@@ -55,8 +56,10 @@
 <tr>
     @foreach (var x in row.Split())
     {
-<td>@x</td>}
-</tr>}
+<td>@x</td>
+}
+</tr>
+}
                         </tbody>
                     </MudSimpleTable>
                 </div>

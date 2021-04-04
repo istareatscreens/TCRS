@@ -42,6 +42,7 @@ namespace TCRS.Server.Controllers
                 var Citation = _db.GetCitationAllInformationByNumber(citation_number, _databaseContext.Server);
                 var Person = _db.GetPersonInfo(Citation.ToList().FirstOrDefault().officer_id, _databaseContext.Server);
 
+
                 return Ok(Citation.Select(citation => new LookupCitationDisplayData
                 {
                     //common
@@ -71,7 +72,16 @@ namespace TCRS.Server.Controllers
                     model = (citation.Vehicle_Record == null) ? "" : citation.Vehicle_Record.Vehicle.model,
                     plate_number = (citation.Vehicle_Record == null) ? "" : citation.Vehicle_Record.Vehicle.License_Plate.plate_number,
                     is_stolen = (citation.Vehicle_Record == null) ? false : citation.Vehicle_Record.Vehicle.stolen,
-                }));
+                    //Insurence
+                    is_insured = (citation.Vehicle_Record != null) ?
+                        citation.Vehicle_Record.Vehicle.Insurer != null : (citation.Driver_Record != null) ?
+                        citation.Driver_Record.Citizen.Insurer != null : false,
+                    insurer = (citation.Vehicle_Record != null) ?
+                        (citation.Vehicle_Record.Vehicle.Insurer != null) ?
+                        citation.Vehicle_Record.Vehicle.Insurer.name : "" : (citation.Driver_Record != null) ?
+                        (citation.Driver_Record.Citizen.Insurer != null) ?
+                        citation.Driver_Record.Citizen.Insurer.name : "" : ""
+                })); ;
             }
             catch
             {
