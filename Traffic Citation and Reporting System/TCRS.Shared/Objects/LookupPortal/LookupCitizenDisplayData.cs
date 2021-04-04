@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TCRS.Shared.Objects.LookupPortal;
 
 namespace TCRS.Shared.Objects.Lookup
 {
@@ -23,5 +24,7 @@ namespace TCRS.Shared.Objects.Lookup
         public bool is_revoked { get; set; }
         public bool is_suspended { get; set; }
         public string license_class { get; set; }
+
+        public IEnumerable<CitizenWantedData> Wanted_Citizen { get; set; }
     }
 }

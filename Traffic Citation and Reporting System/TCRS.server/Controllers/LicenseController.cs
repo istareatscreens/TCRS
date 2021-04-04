@@ -30,7 +30,6 @@ namespace TCRS.Server.Controllers
         public ActionResult<IEnumerable<LookupCitizenDisplayData>> GetCitizenInfoByLicenseID([FromQuery] string license_id)
         {
             //Return type is wrapped in action result to allow NotFond to be returned
-
             //I pull licenseplate url query parameter here to be passed to database query
             if (license_id == null)
             {
@@ -51,7 +50,13 @@ namespace TCRS.Server.Controllers
                             expiration_date = citizen.expiration_date,
                             is_revoked = citizen.is_revoked,
                             is_suspended = citizen.is_suspended,
-                            license_class = citizen.license_class
+                            license_class = citizen.license_class,
+                            Wanted_Citizen = _db.GetWantedCitizenInfoByCitizenId(citizen.citizen_id, _databaseContext.Server).Select(record => new Shared.Objects.LookupPortal.CitizenWantedData
+                            {
+                                reference_no = record.Wanted.reference_no,
+                                dangerous = record.Wanted.dangerous,
+                                crime = record.Wanted.crime
+                            })
                         }
                         );
                 };
