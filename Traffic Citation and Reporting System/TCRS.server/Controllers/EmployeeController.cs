@@ -32,63 +32,107 @@ namespace TCRS.Server.Controllers
             IEnumerable<EmployeeLookupData> EmployeeData = null;
             IEnumerable<Police_Dept> PoliceEmployee = null;
             IEnumerable<Municipality> MunicipalEmployee = null;
-
-
-            if (User.isManager && User.isHighway_Patrol_Officer)
+            try
             {
-                PoliceEmployee = _db.GetPoliceDeptEmployeesByManager(User.person_id, _databaseContext.Server);
-            }
 
-            else if (User.isManager && User.isMunicipal_Officer)
-            {
-                MunicipalEmployee = _db.GetMunicipalOfficersByManager(User.person_id, _databaseContext.Server);
-            }
 
-            else
-            {
-                return BadRequest("Invalid User Credentials");
-            }
-
-            var CitationCountbyType = new List<KeyValuePair<int, int>>();
-            foreach (CitationTypes item in CitationTypes.GetValues(typeof(CitationTypes)))
-            {
-                CitationCountbyType.Add(new KeyValuePair<int, int>((int)item, _db.GetCitationCountforPersonbyTypeId(User.person_id, (int)item, start_date, end_date, _databaseContext.Server)));
-            }
-
-            if (PoliceEmployee != null)
-            {
-                return Ok(PoliceEmployee.ToList().Select(employee => new EmployeeLookupData
+                if (User.isManager && User.isHighway_Patrol_Officer)
                 {
-                    first_name = employee.Persons.first_name,
-                    last_name = employee.Persons.last_name,
-                    email = employee.Persons.email,
-                    active = employee.Persons.active,
-                    police_dept_id = employee.police_dept_id,
-                    CitationCountbyType = CitationCountbyType
-                }));
-            }
+                    PoliceEmployee = _db.GetPoliceDeptEmployeesByManager(User.person_id, _databaseContext.Server);
+                }
 
-            else if (MunicipalEmployee != null)
-            {
-                return Ok(MunicipalEmployee.ToList().Select(employee => new EmployeeLookupData
+                else if (User.isManager && User.isMunicipal_Officer)
                 {
-                    first_name = employee.Person.first_name,
-                    last_name = employee.Person.last_name,
-                    email = employee.Person.email,
-                    active = employee.Person.active,
-                    munic_id = employee.munic_id,
-                    CitationCountbyType = CitationCountbyType
-                }));
-            }
+                    MunicipalEmployee = _db.GetMunicipalOfficersByManager(User.person_id, _databaseContext.Server);
+                }
 
-            return BadRequest("Database Error");
+                else
+                {
+                    return BadRequest("Invalid User Credentials");
+                }
+
+                var CitationCountbyType = new List<KeyValuePair<int, int>>();
+                var sum = 0;
+                foreach (CitationTypes item in CitationTypes.GetValues(typeof(CitationTypes)))
+                {
+                    var count = _db.GetCitationCountforPersonbyTypeId(User.person_id, (int)item, start_date, end_date, _databaseContext.Server);
+                    sum += count;
+                    CitationCountbyType.Add(new KeyValuePair<int, int>((int)item, count));
+                }
+                CitationCountbyType.Add(new KeyValuePair<int, int>(0, sum)); //total
+
+
+                if (PoliceEmployee != null)
+                {
+                    return Ok(PoliceEmployee.ToList().Select(employee => new EmployeeLookupData
+                    {
+                        first_name = employee.Persons.first_name,
+                        last_name = employee.Persons.last_name,
+                        email = employee.Persons.email,
+                        active = employee.Persons.active,
+                        police_dept_id = employee.police_dept_id,
+                        CitationCountbyType = CitationCountbyType
+                    }));
+                }
+
+                else if (MunicipalEmployee != null)
+                {
+                    return Ok(MunicipalEmployee.ToList().Select(employee => new EmployeeLookupData
+                    {
+                        first_name = employee.Person.first_name,
+                        last_name = employee.Person.last_name,
+                        email = employee.Person.email,
+                        active = employee.Person.active,
+                        munic_id = employee.munic_id,
+                        CitationCountbyType = CitationCountbyType
+                    }));
+                }
+            }
+            catch
+            {
+                return BadRequest("Request Error");
+            }
+            return BadRequest("Unreachable Error");
         }
 
         [HttpGet("EmployeeNames")]
-        public ActionResult<IEnumerable<EmployeeName>> GetEmployeeName([FromHeader] string authorization)
+        public ActionResult<IEnumerable<Employee>> GetEmployeeName([FromHeader] string authorization)
         {
+            var User = new User(authorization);
+            IEnumerable<Police_Dept> PoliceEmployee = null;
+            IEnumerable<Municipality> MunicipalEmployee = null;
 
+            try
+            {
+                if (User.isManager && User.isHighway_Patrol_Officer)
+                {
+                    PoliceEmployee = _db.GetPoliceDeptEmployeesByManager(User.person_id, _databaseContext.Server);
+
+                    return Ok(PoliceEmployee.ToList().Select(employee => new Employee
+                    {
+                        first_name = employee.Persons.first_name,
+                        last_name = employee.Persons.last_name
+                    }));
+                }
+
+                else if (User.isManager && User.isMunicipal_Officer)
+                {
+                    MunicipalEmployee = _db.GetMunicipalOfficersByManager(User.person_id, _databaseContext.Server);
+
+                    return Ok(MunicipalEmployee.ToList().Select(employee => new Employee
+                    {
+                        first_name = employee.Person.first_name,
+                        last_name = employee.Person.last_name
+                    }));
+                }
+            }
+            catch
+            {
+                return BadRequest("Bad Request");
+            }
+            return BadRequest("Unreachable Error");
         }
+
 
         [HttpGet("GetCitationsByOfficer")]
         public ActionResult<IEnumerable<EmployeeCitationsLookup>> GetCitationIssuedByOfficers([FromQuery] int person_id)
