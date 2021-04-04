@@ -81,7 +81,7 @@ namespace TCRS.Server.Controllers
                         citation.Vehicle_Record.Vehicle.Insurer.name : "" : (citation.Driver_Record != null) ?
                         (citation.Driver_Record.Citizen.Insurer != null) ?
                         citation.Driver_Record.Citizen.Insurer.name : "" : ""
-                })); ;
+                }));
             }
             catch
             {
