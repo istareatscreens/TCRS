@@ -16,7 +16,7 @@
                     <MudSelect Label="Select Employee" @bind-Value="selectedEmployee" Variant="Variant.Outlined">
                         @foreach (var emp in EmployeeNames)
                         {
-<MudSelectItem Value="@emp">@emp.GetEmployeeName()</MudSelectItem>}
+                            <MudSelectItem Value="@emp">@emp.GetEmployeeName()</MudSelectItem>}
                     </MudSelect>
 
                     <MudDateRangePicker Label="Citation Search Range" @bind-DateRange="dateRange" />
@@ -30,7 +30,7 @@
     </div>
     <div style="max-width: 400px;">
         <MudPaper Class="pa-1 ma-2" Elevation="3">
-            <MudText Typo="Typo.h6">Employee Information</MudText>
+            <MudText Typo="Typo.h6">Employee Information for: @displayActiveEmployee.GetEmployeeName()</MudText>
 
             <MudTextField @bind-Value="@displayActiveEmployee.email" Label="Employee Email:" ReadOnly="true" Variant="Variant.Filled" />
             <MudTextField @bind-Value="@displayActiveEmployee.active" Label="Employee Account Active:" ReadOnly="true" Variant="Variant.Filled" />
@@ -49,25 +49,26 @@
                     <tr>
                         @foreach (var h in headings)
                         {
-    <th>@h</th>}
+                            <th>@h</th>
+}
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ((var key, var value) in displayActiveEmployee.CitationCountbyType)
                     {
-<tr>
-    @if (key == 0)
-    {
+                        <tr>
+                            @if (key == 0)
+                            {
+                                <td>"Total Citations Issued"</td>
+                            }
+                            else
+                            {
+                                <td>@(((CitationTypes)key).ToDescriptionString())</td>
+                            }
+                            <td>@value</td>
 
-<td>"Total Citations Issued"</td>
- }
-else
-{
-<td>@(((CitationTypes)key).ToDescriptionString())</td>
+                        </tr>
 }
-    <td>@value</td>
-
-</tr>}
                 </tbody>
             </MudSimpleTable>
         </MudPaper>

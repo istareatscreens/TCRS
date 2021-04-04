@@ -17,7 +17,7 @@ namespace TCRS.Shared.Objects.EmployeeLookup
         // Key = 0, value = sum(citations)
         // Key = citation_type_id 
         // Value = count(citation_type_id)
-        public IEnumerable<KeyValuePair<int, int>> CitationCountbyType { get; set; }
+        public IEnumerable<KeyValuePair<int, int>> CitationCountbyType { get; set; } = new List<KeyValuePair<int, int>>();
 
 
     }
