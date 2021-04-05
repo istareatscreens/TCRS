@@ -128,7 +128,7 @@ namespace TCRS.Database
             if (Vehicle_Record.Count() != 0)
             {
 
-                var sql = "SELECT * FROM (SELECT citation_id, date_recieved, citation_type_id as type_id, officer_id FROM citation WHERE citation_id = @citation_id) as cit " +
+                var sql = "SELECT * FROM (SELECT citation_id, citation_number, date_recieved, citation_type_id as type_id, officer_id, is_resolved FROM citation WHERE citation_id = @citation_id) as cit " +
                         "LEFT JOIN citation_type ON citation_type.citation_type_id = cit.type_id " +
                         "LEFT JOIN (SELECT * FROM vehicle_record WHERE vehicle_record.citation_id = @citation_id) as v_record ON v_record.citation_id = cit.citation_id " +
                         "LEFT JOIN (SELECT vehicle_id, vin, name, stolen, make, registered, model, year_made, citizen_id, insurer_id as insurer_ident FROM vehicle) as vehicle_table ON vehicle_table.vehicle_id = v_record.vehicle_id " +
@@ -159,7 +159,7 @@ namespace TCRS.Database
             else if (Driver_Record.Count() != 0)
             {
 
-                var sql = "SELECT * FROM (SELECT citation_id, date_recieved, citation_type_id as type_id, officer_id FROM citation WHERE citation_id = @citation_id) as cit " +
+                var sql = "SELECT * FROM (SELECT citation_id, citation_number, date_recieved, citation_type_id as type_id, officer_id, is_resolved FROM citation WHERE citation_id = @citation_id) as cit " +
                        "LEFT JOIN citation_type ON citation_type.citation_type_id = cit.type_id " +
                        "LEFT JOIN (SELECT * FROM driver_record WHERE driver_record.citation_id = @citation_id) as d_record ON d_record.citation_id = cit.citation_id " +
                        "LEFT JOIN (SELECT citizen_id, first_name, middle_name, last_name, dob, home_address, insurer_id as insurer_ident  FROM citizen) as citizen_table ON citizen_table.citizen_id = d_record.citizen_id " +
