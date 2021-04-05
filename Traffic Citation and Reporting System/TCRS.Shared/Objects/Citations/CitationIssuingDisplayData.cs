@@ -41,6 +41,9 @@ namespace TCRS.Shared.Objects.Citations
 
         // citation_type
         public string fine { get; set; }
+        //Warrant information
+        public bool is_dangerous { get; set; }
+        public bool is_wanted { get; set; }
 
         public DateTime? DateDue { get; set; } = null;
     }

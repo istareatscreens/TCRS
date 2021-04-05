@@ -1,4 +1,4 @@
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace TCRS.Database.Model
 {
@@ -11,8 +11,9 @@ namespace TCRS.Database.Model
 
         //Relationships
         //One to
-        public Vehicle Vehicle { get; set; }
-        public Wanted Wanted { get; set; }
+#nullable enable
+        public Vehicle? Vehicle { get; set; }
+        public Wanted? Wanted { get; set; }
         //Many to
     }
 }

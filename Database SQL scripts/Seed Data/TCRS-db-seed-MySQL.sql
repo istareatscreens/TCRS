@@ -6749,3 +6749,6 @@ UPDATE `tcrs-db`.`course` SET `name` = 'Emergency Situations' WHERE (`course_id`
 UPDATE `tcrs-db`.`course` SET `name` = 'Better Driving' WHERE (`course_id` = '8');
 UPDATE `tcrs-db`.`course` SET `name` = 'Better Driving' WHERE (`course_id` = '9');
 UPDATE `tcrs-db`.`course` SET `name` = 'Better Driving' WHERE (`course_id` = '10');
+
+ALTER TABLE `tcrs-db`.`wanted` 
+ADD COLUMN `active_status` TINYINT NOT NULL DEFAULT 1 AFTER `crime`;

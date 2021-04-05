@@ -189,25 +189,35 @@ namespace TCRS.Server.Controllers
             //Check data
             License FoundLicense = null;
             License_Plate FoundPlate = null;
+            bool is_dangerous = true;
+            bool is_wanted = true;
             Citation NewCitation = null;
 
             try
             {
+
                 //Get Data For Citizen or License Plate
                 if (citationIssueData.licencePlate != null)
                 {
                     FoundPlate = IEnumerableHandler.UnpackIEnumerable<License_Plate>(_db.GetVehicleInfoByLicencePlate(citationIssueData.licencePlate, _databaseContext.Server));
+                    //warrant information
+                    var warrants = _db.GetVehicleWarrants(FoundPlate.vehicle_id, _databaseContext.Server);
+                    is_wanted = warrants.Count() > 0;
+                    is_dangerous = warrants.ToList().Exists((wanted) => wanted.Wanted.dangerous);
 
                 }
                 else if (citationIssueData.licence_id != null)
                 {
                     FoundLicense = IEnumerableHandler.UnpackIEnumerable<License>(_db.GetLicenseInfoByLicence(citationIssueData.licence_id, _databaseContext.Server));
+                    //warrant information
+                    var warrants = _db.GetCitizenWarrants(FoundLicense.citizen_id, _databaseContext.Server);
+                    is_wanted = warrants.Count() > 0;
+                    is_dangerous = warrants.ToList().Exists((wanted) => wanted.Wanted.dangerous);
                 }
                 else
                 {
                     return NotFound("Licence plate or id not specified");
                 }
-
 
                 //Post data
                 if (FoundPlate != null)
@@ -220,7 +230,6 @@ namespace TCRS.Server.Controllers
                 }
 
                 NewCitation = IEnumerableHandler.UnpackIEnumerable(_db.GetCitationAllInformationByNumber(Citation.citation_number, _databaseContext.Server));
-
 
             }
             catch (Exception e)
@@ -248,7 +257,9 @@ namespace TCRS.Server.Controllers
                 insurer = NewCitation.Driver_Record.Citizen.Insurer != null ? NewCitation.Driver_Record.Citizen.Insurer.name : "",
                 date_recieved = Citation.date_recieved,
                 DateDue = CalculateDueDate(NewCitation),
-                fine = NewCitation.Citation_Type.fine
+                fine = NewCitation.Citation_Type.fine,
+                is_dangerous = is_dangerous,
+                is_wanted = is_wanted
             } : new CitationIssuingDisplayData
             {
                 is_vehicle = true,
@@ -264,7 +275,9 @@ namespace TCRS.Server.Controllers
                 insurer = NewCitation.Vehicle_Record.Vehicle.Insurer != null ? NewCitation.Vehicle_Record.Vehicle.Insurer.name : "",
                 date_recieved = Citation.date_recieved,
                 DateDue = CalculateDueDate(NewCitation),
-                fine = NewCitation.Citation_Type.fine
+                fine = NewCitation.Citation_Type.fine,
+                is_dangerous = is_dangerous,
+                is_wanted = is_wanted
             }
             );
         }
