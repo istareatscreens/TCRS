@@ -20,27 +20,6 @@ namespace TCRS.Client.Pages
 
         //bool success;
 
-        // TEMP DATA
-        public Type typeValue { get; set; }
-        public enum Type
-        {
-            RunningRed,
-            SeatBeltViolation,
-            FailureToFollowRightOfWay,
-            FailureToSignalWhenChangingLanes,
-            Speeding,
-            DrivingOverAMedian,
-            DrivingIllegally,
-            RunningOverAPedestrianLane,
-            DrivingPastASchoolBuswhenUnloadingLoading,
-            FailureToDriveWithinASpecifiedLane,
-
-            FixItTicket,
-            ParkingCitation,
-            MovingVehicleCodeWarning,
-            MovingVehicleCodeViolation
-        }
-
         [Inject]
         private ICitationManager CitationManager { get; set; }
 

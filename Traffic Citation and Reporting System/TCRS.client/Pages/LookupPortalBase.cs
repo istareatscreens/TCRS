@@ -71,7 +71,7 @@ namespace TCRS.Client.Pages
 
         public string Disabled { get; set; }
 
-        // TEMP DATA
+        // TEMP WARRANT DATA
         protected string[] headings = { "Wanted ID", "Reference Number", "Status", "Crime" };
 
         protected string[] rows = {
