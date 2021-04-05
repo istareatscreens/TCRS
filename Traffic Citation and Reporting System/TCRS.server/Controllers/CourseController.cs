@@ -94,18 +94,16 @@ namespace TCRS.Server.Controllers
         {
             try
             {
-                var citizenList = _db.GetCitizenById(bookingData.citizen_id, _databaseContext.Server);
-                var citationList = _db.GetCitationByNumber(bookingData.citation_number, _databaseContext.Server);
+                var citationList = _db.GetCitationAllInformationByNumber(bookingData.citation_number, _databaseContext.Server);
                 var courseList = _db.GetCourseById(bookingData.course_id, _databaseContext.Server);
 
                 //Validate if parameters passed are valid
-                if (citationList != null && citizenList != null && courseList != null)
+                if (citationList != null && courseList != null)
                 {
                     return BadRequest("Invalid Registration Details");
                 }
 
                 //unpack parameters
-                var citizen = IEnumerableHandler.UnpackIEnumerable<Citizen>(citizenList);
                 var citation = IEnumerableHandler.UnpackIEnumerable<Citation>(citationList);
                 var course = IEnumerableHandler.UnpackIEnumerable<Course>(courseList);
 
@@ -113,12 +111,6 @@ namespace TCRS.Server.Controllers
                 if (!citation.Citation_Type.training_eligable && citation.citation_type_id == course.citation_type_id && course.scheduled < DateTime.Now)
                 {
                     return BadRequest("Invalid Registration Details");
-                }
-
-                //Check if Citation belongs to Citizen 
-                if (!_db.CitationBelongsToCitizen(citation.citation_id, citizen.citizen_id, _databaseContext.Server))
-                {
-                    return BadRequest("Invalid Parameters");
                 }
 
                 //check if already registered for course
@@ -140,8 +132,13 @@ namespace TCRS.Server.Controllers
                     return BadRequest("Already resolved");
                 }
 
+                if (citation.Driver_Record == null)
+                {
+                    return BadRequest("Invalid citation type");
+                }
+
                 //Passed all checks enroll in course
-                _db.RegisterCitizenInCourse(citizen.citizen_id, citation.citation_id, course.course_id, _databaseContext.Server);
+                _db.RegisterCitizenInCourse(citation.Driver_Record.Citizen.citizen_id, citation.citation_id, course.course_id, _databaseContext.Server);
                 if (NumberOfSpacesLeft == 1)
                 {
                     _db.UpdateCourseToFull(course.course_id, _databaseContext.Server);
