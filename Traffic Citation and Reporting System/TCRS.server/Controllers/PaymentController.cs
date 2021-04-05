@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System;
+using System.Linq;
 using TCRS.Database;
 using TCRS.Database.Model;
 using TCRS.Server.Tokens;
@@ -25,18 +26,24 @@ namespace TCRS.Server.Controllers
         [HttpGet("PostPayment")]
         public ActionResult PostPayment(PaymentData paymentData)
         {
-            var Payment = new Payment
-            {
-                citation_number = paymentData.citation_number,
-                //Would be implemented through pay portal
-                payment = 3.50,
-                payment_date = DateTime.Now,
-                made_by = "Joey joe joe",
-                payment_method = "Credit Card"
-            };
-
             try
             {
+                var Citation = _db.GetCitationByNumber(paymentData.citation_number, _databaseContext.Server).ToList().FirstOrDefault();
+                if (Citation != null)
+                {
+                    return NotFound("Citation Not Found");
+                }
+
+                var Payment = new Payment
+                {
+                    citation_id = Citation.citation_id,
+                    //Would be implemented through pay portal
+                    payment = 3.50,
+                    payment_date = DateTime.Now,
+                    made_by = "Joey joe joe",
+                    payment_method = "Credit Card"
+                };
+
                 _db.PayForCitation(Payment, _databaseContext.Server);
                 return Ok("Recipt Issued");
             }
