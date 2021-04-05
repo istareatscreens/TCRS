@@ -64,12 +64,18 @@ namespace TCRS.Server.Controllers
                     first_name = (citation.Driver_Record == null) ? "" : citation.Driver_Record.Citizen.first_name,
                     last_name = (citation.Driver_Record == null) ? "" : citation.Driver_Record.Citizen.last_name,
                     middle_name = (citation.Driver_Record == null) ? "" : citation.Driver_Record.Citizen.middle_name,
+                    dob = (citation.Driver_Record == null) ? new DateTime() : citation.Driver_Record.Citizen.dob,
+                    home_address = (citation.Driver_Record == null) ? "" : citation.Driver_Record.Citizen.home_address,
                     license = (citation.Driver_Record == null) ? "" : citation.Driver_Record.Citizen.License.license_id,
                     is_revoked = (citation.Driver_Record == null) ? false : citation.Driver_Record.Citizen.License.is_revoked,
                     is_suspended = (citation.Driver_Record == null) ? false : citation.Driver_Record.Citizen.License.is_suspended,
                     license_class = (citation.Driver_Record == null) ? "" : citation.Driver_Record.Citizen.License.license_class,
                     //Vehicle
                     model = (citation.Vehicle_Record == null) ? "" : citation.Vehicle_Record.Vehicle.model,
+                    vin = (citation.Vehicle_Record == null) ? "" : citation.Vehicle_Record.Vehicle.vin,
+                    year_made = (citation.Vehicle_Record == null) ? 0 : citation.Vehicle_Record.Vehicle.year_made,
+                    make = (citation.Vehicle_Record == null) ? "" : citation.Vehicle_Record.Vehicle.make,
+
                     plate_number = (citation.Vehicle_Record == null) ? "" : citation.Vehicle_Record.Vehicle.License_Plate.plate_number,
                     is_stolen = (citation.Vehicle_Record == null) ? false : citation.Vehicle_Record.Vehicle.stolen,
                     //Insurence
@@ -151,10 +157,7 @@ namespace TCRS.Server.Controllers
                         is_resolved = IsCitationResolved(citation),
                         is_registered = _db.CitationIsRegisteredToCourse(citation.citation_id, _databaseContext.Server)
                     });
-
                     return Ok(result);
-
-
                 }
             }
             catch (Exception)
@@ -215,7 +218,7 @@ namespace TCRS.Server.Controllers
                     _db.PostCitizenCitation(Citation, FoundLicense, _databaseContext.Server);
                 }
 
-                NewCitation = IEnumerableHandler.UnpackIEnumerable(_db.GetCitationByNumber(Citation.citation_number, _databaseContext.Server));
+                NewCitation = IEnumerableHandler.UnpackIEnumerable(_db.GetCitationAllInformationByNumber(Citation.citation_number, _databaseContext.Server));
 
 
             }
@@ -230,19 +233,34 @@ namespace TCRS.Server.Controllers
             (FoundLicense != null) ?
             new CitationIssuingDisplayData
             {
+                is_citizen = true,
                 first_name = FoundLicense.Citizen.first_name,
                 middle_name = FoundLicense.Citizen.last_name,
                 last_name = FoundLicense.Citizen.middle_name,
+                license_id = FoundLicense.license_id,
+                is_suspended = FoundLicense.is_suspended,
+                is_revoked = FoundLicense.is_revoked,
+                home_address = FoundLicense.Citizen.home_address,
+                dob = FoundLicense.Citizen.dob,
                 //common data
                 citation_number = Citation.citation_number,
+                insurer = Citation.Driver_Record.Citizen.Insurer.name,
                 date_recieved = Citation.date_recieved,
                 DateDue = CalculateDueDate(NewCitation),
                 fine = NewCitation.Citation_Type.fine
             } : new CitationIssuingDisplayData
             {
+                is_vehicle = true,
                 plate_number = citationIssueData.licencePlate,
+                vin = NewCitation.Vehicle_Record.Vehicle.vin,
+                model = NewCitation.Vehicle_Record.Vehicle.model,
+                make = NewCitation.Vehicle_Record.Vehicle.make,
+                year_made = NewCitation.Vehicle_Record.Vehicle.year_made,
+                stolen = NewCitation.Vehicle_Record.Vehicle.stolen,
+
                 //common data
                 citation_number = Citation.citation_number,
+                insurer = Citation.Vehicle_Record.Vehicle.Insurer.name,
                 date_recieved = Citation.date_recieved,
                 DateDue = CalculateDueDate(NewCitation),
                 fine = NewCitation.Citation_Type.fine
