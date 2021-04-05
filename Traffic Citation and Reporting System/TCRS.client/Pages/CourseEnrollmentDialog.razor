@@ -14,17 +14,17 @@
             <tbody>
                 @foreach (var data in CourseData)
                 {
-                <tr>
-                    @foreach (var prop in ObjectPrinter.PropertiesOfType(data))
-                    {
-                        //if (prop.Key == "course_id" || prop.Key == "scheduled" || prop.Key == "address")
-                        //{
+                    <tr>
+                        @foreach (var prop in ObjectPrinter.PropertiesOfType(data))
+                        {
+                            //if (prop.Key == "course_id" || prop.Key == "scheduled" || prop.Key == "address")
+                            //{
                             <td>@prop.Value</td>
-                        //}
+                            //}
 
-                    }
-                    <MudButton @onclick="BookDialogPress" Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary" Class="ma-2">Book</MudButton>
-                </tr>
+                        }
+                        <MudButton @onclick="@((e) => BookDialogPress(data))" Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary" Class="ma-2">Book</MudButton>
+                    </tr>
                 }
             </tbody>
         </MudSimpleTable>
@@ -35,19 +35,18 @@
 </MudDialog>
 
 @using TCRS.Shared.Objects.Citations;
-@using TCRS.Shared.Contracts.CourseManagement; 
-@using TCRS.Shared.Objects.CourseEnrollment; 
+@using TCRS.Shared.Contracts.CourseManagement;
+@using TCRS.Shared.Objects.CourseEnrollment;
 @code {
+    protected List<CourseEnrollmentData> CourseData { get; set; } = new List<CourseEnrollmentData>();
+    protected string[] headings = { "Course ID", "Date", "Location" };
+    CourseEnrollmentBookingData bookingData = new CourseEnrollmentBookingData();
 
     [CascadingParameter]
     MudDialogInstance MudDialog { get; set; }
 
     [Parameter]
     public CitizenVehicleCitation data { get; set; }
-
-    protected List<CourseEnrollmentData> CourseData { get; set; } = new List<CourseEnrollmentData>();
-
-    protected void Cancel() => MudDialog.Cancel();
 
     [Inject]
     private ICourseManager CourseManager { get; set; }
@@ -61,10 +60,22 @@
         this.CourseData = courseInformation;
     }
 
-    protected string[] headings = { "Course ID", "Date", "Location" };
-  
-    private void BookDialogPress()
+    protected async Task BookDialogPress(CourseEnrollmentData selectedCourse)
     {
-        // register the user right here
+        // register the user in the course
+        bookingData = new CourseEnrollmentBookingData {
+            course_id = selectedCourse.course_id,
+            citation_number = data.citation_number,
+            citizen_id = data.citizen_id
+        };
+
+        await CourseManager.BookCourse(bookingData);
+
+        MudDialog.Close(DialogResult.Ok(true));
+
     }
+
+    void Cancel() => MudDialog.Cancel();
+
+
 }

@@ -9,5 +9,6 @@ namespace TCRS.Shared.Contracts.CourseManagement
     {
         Task CreateCourse(CourseManagementData courseManagementData);
         Task<List<CourseEnrollmentData>> GetCourses(string citation_type_id);
+        Task BookCourse(CourseEnrollmentBookingData bookingData);
     }
 }

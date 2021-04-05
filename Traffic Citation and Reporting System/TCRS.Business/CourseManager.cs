@@ -30,5 +30,10 @@ namespace TCRS.Business
             return data.ToList();
         }
 
+        public async Task BookCourse(CourseEnrollmentBookingData bookingData)
+        {
+            await _api.PostAsync<CourseEnrollmentBookingData>(bookingData);
+        }
+
     }
 }

@@ -11,7 +11,7 @@
             @foreach (var h in headings)
             {
                 <th>@h</th>
-}
+            }
         </tr>
     </thead>
     <tbody>
@@ -23,20 +23,20 @@
                     if (prop.Value != null && prop.Key != "citation_type_id" && prop.Key != "is_resolved" && prop.Key != "is_registered")
                     {
                         <td>@prop.Value</td>
-}
+                    }
                 }
 
                 @if (data.fine > 0)
                 {
                     <td><MudButton @onclick="@((e) => OpenPayDialog(data))" Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary">Pay</MudButton></td>
-}
+                }
                 @if (data.training_eligable == true)
                 {
                     <td><MudButton @onclick="((e) => OpenCourseEnrollmentDialog(data))" Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary">Enroll in Course</MudButton></td>
-}
+                }
 
             </tr>
-}
+        }
     </tbody>
 
 </MudSimpleTable>
@@ -48,9 +48,11 @@
         var dialog = DialogService.Show<PayDialog>("Fine Payment", parameters);
         var result = await dialog.Result;
 
+        // successful payment
         if (!result.Cancelled)
         {
-            // successful
+            // Rerender the page
+            StateHasChanged();
         }
 
     }

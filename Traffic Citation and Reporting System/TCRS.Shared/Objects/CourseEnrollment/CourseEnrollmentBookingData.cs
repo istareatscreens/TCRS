@@ -6,5 +6,6 @@
         public int course_id { get; set; }
         public string citation_number { get; set; }
         public int citizen_id { get; set; }
+
     }
 }

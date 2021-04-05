@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using TCRS.Shared.Contracts;
 using TCRS.Shared.Objects.CitationResolution;
 using TCRS.Shared.Objects.Citations;
+using TCRS.Shared.Objects.CourseEnrollment;
 using TCRS.Shared.Objects.Payment;
 
 namespace TCRS.Business
@@ -35,7 +36,7 @@ namespace TCRS.Business
             return crld.ToList();
         }
 
-        public async void MakePayment(PaymentData paymentData)
+        public async Task MakePayment(PaymentData paymentData)
         {
             await _api.PostAsync<PaymentData>(paymentData);
         }

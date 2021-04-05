@@ -147,6 +147,7 @@ namespace TCRS.Server.Controllers
                     var result = citations.Select(citation => new CitizenVehicleCitation
                     {
                         citation_number = citation.citation_number,
+                        citizen_id = citation.Driver_Record.citizen_id,
                         name = citation.Citation_Type.name,
                         citation_type_id = citation.citation_type_id,
                         date_recieved = citation.date_recieved,

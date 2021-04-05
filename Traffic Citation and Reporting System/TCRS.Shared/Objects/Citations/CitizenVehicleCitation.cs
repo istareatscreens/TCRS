@@ -8,6 +8,7 @@ namespace TCRS.Shared.Objects.Citations
         // Belongs in CitationResolution
         // Takes in parameter(vehicle_id)
         public string citation_number { get; set; }
+        public int citizen_id { get; set; }
         public string name { get; set; }
         public string vin { get; set; }
         public int year_made { get; set; }
