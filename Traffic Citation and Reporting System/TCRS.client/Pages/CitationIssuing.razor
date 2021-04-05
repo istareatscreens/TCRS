@@ -41,19 +41,16 @@
 
         <MudText Typo="Typo.h6">Licence Information</MudText>
         <div style="max-width: 400px;">
-            <MudTextField Value="@WarrantInfo()" Label="Licence Revoked:" ReadOnly="true" Variant="Variant.Filled" />
-            <MudTextField Value="@WarrantInfo()" Label="Licence Suspended" ReadOnly="true" Variant="Variant.Filled" />
-            <MudTextField Value="@WarrantInfo()" Label="Vehicle Number" ReadOnly="true" Variant="Variant.Filled" />
-            <MudTextField Value="@WarrantInfo()" Label="Vehicle Stolen:" ReadOnly="true" Variant="Variant.Filled" />
-            <MudTextField Value="@WarrantInfo()" Label="Vehicle Registered:" ReadOnly="true" Variant="Variant.Filled" />
+            <MudTextField Value="data.is_revoked" Label="Licence Revoked:" ReadOnly="true" Variant="Variant.Filled" />
+            <MudTextField Value="data.is_suspended" Label="Licence Suspended" ReadOnly="true" Variant="Variant.Filled" />
+            <MudTextField Value="data.vin" Label="Vehicle Number" ReadOnly="true" Variant="Variant.Filled" />
         </div>
 
         <MudText Typo="Typo.h6">Vehicle Information</MudText>
         <div style="max-width: 400px;">
-            <MudTextField Value="@WarrantInfo()" Label="Vehicle Number" ReadOnly="true" Variant="Variant.Filled" />
-            <MudTextField Value="@WarrantInfo()" Label="Vehicle Stolen:" ReadOnly="true" Variant="Variant.Filled" />
+            <MudTextField Value="data.vin" Label="Vehicle Number" ReadOnly="true" Variant="Variant.Filled" />
+            <MudTextField Value="data.stolen" Label="Vehicle Stolen:" ReadOnly="true" Variant="Variant.Filled" />
             <MudTextField Value="@WarrantInfo()" Label="Vehicle Registered:" ReadOnly="true" Variant="Variant.Filled" />
-
         </div>
 
     </MudPaper>

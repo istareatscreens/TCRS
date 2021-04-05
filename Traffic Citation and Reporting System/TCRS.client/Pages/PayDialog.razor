@@ -13,6 +13,7 @@
 </MudDialog>
 
 @using TCRS.Shared.Objects.Citations;
+@using TCRS.Shared.Objects.Payment;
 @code {
     [CascadingParameter]
     MudDialogInstance MudDialog { get; set; }
@@ -21,11 +22,22 @@
     public CitizenVehicleCitation data { get; set; }
     //public string GetPaymentAmount { get; set; } = "Payment Amount Here";
 
+    [Inject]
+    private IResolveCitationManager ResolveCitationManager { get; set; }
+
+
     public string CreditCardNumber { get; set; } = "";
     public string CVCNumber { get; set; } = "";
 
 
-    void Submit() => MudDialog.Close(DialogResult.Ok(true));
+    protected async void Submit()
+    {
+        PaymentData paymentData = new PaymentData(data.citation_type_id, Int32.Parse(data.citation_number), data.fine);
+        ResolveCitationManager.MakePayment(paymentData);
+
+        MudDialog.Close(DialogResult.Ok(true));
+    }
+
     void Cancel() => MudDialog.Cancel();
 
 }

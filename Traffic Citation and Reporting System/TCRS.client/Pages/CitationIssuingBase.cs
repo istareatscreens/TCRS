@@ -73,7 +73,7 @@ namespace TCRS.Client.Pages
         }
         protected bool IsDangerous()
         {
-            return false;
+            return true;
         }
 
         protected string WarrantInfo()

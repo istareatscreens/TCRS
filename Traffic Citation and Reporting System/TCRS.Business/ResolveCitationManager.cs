@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using TCRS.Shared.Contracts;
 using TCRS.Shared.Objects.CitationResolution;
 using TCRS.Shared.Objects.Citations;
+using TCRS.Shared.Objects.Payment;
 
 namespace TCRS.Business
 {
@@ -32,6 +33,11 @@ namespace TCRS.Business
 
             var crld = await _api.GetAsync<CitizenVehicleCitation>(parameters);
             return crld.ToList();
+        }
+
+        public async void MakePayment(PaymentData paymentData)
+        {
+            await _api.PostAsync<PaymentData>(paymentData);
         }
     }
 }

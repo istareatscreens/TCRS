@@ -244,7 +244,7 @@ namespace TCRS.Server.Controllers
                 dob = FoundLicense.Citizen.dob,
                 //common data
                 citation_number = Citation.citation_number,
-                insurer = Citation.Driver_Record.Citizen.Insurer.name,
+                insurer = NewCitation.Driver_Record.Citizen.Insurer.name,
                 date_recieved = Citation.date_recieved,
                 DateDue = CalculateDueDate(NewCitation),
                 fine = NewCitation.Citation_Type.fine
