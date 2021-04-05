@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace TCRS.Database.Model
@@ -10,6 +10,7 @@ namespace TCRS.Database.Model
         public string reference_no { get; set; }
         public bool dangerous { get; set; }
         public int crime { get; set; }
+        public bool active_status { get; set; }
 
         //Relationships
         //One to
