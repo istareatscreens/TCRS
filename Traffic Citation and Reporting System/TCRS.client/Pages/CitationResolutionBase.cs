@@ -55,7 +55,6 @@ namespace TCRS.Client.Pages
             */
         }
 
-
-        protected string[] headings = { "Citation Number", "Citation Type", "Date Received", "Training Eligable", "Date Due", "Fine (CAD)" };
+        protected string[] headings = { "Citation Number", "Citation Type", "Date Received", "Date Due", "Training Eligable", "Fine (CAD)" };
     }
 }

@@ -17,25 +17,24 @@
     <tbody>
         @foreach (var data in CitizenVehicleCitation)
         {
-            <tr>
-                @foreach (var prop in ObjectPrinter.PropertiesOfType(data))
-                {
-                    if (prop.Value != null && prop.Key != "citation_type_id" && prop.Key != "is_resolved" && prop.Key != "is_registered")
-                    {
-                        <td>@prop.Value</td>
-                    }
-                }
+        <tr>
+            <td>@data.citation_number</td>
+            <td>@(((CitationTypes)data.citation_type_id).ToDescriptionString())</td>
+            <td>@data.date_recieved</td>
+            <td>@data.date_due</td>
+            <td>@data.training_eligable</td>
+            <td>@data.fine</td>
 
-                @if (data.fine > 0)
-                {
-                    <td><MudButton @onclick="@((e) => OpenPayDialog(data))" Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary">Pay</MudButton></td>
-                }
-                @if (data.training_eligable == true)
-                {
-                    <td><MudButton @onclick="((e) => OpenCourseEnrollmentDialog(data))" Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary">Enroll in Course</MudButton></td>
-                }
+            @if (data.fine > 0)
+            {
+                <td><MudButton @onclick="@((e) => OpenPayDialog(data))" Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary">Pay</MudButton></td>
+            }
+            @if (data.training_eligable == true)
+            {
+                <td><MudButton @onclick="((e) => OpenCourseEnrollmentDialog(data))" Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary">Enroll in Course</MudButton></td>
+            }
 
-            </tr>
+        </tr>
         }
     </tbody>
 
