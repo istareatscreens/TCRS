@@ -51,6 +51,8 @@ namespace TCRS.Client.Pages
             StateHasChanged();
         }
 
+        
+
         protected string GetCitationType()
         {
             if(citationData.is_citizen)

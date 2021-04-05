@@ -42,7 +42,12 @@
 </MudSimpleTable>
 
 @using TCRS.Shared.Objects.Citations;
-@code { private async void OpenPayDialog(CitizenVehicleCitation data)
+@code 
+{ 
+    [Inject]
+    private NavigationManager NavigationManager { get; set; }
+
+    private async void OpenPayDialog(CitizenVehicleCitation data)
     {
         var parameters = new DialogParameters { ["data"] = data };
         var dialog = DialogService.Show<PayDialog>("Fine Payment", parameters);
@@ -51,8 +56,8 @@
         // successful payment
         if (!result.Cancelled)
         {
-            // Rerender the page
-            StateHasChanged();
+            // Go back to the home page
+            NavigationManager.NavigateTo("/");
         }
 
     }
@@ -69,5 +74,5 @@
             StateHasChanged();
         }
 
-    } 
+    }
 }

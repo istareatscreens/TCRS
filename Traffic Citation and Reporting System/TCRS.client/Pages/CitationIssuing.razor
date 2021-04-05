@@ -36,7 +36,8 @@
                 <div style="max-width: 400px;">
                     <MudTextField Value="data.GetOffenderName()" Label="Offender Name:" ReadOnly="true" Variant="Variant.Filled" />
                     <MudTextField Value="data.citation_number" Label="Citation Number:" ReadOnly="true" Variant="Variant.Filled" />
-                    <MudTextField Value="@DangerInfo()" Label="Is Dangerous:" ReadOnly="true" Variant="Variant.Filled" Disabled="@(!IsDangerous())" />
+                    <MudTextField Value="data.is_dangerous" Label="Is Dangerous:" ReadOnly="true" Variant="Variant.Filled" Disabled="@(!data.is_dangerous)" />
+                    <MudTextField Value="data.is_wanted" Label="Is Wanted:" ReadOnly="true" Variant="Variant.Filled" Disabled="@(!data.is_wanted)" />
                     <MudTextField Value="@WarrantInfo()" Label="Has Warrant:" ReadOnly="true" Variant="Variant.Filled" Disabled="@(!HasWarrant())" />
                     <MudTextField @bind-Value="data.plate_number" Label="Offender Licence Plate:" ReadOnly="true" Variant="Variant.Filled" />
                     <MudTextField @bind-Value="data.date_recieved" Label="Date of Offence:" ReadOnly="true" Variant="Variant.Filled" />
@@ -76,7 +77,8 @@
                 <div style="max-width: 400px;">
                     <MudTextField Value="data.GetOffenderName()" Label="Offender Name:" ReadOnly="true" Variant="Variant.Filled" />
                     <MudTextField Value="data.citation_number" Label="Citation Number:" ReadOnly="true" Variant="Variant.Filled" />
-                    <MudTextField Value="@DangerInfo()" Label="Is Dangerous:" ReadOnly="true" Variant="Variant.Filled" Disabled="@(!IsDangerous())" />
+                    <MudTextField Value="data.is_dangerous" Label="Is Dangerous:" ReadOnly="true" Variant="Variant.Filled" Disabled="@(!data.is_dangerous)" />
+                    <MudTextField Value="data.is_wanted" Label="Is Wanted:" ReadOnly="true" Variant="Variant.Filled" Disabled="@(!data.is_wanted)" />
                     <MudTextField Value="@WarrantInfo()" Label="Has Warrant:" ReadOnly="true" Variant="Variant.Filled" Disabled="@(!HasWarrant())" />
                     <MudTextField @bind-Value="data.plate_number" Label="Offender Licence Plate:" ReadOnly="true" Variant="Variant.Filled" />
                     <MudTextField @bind-Value="data.date_recieved" Label="Date of Offence:" ReadOnly="true" Variant="Variant.Filled" />

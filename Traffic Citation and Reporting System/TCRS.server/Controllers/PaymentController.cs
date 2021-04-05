@@ -27,7 +27,7 @@ namespace TCRS.Server.Controllers
         {
             var Payment = new Payment
             {
-                citation_number = paymentData.citation_number,
+                //citation_number = paymentData.citation_number,
                 //Would be implemented through pay portal
                 payment = 3.50,
                 payment_date = DateTime.Now,

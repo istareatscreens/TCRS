@@ -15,24 +15,25 @@
 @using TCRS.Shared.Objects.Citations;
 @using TCRS.Shared.Objects.Payment;
 @code {
-        [CascadingParameter]
-        MudDialogInstance MudDialog { get; set; }
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; }
 
-        [Parameter]
-        public CitizenVehicleCitation data { get; set; }
-        //public string GetPaymentAmount { get; set; } = "Payment Amount Here";
+    [Parameter]
+    public CitizenVehicleCitation data { get; set; }
+    //public string GetPaymentAmount { get; set; } = "Payment Amount Here";
 
-        [Inject]
-        private IResolveCitationManager ResolveCitationManager { get; set; }
+    [Inject]
+    private IResolveCitationManager ResolveCitationManager { get; set; }
 
     public string CreditCardNumber { get; set; } = "";
     public string CVCNumber { get; set; } = "";
 
     protected async Task Submit()
     {
-        PaymentData paymentData = new PaymentData { 
-            citation_number = data.citation_number, 
-            payment = data.fine 
+        PaymentData paymentData = new PaymentData
+        {
+            citation_number = data.citation_number,
+            payment = data.fine
         };
         await ResolveCitationManager.MakePayment(paymentData);
 

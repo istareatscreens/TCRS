@@ -57,19 +57,6 @@ namespace TCRS.Client.Pages
             curTab = x;
         }
 
-        protected string DangerInfo()
-        {
-            if (IsDangerous())
-            {
-                return "Danger info";
-            }
-            return "";
-        }
-        protected bool IsDangerous()
-        {
-            return true;
-        }
-
         protected string WarrantInfo()
         {
             if (HasWarrant())
