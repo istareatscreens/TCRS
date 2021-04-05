@@ -109,13 +109,13 @@ namespace TCRS.Server.Controllers
                 var course = IEnumerableHandler.UnpackIEnumerable<Course>(courseList);
 
                 //Check if request is valid
-                if (!citation.Citation_Type.training_eligable && citation.citation_type_id == course.citation_type_id && course.scheduled < DateTime.Now)
+                if (!citation.Citation_Type.training_eligable || !(citation.citation_type_id == course.citation_type_id) || course.scheduled < DateTime.Now)
                 {
                     return BadRequest("Invalid Registration Details");
                 }
 
                 //check if already registered for course
-                if (!_db.CitationIsRegisteredToCourse(citation.citation_id, _databaseContext.Server))
+                if (_db.CitationIsRegisteredToCourse(citation.citation_id, _databaseContext.Server))
                 {
                     return BadRequest("Invalid Parameters");
                 }
@@ -128,7 +128,7 @@ namespace TCRS.Server.Controllers
                 }
 
                 //Check if citation is marked as resolved, if not check in the database and update citation to be resolved if it is resolved
-                if (!citation.is_resolved && _db.CheckIfCitationIsResolved(citation.citation_id, _databaseContext.Server))
+                if (citation.is_resolved || _db.CheckIfCitationIsResolved(citation.citation_id, _databaseContext.Server))
                 {
                     return BadRequest("Already resolved");
                 }

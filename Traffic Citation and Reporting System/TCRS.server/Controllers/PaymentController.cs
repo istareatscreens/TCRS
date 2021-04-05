@@ -34,7 +34,7 @@ namespace TCRS.Server.Controllers
                     return NotFound("Citation Not Found");
                 }
 
-                if (!Citation.is_resolved && _db.CheckIfCitationIsResolved(Citation.citation_id, _databaseContext.Server))
+                if (Citation.is_resolved || _db.CheckIfCitationIsResolved(Citation.citation_id, _databaseContext.Server))
                 {
                     return BadRequest("Citation has already been resolved");
                 }
