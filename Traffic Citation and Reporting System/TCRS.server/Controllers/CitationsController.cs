@@ -151,10 +151,7 @@ namespace TCRS.Server.Controllers
                         is_resolved = IsCitationResolved(citation),
                         is_registered = _db.CitationIsRegisteredToCourse(citation.citation_id, _databaseContext.Server)
                     });
-
                     return Ok(result);
-
-
                 }
             }
             catch (Exception)

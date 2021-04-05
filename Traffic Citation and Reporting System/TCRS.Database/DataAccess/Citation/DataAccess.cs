@@ -131,9 +131,9 @@ namespace TCRS.Database
                 var sql = "SELECT * FROM (SELECT citation_id, date_recieved, citation_type_id as type_id, officer_id FROM citation WHERE citation_id = @citation_id) as cit " +
                         "LEFT JOIN citation_type ON citation_type.citation_type_id = cit.type_id " +
                         "LEFT JOIN (SELECT * FROM vehicle_record WHERE vehicle_record.citation_id = @citation_id) as v_record ON v_record.citation_id = cit.citation_id " +
-                        "LEFT JOIN vehicle ON vehicle.vehicle_id = v_record.vehicle_id " +
-                        "LEFT JOIN license_plate ON license_plate.vehicle_id = vehicle.vehicle_id " +
-                        "LEFT JOIN insurer ON insurer.insurer_id = vehicle.insurer_id";
+                        "LEFT JOIN (SELECT vehicle_id, vin, name, stolen, make, registered, model, year_made, citizen_id, insurer_id as insurer_ident FROM vehicle) as vehicle_table ON vehicle_table.vehicle_id = v_record.vehicle_id " +
+                        "LEFT JOIN license_plate ON license_plate.vehicle_id = vehicle_table.vehicle_id " +
+                        "LEFT JOIN insurer ON insurer.insurer_id = vehicle_table.insurer_ident";
 
                 using (IDbConnection connection = new MySqlConnection(connectionString))
                 {
@@ -146,11 +146,11 @@ namespace TCRS.Database
                           if (Citation.Vehicle_Record != null)
                           {
                               Citation.Vehicle_Record.Vehicle = Vehicle;
-                              Citation.Vehicle_Record.Vehicle.Insurer = Insurer;
+                              //      Citation.Vehicle_Record.Vehicle.Insurer = Insurer;
                               Citation.Vehicle_Record.Vehicle.License_Plate = License_Plate;
                           }
                           return Citation;
-                      }, new { citation_number = citation_number }, splitOn: "citation_id, citation_type_id, vehicle_id, vehicle_id, plate_number, insurer_id");
+                      }, new { citation_id = citation_id }, splitOn: "citation_id, citation_type_id, vehicle_id, vehicle_id, plate_number, insurer_id");
 
                     return rows;
                 }
@@ -162,9 +162,9 @@ namespace TCRS.Database
                 var sql = "SELECT * FROM (SELECT citation_id, date_recieved, citation_type_id as type_id, officer_id FROM citation WHERE citation_id = @citation_id) as cit " +
                        "LEFT JOIN citation_type ON citation_type.citation_type_id = cit.type_id " +
                        "LEFT JOIN (SELECT * FROM driver_record WHERE driver_record.citation_id = @citation_id) as d_record ON d_record.citation_id = cit.citation_id " +
-                       "LEFT JOIN citizen ON citizen.citizen_id = d_record.citizen_id " +
-                       "LEFT JOIN license ON license.citizen_id = citizen.citizen_id " +
-                       "LEFT JOIN insurer ON insurer.insurer_id = citizen.insurer_id";
+                       "LEFT JOIN (SELECT citizen_id, first_name, middle_name, last_name, dob, home_address, insurer_id as insurer_ident  FROM citizen) as citizen_table ON citizen_table.citizen_id = d_record.citizen_id " +
+                       "LEFT JOIN license ON license.citizen_id = citizen_table.citizen_id " +
+                       "LEFT JOIN insurer ON insurer.insurer_id = citizen_table.insurer_ident";
 
                 using (IDbConnection connection = new MySqlConnection(connectionString))
                 {
