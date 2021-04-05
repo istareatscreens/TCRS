@@ -38,7 +38,7 @@ namespace TCRS.APIAccess
 
             /* ***** Payment ***** */
             // citation_id should be passed
-            {typeof(PaymentData), "api/Payment" }
+            {typeof(PaymentData), "api/Payment/PostPayment" }
 
         };
         public static Dictionary<Type, string> GetEntityRouteAssignment { get; } = new Dictionary<Type, string>

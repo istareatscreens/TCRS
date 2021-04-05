@@ -23,13 +23,13 @@ namespace TCRS.Server.Controllers
         }
 
         //TEST IMPLEMENTATION (Need to integrate payment API)
-        [HttpGet("PostPayment")]
+        [HttpPost("PostPayment")]
         public ActionResult PostPayment(PaymentData paymentData)
         {
             try
             {
                 var Citation = _db.GetCitationByNumber(paymentData.citation_number, _databaseContext.Server).ToList().FirstOrDefault();
-                if (Citation != null)
+                if (Citation == null)
                 {
                     return NotFound("Citation Not Found");
                 }
