@@ -104,7 +104,7 @@
                         <DataAnnotationsValidator />
                         <MudCard>
                             <MudCardContent>
-                                <MudTextField Label="Citation ID" Variant="Variant.Outlined"
+                                <MudTextField Label="Citation Number" Variant="Variant.Outlined"
                                               @bind-Value="LookupData.CitationData" For="@(() => LookupData.CitationData)" />
                             </MudCardContent>
                             <MudCardActions>
@@ -116,7 +116,7 @@
                 <MudText Typo="Typo.h6">Citation Information</MudText>
                 <div style="max-width: 400px;">
                     @*citation information*@
-                    <MudTextField Value="@citationData.citation_number" Label="Citation ID" ReadOnly="true" Variant="Variant.Filled" />
+                    <MudTextField Value="@GetCitationType()" Label="Citation Type" ReadOnly="true" Variant="Variant.Filled" />
                     @*officer information*@
                     <MudTextField Value="@citationData.officer_id" Label="Officer ID:" ReadOnly="true" Variant="Variant.Filled" />
                     @*citizen*@
@@ -125,14 +125,19 @@
                     <MudTextField Value="@citationData.first_name" Label="First Name" ReadOnly="true" Variant="Variant.Filled" />
                     <MudTextField Value="@citationData.middle_name" Label="Middle Name" ReadOnly="true" Variant="Variant.Filled" />
                     <MudTextField Value="@citationData.last_name" Label="Last Name" ReadOnly="true" Variant="Variant.Filled" />
-                    @*vehicle*@          
-                    <MudTextField Value="@citationData.plate_number" Label="Plate Number" ReadOnly="true" Variant="Variant.Filled" />
-                    <MudTextField Value="@citationData.model" Label="Model" ReadOnly="true" Variant="Variant.Filled" />
-                    @*status*@           
+                    @*vehicle*@
+                    @if (citationData.is_vehicle)
+                    {
+                        <MudTextField Value="@citationData.plate_number" Label="Plate Number" ReadOnly="true" Variant="Variant.Filled" />
+                        <MudTextField Value="@citationData.model" Label="Model" ReadOnly="true" Variant="Variant.Filled" />
+                    }
+                    @*status*@
                     <MudTextField Value="@citationData.date_recieved" Label="Date Recieved" ReadOnly="true" Variant="Variant.Filled" />
                     <MudTextField Value="@citationData.date_due" Label="Date Due" ReadOnly="true" Variant="Variant.Filled" />
                     <MudTextField Value="@citationData.name" Label="Citation Type" ReadOnly="true" Variant="Variant.Filled" />
-                    
+
+                    <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Send" Color="Color.Primary" OnClick="@ResolveCitation" Class="ml-auto">Resolve Citation</MudButton>
+
                 </div>
             </MudTabPanel>
 

@@ -54,7 +54,7 @@ namespace TCRS.Database
                 LEFT JOIN municipal_officer ON municipal_officer.person_id = p.person_id
                 LEFT JOIN school_rep ON school_rep.person_id = p.person_id
                 LEFT JOIN municipality ON municipality.munic_id = municipal_officer.munic_id
-                LEFT JOIN police_dept ON police_dept.dept_id = highway_patrol_officer.dept_id";
+                LEFT JOIN police_dept ON police_dept.police_dept_id = highway_patrol_officer.police_dept_id";
 
             using (IDbConnection connection = new MySqlConnection(connectionString))
             {

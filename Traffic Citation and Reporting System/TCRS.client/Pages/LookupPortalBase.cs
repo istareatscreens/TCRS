@@ -7,6 +7,12 @@ namespace TCRS.Client.Pages
 {
     public class LookupPortalBase : ComponentBase
     {
+        protected bool IssueWarrant { get; set; }
+
+        protected LookupCitationDisplayData citationData = new LookupCitationDisplayData();
+        protected LookupCitizenDisplayData citizenData = new LookupCitizenDisplayData();
+        protected LookupVehicleDisplayData vehicleData = new LookupVehicleDisplayData();
+
         protected LookupDisplayData LookupData { get; set; } = new LookupDisplayData();
 
         protected EditContext EditContext { get; set; }
@@ -45,11 +51,23 @@ namespace TCRS.Client.Pages
             StateHasChanged();
         }
 
-        protected bool IssueWarrant { get; set; }
+        protected string GetCitationType()
+        {
+            if(citationData.is_citizen)
+            {
+                return "Citizen Citation";
+            }
+            else if(citationData.is_vehicle)
+            {
+                return "Vehicle Citation";
+            }
+            return "";
+        }
 
-        protected LookupCitationDisplayData citationData = new LookupCitationDisplayData();
-        protected LookupCitizenDisplayData citizenData = new LookupCitizenDisplayData();
-        protected LookupVehicleDisplayData vehicleData = new LookupVehicleDisplayData();
+        protected void ResolveCitation()
+        {
+
+        }
 
         public string Disabled { get; set; }
 

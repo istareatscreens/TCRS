@@ -32,6 +32,7 @@
         <MudText Typo="Typo.h6">Person Information</MudText>
         <div style="max-width: 400px;">
             <MudTextField Value="data.GetOffenderName()" Label="Offender Name:" ReadOnly="true" Variant="Variant.Filled" />
+            <MudTextField Value="data.citation_number" Label="Citation Number:" ReadOnly="true" Variant="Variant.Filled" />
             <MudTextField Value="@DangerInfo()" Label="Is Dangerous:" ReadOnly="true" Variant="Variant.Filled" Disabled="@(!IsDangerous())" />
             <MudTextField Value="@WarrantInfo()" Label="Has Warrant:" ReadOnly="true" Variant="Variant.Filled" Disabled="@(!HasWarrant())" />
             <MudTextField @bind-Value="data.plate_number" Label="Offender Licence Plate:" ReadOnly="true" Variant="Variant.Filled" />
