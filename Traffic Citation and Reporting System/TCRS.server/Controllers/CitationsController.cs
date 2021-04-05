@@ -127,7 +127,8 @@ namespace TCRS.Server.Controllers
                 if (Citation.Vehicle_Record != null)
                 {
                     var plate_number = Citation.Vehicle_Record.Vehicle.License_Plate.plate_number;
-                    var citations = _db.GetCitationsByLicensePlate(plate_number, _databaseContext.Server);
+                    //remove resolved citations (Would probably be better to filter at the database level)
+                    var citations = _db.GetCitationsByLicensePlate(plate_number, _databaseContext.Server).ToList().FindAll(citation => !citation.is_resolved);
                     var result = (citations.Select(citation => new CitizenVehicleCitation
                     {
                         citation_number = citation.citation_number,
@@ -138,7 +139,6 @@ namespace TCRS.Server.Controllers
                         date_recieved = citation.date_recieved,
                         training_eligable = citation.Citation_Type.training_eligable,
                         //If Citation is not resolved then check in database if it has been resolved and update if necessary
-                        is_resolved = IsCitationResolved(citation),
                         is_registered = false,
                     }));
 
@@ -148,7 +148,8 @@ namespace TCRS.Server.Controllers
                 else
                 {
                     var license_id = Citation.Driver_Record.Citizen.License.license_id;
-                    var citations = _db.GetCitationsByLicense(license_id, _databaseContext.Server);
+                    //remove resolved citations (Would probably be better to filter at the database level)
+                    var citations = _db.GetCitationsByLicense(license_id, _databaseContext.Server).ToList().FindAll(citation => !citation.is_resolved);
 
                     var result = citations.Select(citation => new CitizenVehicleCitation
                     {
@@ -161,7 +162,6 @@ namespace TCRS.Server.Controllers
                         date_due = CalculateDueDate(citation),
                         fine = Double.Parse(citation.Citation_Type.fine),
                         //If Citation is not resolved then check in database if it has been resolved and update if necessary
-                        is_resolved = IsCitationResolved(citation),
                         is_registered = _db.CitationIsRegisteredToCourse(citation.citation_id, _databaseContext.Server)
                     });
                     return Ok(result);
