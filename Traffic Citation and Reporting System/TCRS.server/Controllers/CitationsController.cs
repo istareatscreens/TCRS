@@ -189,8 +189,8 @@ namespace TCRS.Server.Controllers
             //Check data
             License FoundLicense = null;
             License_Plate FoundPlate = null;
-            bool is_dangerous = true;
-            bool is_wanted = true;
+            bool is_dangerous = false;
+            bool is_wanted = false;
             Citation NewCitation = null;
 
             try
@@ -201,18 +201,26 @@ namespace TCRS.Server.Controllers
                 {
                     FoundPlate = IEnumerableHandler.UnpackIEnumerable<License_Plate>(_db.GetVehicleInfoByLicencePlate(citationIssueData.licencePlate, _databaseContext.Server));
                     //warrant information
-                    var warrants = _db.GetVehicleWarrants(FoundPlate.vehicle_id, _databaseContext.Server);
-                    is_wanted = warrants.Count() > 0;
-                    is_dangerous = warrants.ToList().Exists((wanted) => wanted.Wanted.dangerous);
+                    //Deal with situaton where invalid licence is entered
+                    var warrants = (FoundPlate != null) ? _db.GetVehicleWarrants(FoundPlate.vehicle_id, _databaseContext.Server) : null;
+                    if (warrants != null)
+                    {
+                        is_wanted = warrants.Count() > 0;
+                        is_dangerous = warrants.ToList().Exists((wanted) => wanted.Wanted.dangerous);
+                    }
 
                 }
                 else if (citationIssueData.licence_id != null)
                 {
                     FoundLicense = IEnumerableHandler.UnpackIEnumerable<License>(_db.GetLicenseInfoByLicence(citationIssueData.licence_id, _databaseContext.Server));
                     //warrant information
-                    var warrants = _db.GetCitizenWarrants(FoundLicense.citizen_id, _databaseContext.Server);
-                    is_wanted = warrants.Count() > 0;
-                    is_dangerous = warrants.ToList().Exists((wanted) => wanted.Wanted.dangerous);
+                    //Deal with situaton where invalid licence is entered
+                    var warrants = (FoundLicense != null) ? _db.GetCitizenWarrants(FoundLicense.citizen_id, _databaseContext.Server) : null;
+                    if (warrants != null)
+                    {
+                        is_wanted = warrants.Count() > 0;
+                        is_dangerous = warrants.ToList().Exists((wanted) => wanted.Wanted.dangerous);
+                    }
                 }
                 else
                 {
