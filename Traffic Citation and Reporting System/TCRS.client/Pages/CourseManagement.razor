@@ -12,6 +12,7 @@
             <MudCard>
                 <MudCardContent>
                     <MudDatePicker Label="Course Scheduled Date and Time" Variant="Variant.Outlined" @bind-Date="dateSelect" />
+                    <br />
                     <MudSelect Label="Select type" @bind-Value="CourseData.CitizenCitationType" Variant="Variant.Outlined">
                         @foreach (CitizenCitationTypes item in Enum.GetValues(typeof(CitizenCitationTypes)))
                         {

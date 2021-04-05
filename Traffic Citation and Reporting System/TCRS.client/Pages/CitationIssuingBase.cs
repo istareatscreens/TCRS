@@ -1,13 +1,14 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using TCRS.Shared.Contracts.CitationManagement;
+using TCRS.Shared.Enums;
 using TCRS.Shared.Objects.Citations;
 
 namespace TCRS.Client.Pages
 {
     public class CitationIssuingBase : ComponentBase
     {
-
+        private int curTab = 1;
         protected CitationIssueData CitationData { get; set; } = new CitationIssueData();
 
         protected EditContext EditContext { get; set; }
@@ -30,7 +31,16 @@ namespace TCRS.Client.Pages
                 // Print out invalid input message
                 return;
             }
-            CitationData.citation_type_id = (int)CitationData.CitationType;
+
+            if(curTab == 1)
+            {
+                CitationData.citation_type_id = (int)CitationData.citizenCitationTypes;
+            }
+            else
+            {
+                CitationData.citation_type_id = (int)CitationData.vehicleCitationTypes;
+            }
+
             data = await CitationManager.IssueCitation(CitationData);
 
             //Clear data from form
@@ -41,6 +51,11 @@ namespace TCRS.Client.Pages
 
         protected string Disabled { get; set; }
         protected CitationIssuingDisplayData data = new CitationIssuingDisplayData();
+
+        protected void currentTab(int x)
+        {
+            curTab = x;
+        }
 
         protected string DangerInfo()
         {
