@@ -8,10 +8,16 @@ namespace TCRS.Shared.Objects.Lookup
         public string first_name { get; set; }
         public string middle_name { get; set; }
         public string last_name { get; set; }
+        public DateTime dob { get; set; }
+        public string home_address { get; set; }
         //Vehicle Information
         public string plate_number { get; set; }
         public string model { get; set; }
         public bool is_stolen { get; set; }
+        public string vin { get; set; }
+        public int year_made { get; set; }
+        public string make { get; set; }
+
         //Citation Type Description and Information
         public string citation_number { get; set; }
         public string name { get; set; }
