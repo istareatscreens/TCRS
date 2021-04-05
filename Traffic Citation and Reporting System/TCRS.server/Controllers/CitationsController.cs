@@ -114,10 +114,16 @@ namespace TCRS.Server.Controllers
                 return NotFound("Invalid");
             }
 
-            var Citation = _db.GetCitationAllInformationByNumber(citation_number, _databaseContext.Server).ToList().FirstOrDefault();
 
             try
             {
+                var Citation = _db.GetCitationAllInformationByNumber(citation_number, _databaseContext.Server).ToList().FirstOrDefault();
+                //Check if citation is marked as resolved, if not check in the database and update citation to be resolved if it is resolved
+                if (!Citation.is_resolved && _db.CheckIfCitationIsResolved(Citation.citation_id, _databaseContext.Server) && !_db.CitationIsRegisteredToCourse(Citation.citation_id, _databaseContext.Server))
+                {
+                    return NotFound("Is Resolved or Registered for Course");
+                }
+
                 if (Citation.Vehicle_Record != null)
                 {
                     var plate_number = Citation.Vehicle_Record.Vehicle.License_Plate.plate_number;

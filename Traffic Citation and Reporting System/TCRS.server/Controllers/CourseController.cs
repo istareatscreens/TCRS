@@ -73,6 +73,7 @@ namespace TCRS.Server.Controllers
                 {
                     throw new NullReferenceException("No Courses Available");
                 }
+
                 //Return all courses that are not full, then convert to CourseEnrollmentData
                 return courseList.FindAll(course => !course.is_full).Select(course =>
                   {
