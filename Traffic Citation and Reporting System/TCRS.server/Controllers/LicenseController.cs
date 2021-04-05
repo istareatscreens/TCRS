@@ -1,15 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using TCRS.Database;
-using TCRS.Database.Model;
 using TCRS.Server.Tokens;
-using TCRS.Shared.Helper;
-using TCRS.Shared.Objects.Auth;
-using TCRS.Shared.Objects.Citations;
 using TCRS.Shared.Objects.Lookup;
 
 namespace TCRS.Server.Controllers
@@ -37,31 +32,29 @@ namespace TCRS.Server.Controllers
             }
             try
             {
-                var citizens = new List<LookupCitizenDisplayData>();
-                foreach (var citizen in _db.GetCitizenInfoByLicenseID(license_id, _databaseContext.Server))
+                var citizenData = _db.GetCitizenInfoByLicenseID(license_id, _databaseContext.Server);
+                var citizenWantedList = _db.GetWantedCitizenInfoByCitizenId(citizenData.ToList().FirstOrDefault().citizen_id, _databaseContext.Server);
+                var citationData = _db.GetCitationsByLicense(license_id, _databaseContext.Server);
+                var citizen = citizenData.ToList().Select(citizen => new LookupCitizenDisplayData
                 {
-                    citizens.Add(
-                        new LookupCitizenDisplayData
-                        {
-                            first_name = citizen.Citizen.first_name,
-                            middle_name = citizen.Citizen.middle_name,
-                            last_name = citizen.Citizen.last_name,
-                            license_id = citizen.license_id,
-                            expiration_date = citizen.expiration_date,
-                            is_revoked = citizen.is_revoked,
-                            is_suspended = citizen.is_suspended,
-                            license_class = citizen.license_class,
-                            Wanted_Citizen = _db.GetWantedCitizenInfoByCitizenId(citizen.citizen_id, _databaseContext.Server).Select(record => new Shared.Objects.LookupPortal.CitizenWantedData
-                            {
-                                reference_no = record.Wanted.reference_no,
-                                dangerous = record.Wanted.dangerous,
-                                crime = record.Wanted.crime
-                            })
-                        }
-                        );
-                };
+                    first_name = citizen.Citizen.first_name,
+                    middle_name = citizen.Citizen.middle_name,
+                    last_name = citizen.Citizen.last_name,
+                    license_id = citizen.license_id,
+                    expiration_date = citizen.expiration_date,
+                    is_revoked = citizen.is_revoked,
+                    is_suspended = citizen.is_suspended,
+                    license_class = citizen.license_class,
 
-                return citizens;
+                    CitizenWantedData = (citizenWantedList != null) ? citizenWantedList.Select(record => new Shared.Objects.LookupPortal.CitizenWantedData
+                    {
+                        reference_no = record.Wanted.reference_no,
+                        dangerous = record.Wanted.dangerous,
+                        crime = record.Wanted.crime
+                    }) : null
+                }
+            );
+                return Ok(citizen);
             }
             catch (Exception)
             {

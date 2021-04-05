@@ -94,7 +94,6 @@ namespace TCRS.Database
             }
         }
 
-
         public IEnumerable<Citation> GetCitationByNumber(string citation_number, string connectionString)
         {
             var sql = "SELECT * FROM (SELECT citation_id, date_recieved, citation_type_id as type_id, officer_id FROM citation WHERE citation_number = @citation_number) as cit " +
