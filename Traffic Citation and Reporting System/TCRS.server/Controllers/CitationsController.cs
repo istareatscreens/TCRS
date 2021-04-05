@@ -114,7 +114,6 @@ namespace TCRS.Server.Controllers
                 return NotFound("Invalid");
             }
 
-
             try
             {
                 var Citation = _db.GetCitationAllInformationByNumber(citation_number, _databaseContext.Server).ToList().FirstOrDefault();
