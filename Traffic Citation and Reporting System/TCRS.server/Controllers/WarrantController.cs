@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TCRS.Database;
@@ -83,7 +84,7 @@ namespace TCRS.Server.Controllers
 
                 return Ok("Successfully posted");
             }
-            catch
+            catch (Exception e)
             {
                 return BadRequest("Invalid request");
             }

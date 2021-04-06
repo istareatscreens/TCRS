@@ -19,7 +19,7 @@ namespace TCRS.Database
         }
         private Wanted CreateWarrant(Wanted Wanted, string connectionString)
         {
-            var sql = "INSERT INTO `Wanted` (`reference_no`, `dangerous`, `crime`) VALUES (@reference_no, @dangerous, @crime)";
+            var sql = "INSERT INTO Wanted (reference_no, dangerous, crime) VALUES (@reference_no, @dangerous, @crime)";
             SaveData<Wanted>(sql, Wanted, connectionString);
             sql = "SELECT * FROM wanted WHERE dangerous = @dangerous, reference_no = @reference_no, crime=@crime";
             var warrents = SyncLoadData<Wanted, Wanted>(sql, Wanted, connectionString);
@@ -28,13 +28,13 @@ namespace TCRS.Database
         public void CreateCitizenWanted(Wanted Wanted, int citizen_id, string connectionString)
         {
             var newWanted = CreateWarrant(Wanted, connectionString);
-            SaveData<DynamicParameters>("INSERT INTO `Wanted_Citizen` (`citizen_id`, `wanted_id`) VALUES(@citizen_id, @newWanted)",
+            SaveData<DynamicParameters>("INSERT INTO Wanted_Citizen (citizen_id, wanted_id) VALUES(@citizen_id, @newWanted)",
             new DynamicParameters(new { citizen_id = citizen_id, wanted_id = newWanted.wanted_id }), connectionString);
         }
         public void CreateVehicleWanted(Wanted Wanted, int vehicle_id, string connectionString)
         {
             var newWanted = CreateWarrant(Wanted, connectionString);
-            SaveData<DynamicParameters>("INSERT INTO `Wanted_Vehicle` (`vehicle_id`, `wanted_id`) VALUES(@vehicle_id, @newWanted)",
+            SaveData<DynamicParameters>("INSERT INTO Wanted_Vehicle (vehicle_id, wanted_id) VALUES(@vehicle_id, @newWanted)",
             new DynamicParameters(new { vehicle_id = vehicle_id, wanted_id = newWanted.wanted_id }), connectionString);
         }
         public IEnumerable<Wanted_Vehicle> GetVehicleWarrants(int vehicle_id, string connectionString)
