@@ -2,9 +2,9 @@
 {
     public class WarrantData
     {
-        public string reference_number { get; set; }
+        public string reference_number;
         // only returned
-        public string status { get; set; }
-        public string crime { get; set; }
+        public bool status;
+        public string crime;
     }
 }
