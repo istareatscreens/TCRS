@@ -41,30 +41,67 @@ namespace TCRS.Server.Controllers
         {
             try
             {
-                var citizen = _db.GetCitizenInfoByLicenseID(license_id, _databaseContext.Server);
-                if (citizen == null || citizen.Count() == 0)
+
+                if (license_id != null)
                 {
-                    return BadRequest("Invalid license id");
+                    var citizen = _db.GetCitizenInfoByLicenseID(license_id, _databaseContext.Server);
+                    if (citizen == null || citizen.Count() == 0)
+                    {
+                        return BadRequest("Invalid license id");
+                    }
+
+                    var warrants = _db.GetCitizenWarrants(citizen.ToList().FirstOrDefault().citizen_id, _databaseContext.Server);
+
+                    if (warrants == null && warrants.Count() == 0)
+                    {
+                        var emptyWarrantList = new List<WarrantData>();
+                        emptyWarrantList.Add(new WarrantData());
+                        return emptyWarrantList;
+                    }
+
+                    var warrantsList = warrants.ToList().Select(warrant => (warrant.Wanted != null) ? new WarrantData
+                    {
+                        reference_no = warrant.Wanted.reference_no,
+                        status = warrant.Wanted.active_status,
+                        crime = warrant.Wanted.crime,
+                        dangerous = warrant.Wanted.dangerous
+                    } : null);
+
+                    return Ok(warrantsList);
                 }
-
-                var warrants = _db.GetCitizenWarrants(citizen.ToList().FirstOrDefault().citizen_id, _databaseContext.Server);
-
-                if (warrants == null && warrants.Count() == 0)
+                else if (plate_number != null)
                 {
-                    var emptyWarrantList = new List<WarrantData>();
-                    emptyWarrantList.Add(new WarrantData());
-                    return emptyWarrantList;
+                    var license = _db.GetVehicleInfoByLicensePlate(license_id, _databaseContext.Server);
+                    if (license == null || license.Count() == 0)
+                    {
+                        return BadRequest("Invalid license id");
+                    }
+
+                    var warrants = _db.GetVehicleWarrants(license.ToList().FirstOrDefault().vehicle_id, _databaseContext.Server);
+
+                    if (warrants == null && warrants.Count() == 0)
+                    {
+                        var emptyWarrantList = new List<WarrantData>();
+                        emptyWarrantList.Add(new WarrantData());
+                        return emptyWarrantList;
+                    }
+
+                    var warrantsList = warrants.ToList().Select(warrant => (warrant.Wanted != null) ? new WarrantData
+                    {
+                        reference_no = warrant.Wanted.reference_no,
+                        status = warrant.Wanted.active_status,
+                        crime = warrant.Wanted.crime,
+                        dangerous = warrant.Wanted.dangerous
+                    } : null);
+
+                    return Ok(warrantsList);
+
+
                 }
-
-                var warrantsList = warrants.ToList().Select(warrant => (warrant.Wanted != null) ? new WarrantData
+                else
                 {
-                    reference_no = warrant.Wanted.reference_no,
-                    status = warrant.Wanted.active_status,
-                    crime = warrant.Wanted.crime,
-                    dangerous = warrant.Wanted.dangerous
-                } : null);
-
-                return Ok(warrantsList);
+                    return BadRequest("Invalid input");
+                }
             }
             catch
             {

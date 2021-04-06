@@ -6,6 +6,7 @@ using System.Linq;
 using TCRS.Database;
 using TCRS.Server.Tokens;
 using TCRS.Shared.Objects.Lookup;
+using TCRS.Shared.Objects.LookupPortal;
 using TCRS.Shared.Objects.Warrant;
 
 namespace TCRS.Server.Controllers
@@ -55,7 +56,7 @@ namespace TCRS.Server.Controllers
                         crime = record.Wanted.crime,
                         status = record.Wanted.active_status
                     }) : null,
-                    CitationData = (citationData != null) ? citationData.Select(citation => new LookupCitationDisplayData
+                    CitationData = (citationData != null) ? citationData.Select(citation => new CitationData
                     {
                         citation_number = citation.citation_number,
                         name = citation.Citation_Type.name,
@@ -74,7 +75,7 @@ namespace TCRS.Server.Controllers
         }
 
         [HttpGet("GetVehicleInfoByLicensePlate")]
-        public ActionResult<IEnumerable<LookupVehicleDisplayData>> GetVehicleInfoByLicensePlate([FromQuery] string plate_number)
+        public ActionResult<IEnumerable<LookupVehicleDisplayData>> LookupVehicleInfoByLicensePlate([FromQuery] string plate_number)
 
         {
             //Return type is wrapped in action result to allow NotFond to be returned
@@ -86,45 +87,43 @@ namespace TCRS.Server.Controllers
             }
             try
             {
-                var vehicles = new List<LookupVehicleDisplayData>();
-                var citizenWantedList = _db.GetVehicleWarrants(vehicles.ToList().FirstOrDefault().vehicle_id, _databaseContext.Server);
-                var citationData = _db.GetCitationsByLicense(plate_number, _databaseContext.Server).ToList().FindAll(citation => !citation.is_resolved);
-                foreach (var vehicle in _db.GetVehicleInfoByLicensePlate(plate_number, _databaseContext.Server))
-
+                var vehicle = _db.GetVehicleInfoByLicencePlate(plate_number, _databaseContext.Server).ToList();
+                if (vehicle == null)
                 {
-                    vehicles.Add(
-                        new LookupVehicleDisplayData
-                        {
-                            vehicle_id = vehicle.Vehicle.vehicle_id,
-                            vin = vehicle.Vehicle.vin,
-                            name = vehicle.Vehicle.name,
-                            stolen = vehicle.Vehicle.stolen,
-                            make = vehicle.Vehicle.make,
-                            registered = vehicle.Vehicle.registered,
-                            model = vehicle.Vehicle.model,
-                            year_made = vehicle.Vehicle.year_made,
-                            citizen_id = vehicle.Vehicle.citizen_id,
-                            insurer_id = vehicle.Vehicle.insurer_id,
-                            WarrantData = (citizenWantedList != null) ? citizenWantedList.Select(record => new WarrantData
-                            {
-                                reference_no = record.Wanted.reference_no,
-                                dangerous = record.Wanted.dangerous,
-                                crime = record.Wanted.crime,
-                                status = record.Wanted.active_status
-                            }) : null,
-                            CitationData = (citationData != null) ? citationData.Select(citation => new LookupCitationDisplayData
-                            {
-                                citation_number = citation.citation_number,
-                                name = citation.Citation_Type.name,
-                                date_recieved = citation.date_recieved,
-                                date_due = citation.date_recieved.AddDays(citation.Citation_Type.due_date_month),
-                                fine = Double.Parse(citation.Citation_Type.fine)
-                            }) : null
-                        }
-                        );
-                };
+                    return NotFound(new { message = "Vehicle with this Plate number does not exist" });
+                }
+                var vehicleWantedList = _db.GetVehicleWarrants(vehicle.FirstOrDefault().vehicle_id, _databaseContext.Server);
+                var citationData = _db.GetCitationsByLicense(plate_number, _databaseContext.Server).ToList().FindAll(citation => !citation.is_resolved);
+                var vehicleData = vehicle.Select(vehicle => new LookupVehicleDisplayData
+                {
+                    vehicle_id = vehicle.Vehicle.vehicle_id,
+                    vin = vehicle.Vehicle.vin,
+                    name = vehicle.Vehicle.name,
+                    stolen = vehicle.Vehicle.stolen,
+                    make = vehicle.Vehicle.make,
+                    registered = vehicle.Vehicle.registered,
+                    model = vehicle.Vehicle.model,
+                    year_made = vehicle.Vehicle.year_made,
+                    citizen_id = vehicle.Vehicle.citizen_id,
+                    insurer_id = vehicle.Vehicle.insurer_id,
+                    WarrantData = (vehicleWantedList != null) ? vehicleWantedList.Select(record => new WarrantData
+                    {
+                        reference_no = record.Wanted.reference_no,
+                        dangerous = record.Wanted.dangerous,
+                        crime = record.Wanted.crime,
+                        status = record.Wanted.active_status
+                    }) : null,
+                    CitationData = (citationData != null) ? citationData.Select(citation => new LookupCitationDisplayData
+                    {
+                        citation_number = citation.citation_number,
+                        name = citation.Citation_Type.name,
+                        date_recieved = citation.date_recieved,
+                        date_due = citation.date_recieved.AddDays(citation.Citation_Type.due_date_month),
+                        fine = Double.Parse(citation.Citation_Type.fine)
+                    }) : null
+                });
 
-                return vehicles;
+                return Ok(vehicleData);
             }
             catch (Exception)
             {
