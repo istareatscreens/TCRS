@@ -58,7 +58,7 @@ namespace TCRS.Database
 
         public IEnumerable<Wanted_Citizen> GetCitizenWarrants(int citizen_id, string connectionString)
         {
-            var sql = @$"SELECT * FROM (SELECT * FROM wanted_citizen WHERE citizen_id=@citizen_id) as w
+            var sql = @$"SELECT * FROM (SELECT * FROM wanted_citizen WHERE citizen_id = @citizen_id) as w
                 LEFT JOIN wanted ON wanted.wanted_id = w.wanted_id AND active_status=1";
 
             using (IDbConnection connection = new MySqlConnection(connectionString))

@@ -41,7 +41,7 @@ namespace TCRS.Database
 
         public IEnumerable<Wanted_Citizen> GetWantedCitizenInfoByCitizenId(int citizen_id, string connectionString)
         {
-            var sql = @"SELECT * FROM (SELECT * FROM wanted_citizen WHERE citizen_id = 89) as cit
+            var sql = @"SELECT * FROM (SELECT * FROM wanted_citizen WHERE citizen_id = @citizen_id) as cit
                         LEFT JOIN wanted ON wanted.wanted_id = cit.wanted_id;";
             using (IDbConnection connection = new MySqlConnection(connectionString))
             {

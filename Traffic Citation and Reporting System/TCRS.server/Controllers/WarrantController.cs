@@ -37,7 +37,7 @@ namespace TCRS.Server.Controllers
             }
         }
         [HttpGet]
-        public ActionResult<IEnumerable<WarrantData>> GetWarrants([FromQuery] string license_id)
+        public ActionResult<IEnumerable<WarrantData>> GetWarrants([FromQuery] string license_id, [FromQuery] string plate_number)
         {
             try
             {
@@ -71,20 +71,48 @@ namespace TCRS.Server.Controllers
         {
             try
             {
-                var citizen = _db.GetCitizenInfoByLicenseID(CreateWarrantObject.license_id, _databaseContext.Server);
-                if (citizen == null || citizen.Count() == 0)
+                if (CreateWarrantObject.license_id != null && CreateWarrantObject.license_id != "")
                 {
-                    return BadRequest("Invalid Citizen");
+
+                    var citizen = _db.GetCitizenInfoByLicenseID(CreateWarrantObject.license_id, _databaseContext.Server);
+                    if (citizen == null || citizen.Count() == 0)
+                    {
+                        return BadRequest("Invalid Citizen");
+                    }
+
+                    _db.CreateCitizenWanted(new Wanted
+                    {
+                        crime = CreateWarrantObject.crime,
+                        dangerous = CreateWarrantObject.dangerous,
+                        reference_no = CreateWarrantObject.reference_no,
+                        active_status = true
+                    }, citizen.ToList().FirstOrDefault().citizen_id, _databaseContext.Server);
+
+                    return Ok("Successfully posted");
+
                 }
-
-                _db.CreateCitizenWanted(new Wanted
+                else if (CreateWarrantObject.plate_number != null && CreateWarrantObject.plate_number != "")
                 {
-                    crime = CreateWarrantObject.crime,
-                    dangerous = CreateWarrantObject.dangerous,
-                    reference_no = CreateWarrantObject.reference_no
-                }, citizen.ToList().FirstOrDefault().citizen_id, _databaseContext.Server);
+                    var vehicle = _db.GetVehicleInfoByLicencePlate(CreateWarrantObject.license_id, _databaseContext.Server);
+                    if (vehicle == null || vehicle.Count() == 0)
+                    {
+                        return BadRequest("Invalid Citizen");
+                    }
 
-                return Ok("Successfully posted");
+                    _db.CreateVehicleWanted(new Wanted
+                    {
+                        crime = CreateWarrantObject.crime,
+                        dangerous = CreateWarrantObject.dangerous,
+                        reference_no = CreateWarrantObject.reference_no,
+                        active_status = true
+                    }, vehicle.ToList().FirstOrDefault().vehicle_id, _databaseContext.Server);
+
+                    return Ok("Successfully posted");
+                }
+                else
+                {
+                    return BadRequest("Invalid request");
+                }
             }
             catch (Exception e)
             {
