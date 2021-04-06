@@ -36,7 +36,7 @@ namespace TCRS.Server.Controllers
             }
         }
         [HttpGet]
-        public ActionResult<IEnumerable<WarrantData>> GetWarrants([FromBody] string license_id)
+        public ActionResult<IEnumerable<WarrantData>> GetWarrants([FromQuery] string license_id)
         {
             try
             {
