@@ -69,14 +69,18 @@ namespace TCRS.Client.Pages
         protected void clearCitationForm()
         {
             citationData = new LookupCitationDisplayData();
+            createWarrantData = new CreateWarrantObject();
         }
         protected void clearCitizenForm()
         {
             citizenData = new LookupCitizenDisplayData();
+            createWarrantData = new CreateWarrantObject();
+            warrantData = new List<WarrantData>();
         }
         protected void clearVehicleForm()
         {
             vehicleData = new LookupVehicleDisplayData();
+            createWarrantData = new CreateWarrantObject();
         }
 
         protected string GetCitationType()
@@ -105,12 +109,16 @@ namespace TCRS.Client.Pages
         protected async Task removeWarrant(string reference_no)
         {
             await WarrantManager.RemoveWarrant(reference_no);
+            await WarrantManager.GetWarrants(citizenData.license_id);
+            StateHasChanged();
         }
 
         protected async Task postWarrantData()
         {
             createWarrantData.license_id = citizenData.license_id;
             await WarrantManager.PostWarrant(createWarrantData);
+            await WarrantManager.GetWarrants(citizenData.license_id);
+            StateHasChanged();
         }
     }
 }
