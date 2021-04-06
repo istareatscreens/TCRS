@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using TCRS.Database;
@@ -24,9 +23,17 @@ namespace TCRS.Server.Controllers
         }
 
         [HttpPost("RemoveWarrant")]
-        public ActionResult PostPayment([FromBody] string reference_number)
+        public ActionResult RemoveWarrant(DeleteWarrantObject deleteWarrantObject)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _db.ChangeWarrantStatus(deleteWarrantObject.reference_no, false, _databaseContext.Server);
+                return Ok("Successfully Removed");
+            }
+            catch
+            {
+                return BadRequest("Bad Request");
+            }
         }
         [HttpGet]
         public ActionResult<IEnumerable<WarrantData>> GetWarrants([FromBody] string license_id)
