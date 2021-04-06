@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using TCRS.Shared.Contracts.LookupPortal;
 using TCRS.Shared.Contracts.Warrant;
@@ -45,9 +46,7 @@ namespace TCRS.Client.Pages
             if (curTab == 1)
             {
                 citizenData = await LookupPortalManager.LookupCitizenData(LookupData.CitizenData);
-
-                var data = await WarrantManager.GetWarrants(citizenData.license_id);
-                warrantData = data;
+                warrantData = await WarrantManager.GetWarrants(citizenData.license_id);
             }
             else if (curTab == 2)
             {
