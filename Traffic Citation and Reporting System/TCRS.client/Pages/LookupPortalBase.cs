@@ -101,11 +101,17 @@ namespace TCRS.Client.Pages
         public string Disabled { get; set; }
 
         // Warrant data headings
-        protected string[] headings = { "Reference Number", "Status", "Crime" };
+        protected string[] headings = { "Reference Number", "Status", "Crime", "Dangerous" };
 
         protected async Task removeWarrant(string reference_number)
         {
             await WarrantManager.RemoveWarrant(reference_number);
+        }
+
+        protected async Task postWarrantData()
+        {
+            var tempData = createWarrantData;
+            await WarrantManager.PostWarrant(createWarrantData);
         }
     }
 }

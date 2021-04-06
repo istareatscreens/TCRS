@@ -51,7 +51,8 @@
 
                 <br />
                 
-                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary">Issue Warrant</MudButton>
+                <MudButton OnClick="postWarrantData" ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary">Issue Warrant</MudButton>
+
                 <br />
                 <MudSimpleTable Hover="true" FixedHeader="true">
                     <thead>
@@ -69,8 +70,11 @@
                             <td>@item.reference_number</td>
                             <td>@item.status</td>
                             <td>@item.crime</td>
-                            <td><MudButton OnClick="((e) => removeWarrant(item.reference_number))" ButtonType="ButtonType.Submit" Variant="Variant.Filled" 
-                                           Color="Color.Error">Remove Wanted Status</MudButton></td>
+                            <td>@item.dangerous</td>
+                            <td>
+                                <MudButton OnClick="((e) => removeWarrant(item.reference_number))" ButtonType="ButtonType.Submit" Variant="Variant.Filled"
+                                           Color="Color.Error">Remove Wanted Status</MudButton>
+                            </td>
                         </tr>
                         }
                     </tbody>
