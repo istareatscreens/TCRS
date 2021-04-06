@@ -9,7 +9,7 @@ using TCRS.Shared.Objects.Warrant;
 
 namespace TCRS.Business
 {
-    class WarrantManager : IWarrantManager
+    public class WarrantManager : IWarrantManager
     {
         private readonly IPersistenceService _api;
         public WarrantManager(IPersistenceService api)
