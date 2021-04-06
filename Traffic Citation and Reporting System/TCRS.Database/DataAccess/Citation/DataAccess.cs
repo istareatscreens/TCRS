@@ -246,7 +246,7 @@ namespace TCRS.Database
         }
         public void UpdateCitationToResolved(int citation_id, string connectionString)
         {
-            var sql = @"UPDATE citation SET is_resolved = '1' WHERE (citation_id = @citation_id)"; //set course as resolved
+            var sql = @"UPDATE citation SET is_resolved = '1' WHERE (citation_id = @citation_id)"; //set citation as resolved
             UpdateData<DynamicParameters>(sql, new DynamicParameters(new { citation_id = citation_id }), connectionString);
         }
 

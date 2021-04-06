@@ -6,6 +6,8 @@ namespace TCRS.Shared.Contracts
 {
     public interface IPersistenceService
     {
+        //Put (Update)
+        Task PutAsync<T>(T data);
         //Get
         Task<UserTokens> AuthenticateAndGetUserAsync(UserLoginCredentials userLoginCredentials);
         Task<IEnumerable<T>> GetAsync<T>(List<KeyValuePair<string, string>> parametersList);

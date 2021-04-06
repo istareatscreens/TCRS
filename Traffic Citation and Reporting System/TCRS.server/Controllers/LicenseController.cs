@@ -34,7 +34,7 @@ namespace TCRS.Server.Controllers
             }
             try
             {
-                var citizenData = _db.GetCitizenInfoByLicenseID(license_id, _databaseContext.Server);
+                var citizenData = _db.GetAllLicenseInfoByLicence(license_id, _databaseContext.Server);
                 var citizenWantedList = _db.GetCitizenWarrants(citizenData.ToList().FirstOrDefault().citizen_id, _databaseContext.Server);
                 var citationData = _db.GetCitationsByLicense(license_id, _databaseContext.Server).ToList().FindAll(citation => !citation.is_resolved);
                 var citizen = citizenData.ToList().Select(citizen => new LookupCitizenDisplayData
@@ -49,7 +49,9 @@ namespace TCRS.Server.Controllers
                     is_revoked = citizen.is_revoked,
                     is_suspended = citizen.is_suspended,
                     license_class = citizen.license_class,
-                    CitizenWantedData = (citizenWantedList != null) ? citizenWantedList.Select(record => new WarrantData
+                    insurer_name = (citizen.Citizen.insurer_id != 0) ? citizen.Citizen.Insurer.name : null,
+                    is_insured = citizen.Citizen.insurer_id != 0,
+                    CitizenWantedData = (citizenWantedList != null && citizenWantedList.Count() != 0) ? citizenWantedList.Select(record => new WarrantData
                     {
                         reference_no = record.Wanted.reference_no,
                         dangerous = record.Wanted.dangerous,
@@ -87,16 +89,29 @@ namespace TCRS.Server.Controllers
             }
             try
             {
-                var vehicle = _db.GetVehicleInfoByLicencePlate(plate_number, _databaseContext.Server).ToList();
-                if (vehicle == null)
+                var vehicle = _db.GetAllVehicleInfoByLicencePlate(plate_number, _databaseContext.Server).ToList();
+                if (vehicle == null || vehicle.Count() == 0)
                 {
                     return NotFound(new { message = "Vehicle with this Plate number does not exist" });
                 }
                 var vehicleWantedList = _db.GetVehicleWarrants(vehicle.FirstOrDefault().vehicle_id, _databaseContext.Server);
-                var citationData = _db.GetCitationsByLicense(plate_number, _databaseContext.Server).ToList().FindAll(citation => !citation.is_resolved);
+                var citationData = _db.GetCitationsByLicensePlate(plate_number, _databaseContext.Server).ToList().FindAll(citation => !citation.is_resolved);
+                var owner_id = vehicle.ToList().FirstOrDefault().Vehicle.citizen_id;
+                LookupCitizenDisplayData owner = null;
+                if (owner_id != null || owner_id != 0)
+                {
+                    owner = _db.GetCitizenById((int)owner_id, _databaseContext.Server).ToList().Select(owner => new LookupCitizenDisplayData
+                    {
+                        first_name = owner.first_name,
+                        middle_name = owner.middle_name,
+                        last_name = owner.last_name,
+                        dob = owner.dob,
+                        home_address = owner.home_address,
+                    }).FirstOrDefault();
+                }
                 var vehicleData = vehicle.Select(vehicle => new LookupVehicleDisplayData
                 {
-                    vehicle_id = vehicle.Vehicle.vehicle_id,
+                    plate_number = vehicle.plate_number,
                     vin = vehicle.Vehicle.vin,
                     name = vehicle.Vehicle.name,
                     stolen = vehicle.Vehicle.stolen,
@@ -106,14 +121,17 @@ namespace TCRS.Server.Controllers
                     year_made = vehicle.Vehicle.year_made,
                     citizen_id = vehicle.Vehicle.citizen_id,
                     insurer_id = vehicle.Vehicle.insurer_id,
-                    WarrantData = (vehicleWantedList != null) ? vehicleWantedList.Select(record => new WarrantData
+                    insurer_name = (vehicle.Vehicle.insurer_id != null || vehicle.Vehicle.insurer_id != 0) ? vehicle.Vehicle.Insurer.name : null,
+                    is_insured = vehicle.Vehicle.insurer_id != null || vehicle.Vehicle.insurer_id != 0,
+                    Owner = owner,
+                    WarrantData = (vehicleWantedList != null && vehicleWantedList.Count() != 0) ? vehicleWantedList.Select(record => new WarrantData
                     {
                         reference_no = record.Wanted.reference_no,
                         dangerous = record.Wanted.dangerous,
                         crime = record.Wanted.crime,
                         status = record.Wanted.active_status
                     }) : null,
-                    CitationData = (citationData != null) ? citationData.Select(citation => new LookupCitationDisplayData
+                    CitationData = (citationData != null) ? citationData.Select(citation => new CitationData
                     {
                         citation_number = citation.citation_number,
                         name = citation.Citation_Type.name,

@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using TCRS.Database;
@@ -23,7 +22,7 @@ namespace TCRS.Server.Controllers
             _databaseContext = databaseContext.Value;
         }
 
-        [HttpPost("RemoveWarrant")]
+        [HttpPut("RemoveWarrant")]
         public ActionResult RemoveWarrant(DeleteWarrantObject deleteWarrantObject)
         {
             try
@@ -137,7 +136,7 @@ namespace TCRS.Server.Controllers
                 }
                 else if (CreateWarrantObject.plate_number != null && CreateWarrantObject.plate_number != "")
                 {
-                    var vehicle = _db.GetVehicleInfoByLicencePlate(CreateWarrantObject.license_id, _databaseContext.Server);
+                    var vehicle = _db.GetVehicleInfoByLicensePlate(CreateWarrantObject.license_id, _databaseContext.Server);
                     if (vehicle == null || vehicle.Count() == 0)
                     {
                         return BadRequest("Invalid Citizen");
@@ -158,7 +157,7 @@ namespace TCRS.Server.Controllers
                     return BadRequest("Invalid request");
                 }
             }
-            catch (Exception e)
+            catch
             {
                 return BadRequest("Invalid request");
             }
