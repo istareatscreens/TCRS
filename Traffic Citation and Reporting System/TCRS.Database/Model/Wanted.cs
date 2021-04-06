@@ -9,7 +9,7 @@ namespace TCRS.Database.Model
         public int wanted_id { get; set; }
         public string reference_no { get; set; }
         public bool dangerous { get; set; }
-        public int crime { get; set; }
+        public string crime { get; set; }
         public bool active_status { get; set; }
 
         //Relationships

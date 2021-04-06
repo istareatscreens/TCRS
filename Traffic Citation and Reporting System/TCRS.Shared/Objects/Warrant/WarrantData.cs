@@ -4,7 +4,7 @@
     {
         public string reference_number;
         // only returned
-        public string status;
+        public bool status;
         public string crime;
     }
 }

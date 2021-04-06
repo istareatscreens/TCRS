@@ -31,7 +31,28 @@ namespace TCRS.Server.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<WarrantData>> GetWarrants([FromBody] string license_id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var citizen = _db.GetCitizenInfoByLicenseID(license_id, _databaseContext.Server);
+                if (citizen == null || citizen.Count() == 0)
+                {
+                    return BadRequest("Invalid Citizen");
+                }
+
+                var warrants = _db.GetCitizenWarrants(citizen.ToList().FirstOrDefault().citizen_id, _databaseContext.Server);
+
+                return Ok(warrants.ToList().Select(warrant => new WarrantData
+                {
+                    reference_number = warrant.Wanted.reference_no,
+                    status = warrant.Wanted.active_status,
+                    crime = warrant.Wanted.crime
+                }));
+
+            }
+            catch
+            {
+                return BadRequest("Unknown Error");
+            }
         }
 
         //TEST IMPLEMENTATION (Need to integrate payment API)
@@ -41,10 +62,11 @@ namespace TCRS.Server.Controllers
             try
             {
                 var citizen = _db.GetCitizenInfoByLicenseID(CreateWarrantObject.license_id, _databaseContext.Server);
-                if (citizen == null)
+                if (citizen == null || citizen.Count() == 0)
                 {
                     return BadRequest("Invalid Citizen");
                 }
+
                 _db.CreateCitizenWanted(new Wanted
                 {
                     crime = CreateWarrantObject.crime,
