@@ -93,63 +93,65 @@ namespace TCRS.Server.Controllers
         [HttpPost("EnrollInCourse")]
         public ActionResult EnrollInCourse(CourseEnrollmentBookingData bookingData)
         {
-            try
+            //try
+            //{
+            var citationList = _db.GetCitationAllInformationByNumber(bookingData.citation_number, _databaseContext.Server);
+            var courseList = _db.GetCourseById(bookingData.course_id, _databaseContext.Server);
+
+            //Validate if parameters passed are valid
+            if (citationList == null || courseList == null)
             {
-                var citationList = _db.GetCitationAllInformationByNumber(bookingData.citation_number, _databaseContext.Server);
-                var courseList = _db.GetCourseById(bookingData.course_id, _databaseContext.Server);
-
-                //Validate if parameters passed are valid
-                if (citationList != null && courseList != null)
-                {
-                    return BadRequest("Invalid Registration Details");
-                }
-
-                //unpack parameters
-                var citation = IEnumerableHandler.UnpackIEnumerable<Citation>(citationList);
-                var course = IEnumerableHandler.UnpackIEnumerable<Course>(courseList);
-
-                //Check if request is valid
-                if (!citation.Citation_Type.training_eligable || !(citation.citation_type_id == course.citation_type_id) || course.scheduled < DateTime.Now)
-                {
-                    return BadRequest("Invalid Registration Details");
-                }
-
-                //check if already registered for course
-                if (_db.CitationIsRegisteredToCourse(citation.citation_id, _databaseContext.Server))
-                {
-                    return BadRequest("Invalid Parameters");
-                }
-
-                var NumberOfSpacesLeft = course.capacity - _db.GetEnrollmentNumberForCourse(course.course_id, _databaseContext.Server);
-                //Check if course is already full
-                if (NumberOfSpacesLeft <= 0)
-                {
-                    return BadRequest("Course is Full");
-                }
-
-                //Check if citation is marked as resolved, if not check in the database and update citation to be resolved if it is resolved
-                if (citation.is_resolved || _db.CheckIfCitationIsResolved(citation.citation_id, _databaseContext.Server))
-                {
-                    return BadRequest("Already resolved");
-                }
-
-                if (citation.Driver_Record == null)
-                {
-                    return BadRequest("Invalid citation type");
-                }
-
-                //Passed all checks enroll in course
-                _db.RegisterCitizenInCourse(citation.Driver_Record.Citizen.citizen_id, citation.citation_id, course.course_id, _databaseContext.Server);
-                if (NumberOfSpacesLeft == 1)
-                {
-                    _db.UpdateCourseToFull(course.course_id, _databaseContext.Server);
-                }
-
+                return BadRequest("Invalid Registration Details");
             }
-            catch
+
+            //unpack parameters
+            var citation = IEnumerableHandler.UnpackIEnumerable<Citation>(citationList);
+            var course = IEnumerableHandler.UnpackIEnumerable<Course>(courseList);
+
+            //Check if request is valid
+            if (!citation.Citation_Type.training_eligable || !(citation.citation_type_id == course.citation_type_id) || course.scheduled < DateTime.Now)
             {
-                return BadRequest("Cannot connect to database");
+                return BadRequest("Invalid Registration Details");
             }
+
+            //check if already registered for course
+            if (_db.CitationIsRegisteredToCourse(citation.citation_id, _databaseContext.Server))
+            {
+                return BadRequest("Invalid Parameters");
+            }
+
+            var NumberOfSpacesLeft = course.capacity - _db.GetEnrollmentNumberForCourse(course.course_id, _databaseContext.Server);
+            //Check if course is already full
+            if (NumberOfSpacesLeft <= 0)
+            {
+                return BadRequest("Course is Full");
+            }
+
+            //Check if citation is marked as resolved, if not check in the database and update citation to be resolved if it is resolved
+            if (citation.is_resolved || _db.CheckIfCitationIsResolved(citation.citation_id, _databaseContext.Server))
+            {
+                return BadRequest("Already resolved");
+            }
+
+            if (citation.Driver_Record == null)
+            {
+                return BadRequest("Invalid citation type");
+            }
+
+            //Passed all checks enroll in course
+            _db.RegisterCitizenInCourse(citation.citation_id, course.course_id, citation.Driver_Record.Citizen.citizen_id, _databaseContext.Server);
+            if (NumberOfSpacesLeft == 1)
+            {
+                _db.UpdateCourseToFull(course.course_id, _databaseContext.Server);
+            }
+
+            /*
+        }
+        catch (Exception e)
+        {
+            return BadRequest("Cannot connect to database");
+        }
+            */
 
             return Accepted("Successfully registered for course");
 
