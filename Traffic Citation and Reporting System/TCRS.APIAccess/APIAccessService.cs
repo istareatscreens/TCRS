@@ -71,6 +71,11 @@ namespace TCRS.APIAccess
                    .ReadAsStringAsync(), _settings);
         }
 
+        public async Task PutAsync<T>(T data)
+        {
+            var requestUrl = RouteByType.PutEntityRouteAssignment[typeof(T)];
+            await _httpClient.PutAsJsonAsync(requestUrl, data);
+        }
 
         public async Task PostAsync<T>(T data)
         {

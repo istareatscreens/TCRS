@@ -27,6 +27,30 @@ namespace TCRS.Server.Controllers
             _databaseContext = databaseContext.Value;
         }
 
+        [HttpPut("RemoveCitation")]
+        public ActionResult ResolveCitation([FromQuery] string citation_number)
+        {
+            try
+            {
+                if (!IsValidCitationNumber(citation_number))
+                {
+                    return NotFound("Invalid Citation Number Length");
+                }
+
+                var Citation = _db.GetCitationByNumber(citation_number, _databaseContext.Server);
+                if (Citation == null || Citation.Count() == 0)
+                {
+                    return BadRequest("Invalid citation number");
+                }
+                _db.UpdateCitationToResolved(Citation.ToList().FirstOrDefault().citation_id, _databaseContext.Server);
+                return Ok("Successfully Removed");
+            }
+            catch
+            {
+                return BadRequest("Bad Request");
+            }
+
+        }
 
         [HttpGet("Lookup")]
         public ActionResult<IEnumerable<LookupCitationDisplayData>> CitationLookup([FromQuery] string citation_number)
@@ -204,7 +228,7 @@ namespace TCRS.Server.Controllers
                 //Get Data For Citizen or License Plate
                 if (citationIssueData.licencePlate != null)
                 {
-                    FoundPlate = IEnumerableHandler.UnpackIEnumerable<License_Plate>(_db.GetVehicleInfoByLicencePlate(citationIssueData.licencePlate, _databaseContext.Server));
+                    FoundPlate = IEnumerableHandler.UnpackIEnumerable<License_Plate>(_db.GetAllVehicleInfoByLicencePlate(citationIssueData.licencePlate, _databaseContext.Server));
                     //warrant information
                     //Deal with situaton where invalid licence is entered
                     var warrants = (FoundPlate != null) ? _db.GetVehicleWarrants(FoundPlate.vehicle_id, _databaseContext.Server) : null;
@@ -217,7 +241,7 @@ namespace TCRS.Server.Controllers
                 }
                 else if (citationIssueData.licence_id != null)
                 {
-                    FoundLicense = IEnumerableHandler.UnpackIEnumerable<License>(_db.GetLicenseInfoByLicence(citationIssueData.licence_id, _databaseContext.Server));
+                    FoundLicense = IEnumerableHandler.UnpackIEnumerable<License>(_db.GetAllLicenseInfoByLicence(citationIssueData.licence_id, _databaseContext.Server));
                     //warrant information
                     //Deal with situaton where invalid licence is entered
                     var warrants = (FoundLicense != null) ? _db.GetCitizenWarrants(FoundLicense.citizen_id, _databaseContext.Server) : null;

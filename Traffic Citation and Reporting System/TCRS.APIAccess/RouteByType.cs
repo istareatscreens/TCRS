@@ -14,6 +14,15 @@ namespace TCRS.APIAccess
 {
     class RouteByType
     {
+        public static Dictionary<Type, string> PutEntityRouteAssignment { get; } = new Dictionary<Type, string>
+        {
+            /* ***** Warrant ***** */
+            {typeof(DeleteWarrantObject), "api/Warrant/RemoveWarrant" },
+            /* ***** Warrant ***** */
+            {typeof(RemoveCitationObject), "api/Citations/RemoveCitation" }
+
+
+        };
 
         public static Dictionary<Type, string> PostEntityRouteAssignment { get; } = new Dictionary<Type, string>
         {
@@ -42,8 +51,7 @@ namespace TCRS.APIAccess
             {typeof(PaymentData), "api/Payment/PostPayment" },
 
             /* ***** Warrant ***** */
-            {typeof(CreateWarrantObject), "api/Warrant/PostWarrant" },
-            {typeof(DeleteWarrantObject), "api/Warrant/RemoveWarrant" }
+            {typeof(CreateWarrantObject), "api/Warrant/PostWarrant" }
 
         };
         public static Dictionary<Type, string> GetEntityRouteAssignment { get; } = new Dictionary<Type, string>

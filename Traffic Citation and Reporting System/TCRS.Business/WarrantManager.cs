@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using TCRS.Shared.Contracts;
 using TCRS.Shared.Contracts.Warrant;
@@ -33,7 +31,7 @@ namespace TCRS.Business
 
         public async Task RemoveWarrant(string reference_no)
         {
-            await _api.PostAsync<DeleteWarrantObject>(new DeleteWarrantObject { reference_no = reference_no });
+            await _api.PutAsync<DeleteWarrantObject>(new DeleteWarrantObject { reference_no = reference_no });
         }
     }
 }
