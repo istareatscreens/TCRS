@@ -44,18 +44,20 @@ namespace TCRS.Server.Controllers
                 var citizen = _db.GetCitizenInfoByLicenseID(license_id, _databaseContext.Server);
                 if (citizen == null || citizen.Count() == 0)
                 {
-                    return BadRequest("Invalid Citizen");
+                    return BadRequest("Invalid license id");
                 }
 
                 var warrants = _db.GetCitizenWarrants(citizen.ToList().FirstOrDefault().citizen_id, _databaseContext.Server);
 
-                return Ok(warrants.ToList().Select(warrant => new WarrantData
+                var warrantsList = warrants.ToList().Select(warrant => new WarrantData
                 {
                     reference_no = warrant.Wanted.reference_no,
                     status = warrant.Wanted.active_status,
-                    crime = warrant.Wanted.crime
-                }));
+                    crime = warrant.Wanted.crime,
+                    dangerous = warrant.Wanted.dangerous
+                }).ToList();
 
+                return warrantsList;
             }
             catch
             {

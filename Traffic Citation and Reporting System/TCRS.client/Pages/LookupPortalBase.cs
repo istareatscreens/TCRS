@@ -46,7 +46,7 @@ namespace TCRS.Client.Pages
             if (curTab == 1)
             {
                 citizenData = await LookupPortalManager.LookupCitizenData(LookupData.CitizenData);
-                warrantData = await WarrantManager.GetWarrants(citizenData.license_id);
+                warrantData = citizenData.CitizenWantedData.ToList(); //await WarrantManager.GetWarrants(citizenData.license_id);
             }
             else if (curTab == 2)
             {
@@ -81,11 +81,11 @@ namespace TCRS.Client.Pages
 
         protected string GetCitationType()
         {
-            if(citationData.is_citizen)
+            if (citationData.is_citizen)
             {
                 return "Citizen Citation";
             }
-            else if(citationData.is_vehicle)
+            else if (citationData.is_vehicle)
             {
                 return "Vehicle Citation";
             }
@@ -110,7 +110,6 @@ namespace TCRS.Client.Pages
         protected async Task postWarrantData()
         {
             createWarrantData.license_id = citizenData.license_id;
-            var temp = createWarrantData;
             await WarrantManager.PostWarrant(createWarrantData);
         }
     }

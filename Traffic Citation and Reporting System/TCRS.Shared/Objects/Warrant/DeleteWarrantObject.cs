@@ -2,6 +2,6 @@
 {
     public class DeleteWarrantObject
     {
-        public string reference_no;
+        public string reference_no { get; set; }
     }
 }

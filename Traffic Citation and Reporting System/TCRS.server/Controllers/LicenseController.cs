@@ -35,24 +35,33 @@ namespace TCRS.Server.Controllers
             {
                 var citizenData = _db.GetCitizenInfoByLicenseID(license_id, _databaseContext.Server);
                 var citizenWantedList = _db.GetWantedCitizenInfoByCitizenId(citizenData.ToList().FirstOrDefault().citizen_id, _databaseContext.Server);
-                var citationData = _db.GetCitationsByLicense(license_id, _databaseContext.Server);
+                var citationData = _db.GetCitationsByLicense(license_id, _databaseContext.Server).ToList().FindAll(citation => !citation.is_resolved);
                 var citizen = citizenData.ToList().Select(citizen => new LookupCitizenDisplayData
                 {
                     first_name = citizen.Citizen.first_name,
                     middle_name = citizen.Citizen.middle_name,
                     last_name = citizen.Citizen.last_name,
+                    dob = citizen.Citizen.dob,
+                    home_address = citizen.Citizen.home_address,
                     license_id = citizen.license_id,
                     expiration_date = citizen.expiration_date,
                     is_revoked = citizen.is_revoked,
                     is_suspended = citizen.is_suspended,
                     license_class = citizen.license_class,
-
                     CitizenWantedData = (citizenWantedList != null) ? citizenWantedList.Select(record => new WarrantData
                     {
                         reference_no = record.Wanted.reference_no,
                         dangerous = record.Wanted.dangerous,
                         crime = record.Wanted.crime,
                         status = record.Wanted.active_status
+                    }) : null,
+                    CitationData = (citationData != null) ? citationData.Select(citation => new LookupCitationDisplayData
+                    {
+                        citation_number = citation.citation_number,
+                        name = citation.Citation_Type.name,
+                        date_recieved = citation.date_recieved,
+                        date_due = citation.date_recieved.AddDays(citation.Citation_Type.due_date_month),
+                        fine = Double.Parse(citation.Citation_Type.fine)
                     }) : null
                 }
             );
@@ -78,7 +87,10 @@ namespace TCRS.Server.Controllers
             try
             {
                 var vehicles = new List<LookupVehicleDisplayData>();
+                var citizenWantedList = _db.GetVehicleWarrants(vehicles.ToList().FirstOrDefault().vehicle_id, _databaseContext.Server);
+                var citationData = _db.GetCitationsByLicense(plate_number, _databaseContext.Server).ToList().FindAll(citation => !citation.is_resolved);
                 foreach (var vehicle in _db.GetVehicleInfoByLicensePlate(plate_number, _databaseContext.Server))
+
                 {
                     vehicles.Add(
                         new LookupVehicleDisplayData
@@ -93,9 +105,23 @@ namespace TCRS.Server.Controllers
                             year_made = vehicle.Vehicle.year_made,
                             citizen_id = vehicle.Vehicle.citizen_id,
                             insurer_id = vehicle.Vehicle.insurer_id,
+                            WarrantData = (citizenWantedList != null) ? citizenWantedList.Select(record => new WarrantData
+                            {
+                                reference_no = record.Wanted.reference_no,
+                                dangerous = record.Wanted.dangerous,
+                                crime = record.Wanted.crime,
+                                status = record.Wanted.active_status
+                            }) : null,
+                            CitationData = (citationData != null) ? citationData.Select(citation => new LookupCitationDisplayData
+                            {
+                                citation_number = citation.citation_number,
+                                name = citation.Citation_Type.name,
+                                date_recieved = citation.date_recieved,
+                                date_due = citation.date_recieved.AddDays(citation.Citation_Type.due_date_month),
+                                fine = Double.Parse(citation.Citation_Type.fine)
+                            }) : null
                         }
                         );
-
                 };
 
                 return vehicles;

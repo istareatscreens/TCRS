@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using TCRS.Shared.Objects.Warrant;
 
 namespace TCRS.Shared.Objects.Lookup
 {
@@ -19,5 +16,7 @@ namespace TCRS.Shared.Objects.Lookup
         public int year_made { get; set; }
         public int? citizen_id { get; set; }
         public int? insurer_id { get; set; }
+        public IEnumerable<WarrantData> WarrantData { get; set; }
+        public IEnumerable<LookupCitationDisplayData> CitationData { get; set; }
     }
 }
