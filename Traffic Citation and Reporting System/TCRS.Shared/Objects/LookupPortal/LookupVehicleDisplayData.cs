@@ -18,5 +18,6 @@ namespace TCRS.Shared.Objects.Lookup
         public int? insurer_id { get; set; }
         public IEnumerable<WarrantData> WarrantData { get; set; }
         public IEnumerable<LookupCitationDisplayData> CitationData { get; set; }
+        //    public LookupCitizenDisplayData? lookupCitizenDisplayData { get; set; }
     }
 }
