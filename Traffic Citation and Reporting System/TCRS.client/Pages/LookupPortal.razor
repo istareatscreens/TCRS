@@ -40,13 +40,13 @@
                     <MudTextField Value="citizenData.license_class" Label="Licence Class:" ReadOnly="true" Variant="Variant.Filled" />
 
                     <MudTextField Label="Reference number:" Variant="Variant.Outlined" Placeholder="Reference number:"
-                                  @bind-Value="createWarrantData.reference_no" For="@((e) => createWarrantData.reference_no)" />
-                    <MudSelect T="bool" Label="Dangerous:"  @bind-Value="createWarrantData.dangerous">
+                                  @bind-Value="createWarrantData.reference_no" />
+                    <MudSelect T="bool" Label="Dangerous:" @bind-Value="createWarrantData.dangerous">
                         <MudSelectItem Value="@(true)" />
                         <MudSelectItem Value="@(false)" />
                     </MudSelect>
                     <MudTextField Label="Crime:" Variant="Variant.Outlined" Placeholder="Crime decription:"
-                                  @bind-Value="createWarrantData.crime" For="@((e) => createWarrantData.crime)" />
+                                  @bind-Value="createWarrantData.crime" />
                 </div>
 
                 <br />
@@ -69,7 +69,7 @@
                             <td>@item.reference_number</td>
                             <td>@item.status</td>
                             <td>@item.crime</td>
-                            <td><MudButton OnClick="((e) => removeWarrant(item.reference_number)" ButtonType="ButtonType.Submit" Variant="Variant.Filled" 
+                            <td><MudButton OnClick="((e) => removeWarrant(item.reference_number))" ButtonType="ButtonType.Submit" Variant="Variant.Filled" 
                                            Color="Color.Error">Remove Wanted Status</MudButton></td>
                         </tr>
                         }
