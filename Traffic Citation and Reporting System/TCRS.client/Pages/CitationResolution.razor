@@ -28,10 +28,19 @@
             {
                 <td><MudButton @onclick="@((e) => OpenPayDialog(data))" Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary">Pay</MudButton></td>
             }
-            @if (data.training_eligable == true)
+            @if (data.training_eligable == true && !data.is_registered)
             {
-                <td><MudButton @onclick="((e) => OpenCourseEnrollmentDialog(data))" Variant="Variant.Filled" 
-                               Size="Size.Small" Color="Color.Primary" Disabled="@(data.is_registered)">Enroll in Course</MudButton></td>
+                <td>
+                    <MudButton @onclick="((e) => OpenCourseEnrollmentDialog(data))" Variant="Variant.Filled"
+                               Size="Size.Small" Color="Color.Primary" >Enroll in Course</MudButton>
+                </td>
+            }
+            @if (data.training_eligable == true && data.is_registered)
+            {
+                <td>
+                    <MudButton @onclick="((e) => OpenCourseEnrollmentDialog(data))" Variant="Variant.Filled"
+                               Size="Size.Small" Color="Color.Primary" Disabled="@(data.is_registered)">Already Enrolled in Course</MudButton>
+                </td>
             }
 
         </tr>

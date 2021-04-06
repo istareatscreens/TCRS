@@ -11,7 +11,7 @@ namespace TCRS.Shared.Enums
         ParkingCitation = 12,
         [Description("Moving vehicle code warning")]
         MovingVehicleCodeWarning = 13,
-        [Description("Moving vehicle code warning")]
+        [Description("Moving vehicle code violation")]
         MovingVehicleCodeViolation = 14
     }
 }
