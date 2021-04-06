@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TCRS.Shared.Objects.Warrant
 {
-    class WarrantData
+    public class WarrantData
     {
         public int wanted_id;
         public string reference_number;
