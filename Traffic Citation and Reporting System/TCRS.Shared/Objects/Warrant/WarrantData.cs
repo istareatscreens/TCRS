@@ -6,6 +6,6 @@
         // only returned
         public bool status;
         public string crime;
-        public string dangerous;
+        public bool dangerous;
     }
 }

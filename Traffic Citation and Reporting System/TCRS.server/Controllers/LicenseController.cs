@@ -6,6 +6,7 @@ using System.Linq;
 using TCRS.Database;
 using TCRS.Server.Tokens;
 using TCRS.Shared.Objects.Lookup;
+using TCRS.Shared.Objects.Warrant;
 
 namespace TCRS.Server.Controllers
 {
@@ -46,11 +47,12 @@ namespace TCRS.Server.Controllers
                     is_suspended = citizen.is_suspended,
                     license_class = citizen.license_class,
 
-                    CitizenWantedData = (citizenWantedList != null) ? citizenWantedList.Select(record => new Shared.Objects.LookupPortal.CitizenWantedData
+                    CitizenWantedData = (citizenWantedList != null) ? citizenWantedList.Select(record => new WarrantData
                     {
-                        reference_no = record.Wanted.reference_no,
+                        reference_number = record.Wanted.reference_no,
                         dangerous = record.Wanted.dangerous,
-                        crime = record.Wanted.crime
+                        crime = record.Wanted.crime,
+                        status = record.Wanted.active_status
                     }) : null
                 }
             );
