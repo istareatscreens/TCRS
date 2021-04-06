@@ -34,7 +34,7 @@ namespace TCRS.Server.Controllers
             try
             {
                 var citizenData = _db.GetCitizenInfoByLicenseID(license_id, _databaseContext.Server);
-                var citizenWantedList = _db.GetWantedCitizenInfoByCitizenId(citizenData.ToList().FirstOrDefault().citizen_id, _databaseContext.Server);
+                var citizenWantedList = _db.GetCitizenWarrants(citizenData.ToList().FirstOrDefault().citizen_id, _databaseContext.Server);
                 var citationData = _db.GetCitationsByLicense(license_id, _databaseContext.Server).ToList().FindAll(citation => !citation.is_resolved);
                 var citizen = citizenData.ToList().Select(citizen => new LookupCitizenDisplayData
                 {
