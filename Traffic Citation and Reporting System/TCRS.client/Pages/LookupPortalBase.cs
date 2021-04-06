@@ -7,8 +7,8 @@ namespace TCRS.Client.Pages
 {
     public class LookupPortalBase : ComponentBase
     {
+        private int curTab = 1;
         protected bool IssueWarrant { get; set; }
-
         protected LookupCitationDisplayData citationData = new LookupCitationDisplayData();
         protected LookupCitizenDisplayData citizenData = new LookupCitizenDisplayData();
         protected LookupVehicleDisplayData vehicleData = new LookupVehicleDisplayData();
@@ -34,15 +34,15 @@ namespace TCRS.Client.Pages
                 return;
             }
 
-            if (LookupData.CitizenData != null)
+            if (curTab == 1)
             {
                 citizenData = await LookupPortalManager.LookupCitizenData(LookupData.CitizenData);
             }
-            else if (LookupData.VehicleData != null)
+            else if (curTab == 2)
             {
                 vehicleData = await LookupPortalManager.LookupVehicleData(LookupData.VehicleData);
             }
-            else if (LookupData.CitationData != null)
+            else if (curTab == 3)
             {
                 citationData = await LookupPortalManager.LookupCitationData(LookupData.CitationData);
             }
@@ -51,7 +51,23 @@ namespace TCRS.Client.Pages
             StateHasChanged();
         }
 
-        
+        protected void currentTab(int x)
+        {
+            curTab = x;
+        }
+
+        protected void clearCitationForm()
+        {
+            citationData = new LookupCitationDisplayData();
+        }
+        protected void clearCitizenForm()
+        {
+            citizenData = new LookupCitizenDisplayData();
+        }
+        protected void clearVehicleForm()
+        {
+            vehicleData = new LookupVehicleDisplayData();
+        }
 
         protected string GetCitationType()
         {

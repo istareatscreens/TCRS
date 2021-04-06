@@ -36,7 +36,7 @@ namespace TCRS.Client.Pages
             {
                 CitationData.citation_type_id = (int)CitationData.citizenCitationTypes;
             }
-            else
+            else if(curTab == 2)
             {
                 CitationData.citation_type_id = (int)CitationData.vehicleCitationTypes;
             }
@@ -55,6 +55,7 @@ namespace TCRS.Client.Pages
         protected void currentTab(int x)
         {
             curTab = x;
+            data = new CitationIssuingDisplayData();
         }
 
         protected string WarrantInfo()
