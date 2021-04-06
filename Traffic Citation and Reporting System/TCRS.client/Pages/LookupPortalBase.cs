@@ -17,8 +17,8 @@ namespace TCRS.Client.Pages
         protected LookupCitizenDisplayData citizenData = new LookupCitizenDisplayData();
         protected LookupVehicleDisplayData vehicleData = new LookupVehicleDisplayData();
         protected LookupDisplayData LookupData { get; set; } = new LookupDisplayData();
-        protected List<WarrantData> warrantData { get; set; }
-        protected CreateWarrantObject createWarrantData { get; set; }
+        protected List<WarrantData> warrantData { get; set; } = new List<WarrantData>();
+        protected CreateWarrantObject createWarrantData { get; set; } = new CreateWarrantObject();
 
         protected EditContext EditContext { get; set; }
 
@@ -101,11 +101,18 @@ namespace TCRS.Client.Pages
         public string Disabled { get; set; }
 
         // Warrant data headings
-        protected string[] headings = { "Reference Number", "Status", "Crime" };
+        protected string[] headings = { "Reference Number", "Status", "Crime", "Dangerous" };
 
-        protected async Task removeWarrant(string reference_number)
+        protected async Task removeWarrant(string reference_no)
         {
-            await WarrantManager.RemoveWarrant(reference_number);
+            await WarrantManager.RemoveWarrant(reference_no);
+        }
+
+        protected async Task postWarrantData()
+        {
+            createWarrantData.license_id = citizenData.license_id;
+            var temp = createWarrantData;
+            await WarrantManager.PostWarrant(createWarrantData);
         }
     }
 }

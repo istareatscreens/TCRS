@@ -8,6 +8,7 @@ using TCRS.Shared.Objects.CourseManagement;
 using TCRS.Shared.Objects.EmployeeLookup;
 using TCRS.Shared.Objects.Lookup;
 using TCRS.Shared.Objects.Payment;
+using TCRS.Shared.Objects.Warrant;
 
 namespace TCRS.APIAccess
 {
@@ -38,7 +39,11 @@ namespace TCRS.APIAccess
 
             /* ***** Payment ***** */
             // citation_id should be passed
-            {typeof(PaymentData), "api/Payment/PostPayment" }
+            {typeof(PaymentData), "api/Payment/PostPayment" },
+
+            /* ***** Warrant ***** */
+            {typeof(CreateWarrantObject), "api/Warrant/PostWarrant" },
+            {typeof(DeleteWarrantObject), "api/Warrant/RemoveWarrant" }
 
         };
         public static Dictionary<Type, string> GetEntityRouteAssignment { get; } = new Dictionary<Type, string>
@@ -73,7 +78,8 @@ namespace TCRS.APIAccess
             // VehicleController: get(vehicle_id)
             {typeof(LookupVehicleDisplayData), "api/License/GetVehicleInfoByLicensePlate" },
 
-
+            /* ***** Warrant ***** */
+            {typeof(WarrantData), "api/Warrant" }
         };
 
     }
