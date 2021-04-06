@@ -69,14 +69,18 @@ namespace TCRS.Client.Pages
         protected void clearCitationForm()
         {
             citationData = new LookupCitationDisplayData();
+            createWarrantData = new CreateWarrantObject();
         }
         protected void clearCitizenForm()
         {
             citizenData = new LookupCitizenDisplayData();
+            createWarrantData = new CreateWarrantObject();
+            warrantData = new List<WarrantData>();
         }
         protected void clearVehicleForm()
         {
             vehicleData = new LookupVehicleDisplayData();
+            createWarrantData = new CreateWarrantObject();
         }
 
         protected string GetCitationType()

@@ -11,9 +11,9 @@
 
         <MudTabs Elevation="4" Rounded="true" Centered="true" Color="@Color.Primary">
             <br />
-            
+
             <MudTabPanel OnClick="((e) => currentTab(1))" Text="Person Information">
-                
+
                 <div style="max-width: 400px;">
                     <EditForm Model="@EditContext" OnValidSubmit="@OnValidSubmit">
                         <DataAnnotationsValidator />
@@ -38,22 +38,24 @@
                     <MudTextField Value="citizenData.is_revoked" Label="Licence Revoked?:" ReadOnly="true" Variant="Variant.Filled" />
                     <MudTextField Value="citizenData.is_suspended" Label="Licence Suspended?" ReadOnly="true" Variant="Variant.Filled" />
                     <MudTextField Value="citizenData.license_class" Label="Licence Class:" ReadOnly="true" Variant="Variant.Filled" />
+                    <br />
+                    <MudText Typo="Typo.h6">Warrant Creation</MudText>
+                    <MudPaper Class="pa-1" Elevation="3">
+                        <MudTextField Label="Reference number:" Variant="Variant.Outlined" Placeholder="Reference number:"
+                                      @bind-Value="createWarrantData.reference_no" />
+                        <MudSelect T="bool" Label="Dangerous:" @bind-Value="createWarrantData.dangerous">
+                            <MudSelectItem Value="@(true)" />
+                            <MudSelectItem Value="@(false)" />
+                        </MudSelect>
+                        <MudTextField Label="Crime:" Variant="Variant.Outlined" Placeholder="Crime decription:"
+                                      @bind-Value="createWarrantData.crime" />
+                        <br />
+                        <MudButton OnClick="postWarrantData" ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary">Issue Warrant</MudButton>
 
-                    <MudTextField Label="Reference number:" Variant="Variant.Outlined" Placeholder="Reference number:"
-                                  @bind-Value="createWarrantData.reference_no" />
-                    <MudSelect T="bool" Label="Dangerous:" @bind-Value="createWarrantData.dangerous">
-                        <MudSelectItem Value="@(true)" />
-                        <MudSelectItem Value="@(false)" />
-                    </MudSelect>
-                    <MudTextField Label="Crime:" Variant="Variant.Outlined" Placeholder="Crime decription:"
-                                  @bind-Value="createWarrantData.crime" />
+                    </MudPaper>
                 </div>
-
                 <br />
-                
-                <MudButton OnClick="postWarrantData" ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary">Issue Warrant</MudButton>
-
-                <br />
+                <MudText Typo="Typo.h6">Warrant Information</MudText>
                 <MudSimpleTable Hover="true" FixedHeader="true">
                     <thead>
                         <tr>
@@ -66,24 +68,24 @@
                     <tbody>
                         @foreach (var item in warrantData)
                         {
-                        <tr>
-                            <td>@item.reference_no</td>
-                            <td>@item.status</td>
-                            <td>@item.crime</td>
-                            <td>@item.dangerous</td>
-                            <td>
-                                <MudButton OnClick="((e) => removeWarrant(item.reference_no))" ButtonType="ButtonType.Submit" Variant="Variant.Filled"
-                                           Color="Color.Error">Remove Wanted Status</MudButton>
-                            </td>
-                        </tr>
+                            <tr>
+                                <td>@item.reference_no</td>
+                                <td>@item.status</td>
+                                <td>@item.crime</td>
+                                <td>@item.dangerous</td>
+                                <td>
+                                    <MudButton OnClick="((e) => removeWarrant(item.reference_no))" ButtonType="ButtonType.Submit" Variant="Variant.Filled"
+                                               Color="Color.Error">Remove Wanted Status</MudButton>
+                                </td>
+                            </tr>
                         }
                     </tbody>
                 </MudSimpleTable>
-                    
+
                 <MudDivider DividerType="DividerType.Middle" Class="my-6" />
 
             </MudTabPanel>
-                
+
             <MudTabPanel OnClick="((e) => currentTab(2))" Text="Vehicle Information">
 
                 <div style="max-width: 400px;">
