@@ -81,7 +81,8 @@ namespace TCRS.Server.Controllers
                 {
                     crime = CreateWarrantObject.crime,
                     dangerous = CreateWarrantObject.dangerous,
-                    reference_no = CreateWarrantObject.reference_no
+                    reference_no = CreateWarrantObject.reference_no,
+                    active_status = true
                 }, citizen.ToList().FirstOrDefault().citizen_id, _databaseContext.Server);
 
                 return Ok("Successfully posted");
