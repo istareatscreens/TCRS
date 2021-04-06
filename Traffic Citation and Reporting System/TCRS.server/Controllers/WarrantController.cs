@@ -49,7 +49,7 @@ namespace TCRS.Server.Controllers
 
                 var warrants = _db.GetCitizenWarrants(citizen.ToList().FirstOrDefault().citizen_id, _databaseContext.Server);
 
-                if (warrants.Count() == 1 && warrants.ToList().FirstOrDefault().Wanted == null)
+                if (warrants == null && warrants.Count() == 0)
                 {
                     var emptyWarrantList = new List<WarrantData>();
                     emptyWarrantList.Add(new WarrantData());
@@ -62,7 +62,7 @@ namespace TCRS.Server.Controllers
                     status = warrant.Wanted.active_status,
                     crime = warrant.Wanted.crime,
                     dangerous = warrant.Wanted.dangerous
-                } : null).Where(warrant => warrant != null);
+                } : null);
 
                 return Ok(warrantsList);
             }

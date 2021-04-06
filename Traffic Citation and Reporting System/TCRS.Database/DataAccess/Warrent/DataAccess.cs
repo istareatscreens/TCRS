@@ -40,7 +40,7 @@ namespace TCRS.Database
         public IEnumerable<Wanted_Vehicle> GetVehicleWarrants(int vehicle_id, string connectionString)
         {
             var sql = @$"SELECT * FROM (SELECT * FROM wanted_vehicle WHERE vehicle_id=@vehicle_id ) as w
-                LEFT JOIN wanted ON wanted.wanted_id = w.wanted_id AND active_status=1";
+                JOIN wanted ON wanted.wanted_id = w.wanted_id AND active_status=1";
 
             using (IDbConnection connection = new MySqlConnection(connectionString))
             {
@@ -59,7 +59,7 @@ namespace TCRS.Database
         public IEnumerable<Wanted_Citizen> GetCitizenWarrants(int citizen_id, string connectionString)
         {
             var sql = @$"SELECT * FROM (SELECT * FROM wanted_citizen WHERE citizen_id = @citizen_id) as w
-                LEFT JOIN wanted ON wanted.wanted_id = w.wanted_id AND active_status=1";
+                JOIN wanted ON wanted.wanted_id = w.wanted_id AND active_status=1";
 
             using (IDbConnection connection = new MySqlConnection(connectionString))
             {
@@ -70,7 +70,6 @@ namespace TCRS.Database
                     return Wanted_Citizen;
                 }
             , new { citizen_id = citizen_id }, splitOn: "citizen_id, wanted_id");
-
                 return rows;
             }
         }
