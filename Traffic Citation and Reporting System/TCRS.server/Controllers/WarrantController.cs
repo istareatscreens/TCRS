@@ -38,12 +38,13 @@ namespace TCRS.Server.Controllers
         {
             try
             {
+                /*
                 var citizen = _db.GetCitizenInfoByLicenseID(WarrantData.);
                 if (citizen == null)
                 {
                     return BadRequest("Invalid Citizen");
                 }
-                /*
+                
                 _db.CreateCitizenWanted(new Wanted
                 });
                 */

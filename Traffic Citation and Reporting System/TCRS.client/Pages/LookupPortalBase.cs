@@ -1,7 +1,11 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using TCRS.Shared.Contracts.LookupPortal;
+using TCRS.Shared.Contracts.Warrant;
 using TCRS.Shared.Objects.Lookup;
+using TCRS.Shared.Objects.Warrant;
 
 namespace TCRS.Client.Pages
 {
@@ -12,8 +16,9 @@ namespace TCRS.Client.Pages
         protected LookupCitationDisplayData citationData = new LookupCitationDisplayData();
         protected LookupCitizenDisplayData citizenData = new LookupCitizenDisplayData();
         protected LookupVehicleDisplayData vehicleData = new LookupVehicleDisplayData();
-
         protected LookupDisplayData LookupData { get; set; } = new LookupDisplayData();
+        protected List<WarrantData> warrantData { get; set; }
+        protected CreateWarrantObject createWarrantData { get; set; }
 
         protected EditContext EditContext { get; set; }
 
@@ -26,6 +31,9 @@ namespace TCRS.Client.Pages
         [Inject]
         private ILookupPortalManager LookupPortalManager { get; set; }
 
+        [Inject]
+        private IWarrantManager WarrantManager { get; set; }
+
         protected async void OnValidSubmit(EditContext context)
         {
             if (!EditContext.Validate())
@@ -37,6 +45,9 @@ namespace TCRS.Client.Pages
             if (curTab == 1)
             {
                 citizenData = await LookupPortalManager.LookupCitizenData(LookupData.CitizenData);
+
+                var data = await WarrantManager.GetWarrants(citizenData.license_id);
+                warrantData = data;
             }
             else if (curTab == 2)
             {
@@ -89,16 +100,12 @@ namespace TCRS.Client.Pages
 
         public string Disabled { get; set; }
 
-        // TEMP WARRANT DATA
+        // Warrant data headings
         protected string[] headings = { "Reference Number", "Status", "Crime" };
 
-        protected string[] rows = {
-            @"Reference1 Status1 Crime1",
-            @"Reference2 Status2 Crime2",
-            @"Reference3 Status3 Crime3",
-            @"Reference4 Status4 Crime4",
-            @"Reference5 Status5 Crime5"
-        };
-
+        protected async Task removeWarrant(string reference_number)
+        {
+            await WarrantManager.RemoveWarrant(reference_number);
+        }
     }
 }
