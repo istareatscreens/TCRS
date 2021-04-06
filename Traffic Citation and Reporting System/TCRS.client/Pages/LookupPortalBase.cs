@@ -119,7 +119,9 @@ namespace TCRS.Client.Pages
             // vehicle
             else if (curTab == 2)
             {
-
+                // licence plate number
+                createWarrantData.plate_number = LookupData.VehicleData;
+                await WarrantManager.PostWarrant(createWarrantData);
             }
             StateHasChanged();
         }
