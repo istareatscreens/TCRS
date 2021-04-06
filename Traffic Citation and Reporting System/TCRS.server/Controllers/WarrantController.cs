@@ -56,13 +56,13 @@ namespace TCRS.Server.Controllers
                     return emptyWarrantList;
                 }
 
-                var warrantsList = warrants.ToList().Select(warrant => new WarrantData
+                var warrantsList = warrants.ToList().Select(warrant => (warrant.Wanted != null) ? new WarrantData
                 {
                     reference_no = warrant.Wanted.reference_no,
                     status = warrant.Wanted.active_status,
                     crime = warrant.Wanted.crime,
                     dangerous = warrant.Wanted.dangerous
-                });
+                } : null).Where(warrant => warrant != null);
 
                 return Ok(warrantsList);
             }
