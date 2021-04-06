@@ -43,7 +43,7 @@ namespace TCRS.Server.Controllers
 
                 return Ok(warrants.ToList().Select(warrant => new WarrantData
                 {
-                    reference_number = warrant.Wanted.reference_no,
+                    reference_no = warrant.Wanted.reference_no,
                     status = warrant.Wanted.active_status,
                     crime = warrant.Wanted.crime
                 }));

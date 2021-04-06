@@ -49,7 +49,7 @@ namespace TCRS.Server.Controllers
 
                     CitizenWantedData = (citizenWantedList != null) ? citizenWantedList.Select(record => new WarrantData
                     {
-                        reference_number = record.Wanted.reference_no,
+                        reference_no = record.Wanted.reference_no,
                         dangerous = record.Wanted.dangerous,
                         crime = record.Wanted.crime,
                         status = record.Wanted.active_status
