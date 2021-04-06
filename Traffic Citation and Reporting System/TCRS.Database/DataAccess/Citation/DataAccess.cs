@@ -262,7 +262,8 @@ namespace TCRS.Database
         {
             var sql = @"SELECT COUNT(*) FROM (SELECT * FROM registration WHERE citation_id = @citation_id) as reg " +
                       "LEFT JOIN course ON course.course_id = reg.course_id AND course.scheduled > @date ";
-            return 0 > GetCount<DynamicParameters>(sql, new DynamicParameters(new { citation_id = citation_id, date = DateTime.Now }), connectionString);
+            var count = GetCount<DynamicParameters>(sql, new DynamicParameters(new { citation_id = citation_id, date = DateTime.Now }), connectionString);
+            return 0 < count;
         }
 
         public void PayForCitation(Payment Payment, string connectionString)

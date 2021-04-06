@@ -179,11 +179,6 @@ namespace TCRS.Server.Controllers
         public ActionResult<IEnumerable<CitationIssuingDisplayData>> PostCitation([FromHeader] string authorization, [FromBody] CitationIssueData citationIssueData)
         {
 
-            if (_db.GetCitationTypeById(citationIssueData.citation_type_id, _databaseContext.Server) == null)
-            {
-                return BadRequest("Invalid Citation Type");
-            }
-
             Citation Citation = new Citation
             {
                 citation_number = Guid.NewGuid().ToString(), //Generate GUID
@@ -201,6 +196,12 @@ namespace TCRS.Server.Controllers
 
             try
             {
+
+                //Check citation type
+                if (_db.GetCitationTypeById(citationIssueData.citation_type_id, _databaseContext.Server) == null)
+                {
+                    return BadRequest("Invalid Citation Type");
+                }
 
                 //Get Data For Citizen or License Plate
                 if (citationIssueData.licencePlate != null)

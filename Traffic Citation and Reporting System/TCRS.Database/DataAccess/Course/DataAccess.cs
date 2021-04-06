@@ -67,7 +67,7 @@ namespace TCRS.Database
         }
         public void RegisterCitizenInCourse(int citation_id, int course_id, int citizen_id, string connectionString)
         {
-            SaveData<DynamicParameters>("INSERT INTO `Registration` (`citizen_id`, `course_id`, `citation_id`, `passed`) VALUES (@citizen_id, @course_id, @citation_id, @passed)",
+            SaveData<DynamicParameters>("INSERT INTO registration (`citizen_id`, `course_id`, `citation_id`) VALUES (@citizen_id, @course_id, @citation_id)",
                new DynamicParameters(new { citizen_id = citizen_id, course_id = course_id, citation_id = citation_id }), connectionString);
         }
     }
