@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TCRS.Shared.Objects.Warrant
+﻿namespace TCRS.Shared.Objects.Warrant
 {
-    class WarrantData
+    public class WarrantData
     {
         public int wanted_id;
         public string reference_number;
