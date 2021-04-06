@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TCRS.Database;
@@ -36,7 +37,7 @@ namespace TCRS.Server.Controllers
             }
         }
         [HttpGet]
-        public ActionResult<IEnumerable<WarrantData>> GetWarrants([FromBody] string license_id)
+        public ActionResult<IEnumerable<WarrantData>> GetWarrants([FromQuery] string license_id)
         {
             try
             {
@@ -83,7 +84,7 @@ namespace TCRS.Server.Controllers
 
                 return Ok("Successfully posted");
             }
-            catch
+            catch (Exception e)
             {
                 return BadRequest("Invalid request");
             }
