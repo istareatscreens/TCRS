@@ -6758,3 +6758,7 @@ CHANGE COLUMN `reference_no` `reference_no` VARCHAR(36) NOT NULL ;
 
 ALTER TABLE `tcrs-db`.`wanted` 
 ADD COLUMN `wantedcol` VARCHAR(45) NOT NULL DEFAULT '1' AFTER `active_status`;
+
+ALTER TABLE `tcrs-db`.`wanted` 
+DROP COLUMN `wantedcol`;
+
