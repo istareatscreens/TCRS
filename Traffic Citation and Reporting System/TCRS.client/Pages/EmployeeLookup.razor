@@ -29,51 +29,55 @@
                 </MudCard>
             </EditForm>
 
-        </div>
+        </div>            
+        <br />
         <div style="max-width: 400px;">
-            <br />
-            <MudText Typo="Typo.h6">Employee Information for: @displayActiveEmployee.GetEmployeeName()</MudText>
+            <MudCard>
+                <MudCardContent>
+                    <MudText Typo="Typo.h6">Employee Information for: @displayActiveEmployee.GetEmployeeName()</MudText>
 
-            <MudTextField @bind-Value="@displayActiveEmployee.email" Label="Employee Email:" ReadOnly="true" Variant="Variant.Filled" />
-            <MudTextField @bind-Value="@displayActiveEmployee.active" Label="Employee Account Active:" ReadOnly="true" Variant="Variant.Filled" />
-            <MudTextField @bind-Value="@displayActiveEmployee.police_dept_id" Label="Police Department ID:" ReadOnly="true" Variant="Variant.Filled" />
-            <MudTextField @bind-Value="@displayActiveEmployee.munic_id" Label="Municipality Department ID:" ReadOnly="true" Variant="Variant.Filled" />
-
+                    <MudTextField @bind-Value="@displayActiveEmployee.email" Label="Employee Email:" ReadOnly="true" Variant="Variant.Filled" />
+                    <MudTextField @bind-Value="@displayActiveEmployee.active" Label="Employee Account Active:" ReadOnly="true" Variant="Variant.Filled" />
+                    <MudTextField @bind-Value="@displayActiveEmployee.police_dept_id" Label="Police Department ID:" ReadOnly="true" Variant="Variant.Filled" />
+                    <MudTextField @bind-Value="@displayActiveEmployee.munic_id" Label="Municipality Department ID:" ReadOnly="true" Variant="Variant.Filled" />
+                </MudCardContent>
+            </MudCard>
         </div>
-
+        <br />
         <div style="max-width: 400px;">
-            <br />
-            <MudPaper Class="pa-1" Elevation="3">
-                <MudText Typo="Typo.h6">Citation Count Information</MudText>
 
-                <MudSimpleTable Hover="true" Dense="true" FixedHeader="true" Style="height:300px">
-                    <thead>
-                        <tr>
-                            @foreach (var h in headings)
-                            {
-                                <th>@h</th>
-                            }
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ((var key, var value) in displayActiveEmployee.CitationCountbyType)
-                        {
+            <MudCard>
+                <MudCardContent>
+                    <MudText Typo="Typo.h6">Citation Count Information</MudText>
+                    <MudSimpleTable Hover="true" Dense="true" FixedHeader="true" Style="height:400px">
+                        <thead>
                             <tr>
-                                @if (key == 0)
+                                @foreach (var h in headings)
                                 {
-                                    <td>"Total Citations Issued"</td>
+                                    <th>@h</th>
                                 }
-                                else
-                                {
-                                    <td>@(((CitationTypes)key).ToDescriptionString())</td>
-                                }
-                                <td>@value</td>
-
                             </tr>
-                        }
-                    </tbody>
-                </MudSimpleTable>
-            </MudPaper>
+                        </thead>
+                        <tbody>
+                            @foreach ((var key, var value) in displayActiveEmployee.CitationCountbyType)
+                            {
+                                <tr>
+                                    @if (key == 0)
+                                    {
+                                        <td>"Total Citations Issued"</td>
+                                    }
+                                    else
+                                    {
+                                        <td>@(((CitationTypes)key).ToDescriptionString())</td>
+                                    }
+                                    <td>@value</td>
+
+                                </tr>
+                            }
+                        </tbody>
+                    </MudSimpleTable>
+                </MudCardContent>
+            </MudCard>
         </div>
     </MudPaper>
 

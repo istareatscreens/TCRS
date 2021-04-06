@@ -46,11 +46,12 @@ namespace TCRS.Client.Pages
             if (curTab == 1)
             {
                 citizenData = await LookupPortalManager.LookupCitizenData(LookupData.CitizenData);
-                warrantData = citizenData.CitizenWantedData.ToList(); //await WarrantManager.GetWarrants(citizenData.license_id);
+                warrantData = citizenData.CitizenWantedData.ToList();
             }
             else if (curTab == 2)
             {
                 vehicleData = await LookupPortalManager.LookupVehicleData(LookupData.VehicleData);
+                warrantData = vehicleData.WarrantData.ToList();
             }
             else if (curTab == 3)
             {
@@ -106,19 +107,40 @@ namespace TCRS.Client.Pages
         // Warrant data headings
         protected string[] headings = { "Reference Number", "Crime", "Dangerous" };
 
-        protected async Task removeWarrant(string reference_no)
+        protected async Task postWarrantData()
         {
-            await WarrantManager.RemoveWarrant(reference_no);
-            warrantData = await WarrantManager.GetWarrants(citizenData.license_id);
+            // citizen
+            if (curTab == 1)
+            {
+                createWarrantData.license_id = citizenData.license_id;
+                await WarrantManager.PostWarrant(createWarrantData);
+                warrantData = await WarrantManager.GetWarrants(citizenData.license_id);
+            }
+            // vehicle
+            else if (curTab == 2)
+            {
+
+            }
             StateHasChanged();
         }
 
-        protected async Task postWarrantData()
+        protected async Task removeWarrant(string reference_no)
         {
-            createWarrantData.license_id = citizenData.license_id;
-            await WarrantManager.PostWarrant(createWarrantData);
-            warrantData = await WarrantManager.GetWarrants(citizenData.license_id);
+            // citizen
+            if(curTab == 1)
+            {
+                await WarrantManager.RemoveWarrant(reference_no);
+                warrantData = await WarrantManager.GetWarrants(citizenData.license_id);
+            }
+            // vehicle
+            else if(curTab == 2)
+            {
+                
+            }
+            
             StateHasChanged();
         }
+
+        
     }
 }
