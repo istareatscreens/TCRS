@@ -33,7 +33,7 @@ namespace TCRS.Business
 
         public async Task RemoveWarrant(string reference_number)
         {
-            await _api.PostAsync<DeleteWarrantObject>(new DeleteWarrantObject { reference_number = reference_number });
+            await _api.PostAsync<DeleteWarrantObject>(new DeleteWarrantObject { reference_no = reference_number });
         }
     }
 }

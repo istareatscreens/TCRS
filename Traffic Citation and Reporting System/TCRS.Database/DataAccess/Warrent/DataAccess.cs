@@ -12,7 +12,7 @@ namespace TCRS.Database
     public partial class DataAccess
     {
 
-        public void ChangeWarrantStatus(int reference_no, bool active_status, string connectionString)
+        public void ChangeWarrantStatus(string reference_no, bool active_status, string connectionString)
         {
             var sql = @"UPDATE wanted SET active_status = @active_status WHERE (reference_no = @reference_no)"; //set course as resolved
             UpdateData<DynamicParameters>(sql, new DynamicParameters(new { active_status = active_status, reference_no = reference_no }), connectionString);
