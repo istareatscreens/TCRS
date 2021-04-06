@@ -90,14 +90,14 @@ namespace TCRS.Client.Pages
         public string Disabled { get; set; }
 
         // TEMP WARRANT DATA
-        protected string[] headings = { "Wanted ID", "Reference Number", "Status", "Crime" };
+        protected string[] headings = { "Reference Number", "Status", "Crime" };
 
         protected string[] rows = {
-            @"ID1 Reference1 Status1 Crime1",
-            @"ID2 Reference2 Status2 Crime2",
-            @"ID3 Reference3 Status3 Crime3",
-            @"ID4 Reference4 Status4 Crime4",
-            @"ID5 Reference5 Status5 Crime5"
+            @"Reference1 Status1 Crime1",
+            @"Reference2 Status2 Crime2",
+            @"Reference3 Status3 Crime3",
+            @"Reference4 Status4 Crime4",
+            @"Reference5 Status5 Crime5"
         };
 
     }

@@ -9,7 +9,8 @@ namespace TCRS.Shared.Contracts.Warrant
 {
     public interface IWarrantManager
     {
-        List<WarrantData> GetWarrants();
-        
+        Task<List<WarrantData>> GetWarrants(string licence_id);
+        Task RemoveWarrant(string reference_number);
+        Task PostWarrant(CreateWarrantObject createWarrantObject);
     }
 }
