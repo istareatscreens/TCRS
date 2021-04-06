@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using TCRS.Shared.Objects.LookupPortal;
+using TCRS.Shared.Objects.Warrant;
 
 namespace TCRS.Shared.Objects.Lookup
 {
@@ -23,6 +23,6 @@ namespace TCRS.Shared.Objects.Lookup
         public string license_class { get; set; }
 
 #nullable enable
-        public IEnumerable<CitizenWantedData>? CitizenWantedData { get; set; }
+        public IEnumerable<WarrantData>? CitizenWantedData { get; set; }
     }
 }

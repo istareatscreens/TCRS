@@ -11,9 +11,9 @@
 
         <MudTabs Elevation="4" Rounded="true" Centered="true" Color="@Color.Primary">
             <br />
-            
+
             <MudTabPanel OnClick="((e) => currentTab(1))" Text="Person Information">
-                
+
                 <div style="max-width: 400px;">
                     <EditForm Model="@EditContext" OnValidSubmit="@OnValidSubmit">
                         <DataAnnotationsValidator />
@@ -50,7 +50,7 @@
                 </div>
 
                 <br />
-                
+
                 <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary">Issue Warrant</MudButton>
                 <br />
                 <MudSimpleTable Hover="true" FixedHeader="true">
@@ -58,28 +58,28 @@
                         <tr>
                             @foreach (var h in headings)
                             {
-                                <th>@h</th>
-                            }
+<th>@h</th>}
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var item in warrantData)
                         {
-                        <tr>
-                            <td>@item.reference_number</td>
-                            <td>@item.status</td>
-                            <td>@item.crime</td>
-                            <td><MudButton OnClick="((e) => removeWarrant(item.reference_number))" ButtonType="ButtonType.Submit" Variant="Variant.Filled" 
-                                           Color="Color.Error">Remove Wanted Status</MudButton></td>
-                        </tr>
-                        }
+<tr>
+    <td>@item.reference_number</td>
+    <td>@item.status</td>
+    <td>@item.crime</td>
+    <td>
+        <MudButton OnClick="((e) => removeWarrant(item.reference_number))" ButtonType="ButtonType.Submit" Variant="Variant.Filled"
+                   Color="Color.Error">Remove Wanted Status</MudButton>
+    </td>
+</tr>}
                     </tbody>
                 </MudSimpleTable>
-                    
+
                 <MudDivider DividerType="DividerType.Middle" Class="my-6" />
 
             </MudTabPanel>
-                
+
             <MudTabPanel OnClick="((e) => currentTab(2))" Text="Vehicle Information">
 
                 <div style="max-width: 400px;">
@@ -140,19 +140,15 @@
                     @*citizen*@
                     @if (citationData.is_citizen)
                     {
-                        <MudTextField Value="@citationData.license" Label="License Number" ReadOnly="true" Variant="Variant.Filled" />
-                        <MudTextField Value="@citationData.license_class" Label="License Class:" ReadOnly="true" Variant="Variant.Filled" />
-                        <MudTextField Value="@citationData.first_name" Label="First Name" ReadOnly="true" Variant="Variant.Filled" />
-                        <MudTextField Value="@citationData.middle_name" Label="Middle Name" ReadOnly="true" Variant="Variant.Filled" />
-                        <MudTextField Value="@citationData.last_name" Label="Last Name" ReadOnly="true" Variant="Variant.Filled" />
-                    }
-                    @*vehicle*@
+<MudTextField Value="@citationData.license" Label="License Number" ReadOnly="true" Variant="Variant.Filled" />
+                            <MudTextField Value="@citationData.license_class" Label="License Class:" ReadOnly="true" Variant="Variant.Filled" />
+                                                        <MudTextField Value="@citationData.first_name" Label="First Name" ReadOnly="true" Variant="Variant.Filled" />
+                                                                                    <MudTextField Value="@citationData.middle_name" Label="Middle Name" ReadOnly="true" Variant="Variant.Filled" />
+                                                                                                                <MudTextField Value="@citationData.last_name" Label="Last Name" ReadOnly="true" Variant="Variant.Filled" /> } @*vehicle*@
                     @if (citationData.is_vehicle)
                     {
-                        <MudTextField Value="@citationData.plate_number" Label="Plate Number" ReadOnly="true" Variant="Variant.Filled" />
-                        <MudTextField Value="@citationData.model" Label="Model" ReadOnly="true" Variant="Variant.Filled" />
-                    }
-                    @*status*@
+<MudTextField Value="@citationData.plate_number" Label="Plate Number" ReadOnly="true" Variant="Variant.Filled" />
+                            <MudTextField Value="@citationData.model" Label="Model" ReadOnly="true" Variant="Variant.Filled" /> } @*status*@
                     <MudTextField Value="@citationData.date_recieved" Label="Date Recieved" ReadOnly="true" Variant="Variant.Filled" />
                     <MudTextField Value="@citationData.date_due" Label="Date Due" ReadOnly="true" Variant="Variant.Filled" />
                     <MudTextField Value="@citationData.name" Label="Citation Type" ReadOnly="true" Variant="Variant.Filled" />
