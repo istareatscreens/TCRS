@@ -49,19 +49,26 @@ namespace TCRS.Server.Controllers
 
                 var warrants = _db.GetCitizenWarrants(citizen.ToList().FirstOrDefault().citizen_id, _databaseContext.Server);
 
+                if (warrants.Count() == 1 && warrants.ToList().FirstOrDefault().Wanted == null)
+                {
+                    var emptyWarrantList = new List<WarrantData>();
+                    emptyWarrantList.Add(new WarrantData());
+                    return emptyWarrantList;
+                }
+
                 var warrantsList = warrants.ToList().Select(warrant => new WarrantData
                 {
                     reference_no = warrant.Wanted.reference_no,
                     status = warrant.Wanted.active_status,
                     crime = warrant.Wanted.crime,
                     dangerous = warrant.Wanted.dangerous
-                }).ToList();
+                });
 
-                return warrantsList;
+                return Ok(warrantsList);
             }
             catch
             {
-                return BadRequest("Unknown Error");
+                return BadRequest("No Warrants Exist");
             }
         }
 

@@ -49,6 +49,7 @@ namespace TCRS.Server.Controllers
                 };
 
                 _db.PayForCitation(Payment, _databaseContext.Server);
+                _db.UpdateCitationToResolved(Citation.citation_id, _databaseContext.Server);
                 return Ok("Recipt Issued");
             }
             catch
