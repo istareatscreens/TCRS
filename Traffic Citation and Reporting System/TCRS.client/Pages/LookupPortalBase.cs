@@ -51,7 +51,7 @@ namespace TCRS.Client.Pages
             else if (curTab == 2)
             {
                 vehicleData = await LookupPortalManager.LookupVehicleData(LookupData.VehicleData);
-                warrantData = vehicleData.WarrantData.ToList();
+                //warrantData = vehicleData.WarrantData.ToList();
             }
             else if (curTab == 3)
             {
@@ -117,12 +117,14 @@ namespace TCRS.Client.Pages
                 warrantData = await WarrantManager.GetWarrants(citizenData.license_id);
             }
             // vehicle
+            /*
             else if (curTab == 2)
             {
                 // licence plate number
                 createWarrantData.plate_number = LookupData.VehicleData;
                 await WarrantManager.PostWarrant(createWarrantData);
             }
+            */
             StateHasChanged();
         }
 
@@ -135,11 +137,12 @@ namespace TCRS.Client.Pages
                 warrantData = await WarrantManager.GetWarrants(citizenData.license_id);
             }
             // vehicle
+            /*
             else if(curTab == 2)
             {
                 
             }
-            
+            */
             StateHasChanged();
         }
 
