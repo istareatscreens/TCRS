@@ -37,40 +37,39 @@
                     <MudTextField Value="citizenData.is_revoked" Label="Licence Revoked?:" ReadOnly="true" Variant="Variant.Filled" />
                     <MudTextField Value="citizenData.is_suspended" Label="Licence Suspended?" ReadOnly="true" Variant="Variant.Filled" />
                     <MudTextField Value="citizenData.license_class" Label="Licence Class:" ReadOnly="true" Variant="Variant.Filled" />
-                    <br />
                     <MudTextField Label="Issue Warrant" Variant="Variant.Outlined" Placeholder="Warrant Reference Number"
                                   @bind-Value="IssueWarrant" For="@(() => IssueWarrant)" />
-                    <br />
-                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary">Issue Warrant</MudButton>
-                    <br />
-                    <MudSimpleTable Hover="true" Dense="true" FixedHeader="true" Style="height:300px">
-                        <thead>
-                            <tr>
-                                @foreach (var h in headings)
-                                {
-                                    <th>@h</th>
-                                }
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var row in rows)
-                            {
-                                <tr>
-                                    @foreach (var x in row.Split())
-                                    {
-                                        <td>@x</td>
-                                    }
-                                </tr>
-                            }
-                        </tbody>
-                    </MudSimpleTable>
-
-                    <MudDivider DividerType="DividerType.Middle" Class="my-6" />
-
-                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Error" Class="ml-auto">Add Wanted Status</MudButton>
-                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Error" Class="ml-auto">Remove Wanted Status</MudButton>
-
                 </div>
+
+                <br />
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary">Issue Warrant</MudButton>
+                <br />
+                <MudSimpleTable Hover="true" FixedHeader="true">
+                    <thead>
+                        <tr>
+                            @foreach (var h in headings)
+                            {
+                                <th>@h</th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var row in rows)
+                        {
+                            <tr>
+                                @foreach (var x in row.Split())
+                                {
+                                    <td>@x</td>
+                                }
+                                <td><MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Error" >Remove Wanted Status</MudButton></td>
+                            </tr>
+                        }
+                    </tbody>
+                </MudSimpleTable>
+
+                <MudDivider DividerType="DividerType.Middle" Class="my-6" />
+
+
             </MudTabPanel>
 
             <MudTabPanel OnClick="((e) => currentTab(2))" Text="Vehicle Information">
