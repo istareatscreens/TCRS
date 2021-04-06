@@ -47,8 +47,13 @@
                             <MudSelectItem Value="@(true)" />
                             <MudSelectItem Value="@(false)" />
                         </MudSelect>
+
+                        <MudTextField T="string" Label="Crime Description" Variant="Variant.Outlined" Placeholder="Crime decription:"
+                                      @bind-Value="createWarrantData.crime"  Lines="3" />
+                        @*
                         <MudTextField Label="Crime:" Variant="Variant.Outlined" Placeholder="Crime decription:"
                                       @bind-Value="createWarrantData.crime" />
+                        *@
                         <br />
                         <MudButton OnClick="postWarrantData" ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary">Issue Warrant</MudButton>
 
@@ -56,7 +61,7 @@
                 </div>
                 <br />
                 <MudText Typo="Typo.h6">Warrant Information</MudText>
-                <MudSimpleTable Hover="true" FixedHeader="true">
+                <MudSimpleTable Hover="true" FixedHeader="true" style="max-width: 600px;">
                     <thead>
                         <tr>
                             @foreach (var h in headings)
@@ -70,7 +75,6 @@
                         {
                             <tr>
                                 <td>@item.reference_no</td>
-                                <td>@item.status</td>
                                 <td>@item.crime</td>
                                 <td>@item.dangerous</td>
                                 <td>
