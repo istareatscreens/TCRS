@@ -27,6 +27,11 @@ namespace TCRS.Server.Controllers
         {
             try
             {
+                if (deleteWarrantObject.reference_no.Length > 36)
+                {
+                    return Ok("Invalid reference_no");
+                }
+
                 _db.ChangeWarrantStatus(deleteWarrantObject.reference_no, false, _databaseContext.Server);
                 return Ok("Successfully Removed");
             }
@@ -70,7 +75,7 @@ namespace TCRS.Server.Controllers
                 }
                 else if (plate_number != null)
                 {
-                    var license = _db.GetVehicleInfoByLicensePlate(license_id, _databaseContext.Server);
+                    var license = _db.GetVehicleInfoByLicensePlate(plate_number, _databaseContext.Server);
                     if (license == null || license.Count() == 0)
                     {
                         return BadRequest("Invalid license id");
@@ -159,7 +164,7 @@ namespace TCRS.Server.Controllers
             }
             catch
             {
-                return BadRequest("Invalid request");
+                return BadRequest("Invalid request or Duplicate Entry");
             }
         }
 
