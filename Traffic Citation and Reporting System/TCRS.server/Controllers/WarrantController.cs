@@ -141,7 +141,7 @@ namespace TCRS.Server.Controllers
                 }
                 else if (CreateWarrantObject.plate_number != null && CreateWarrantObject.plate_number != "")
                 {
-                    var vehicle = _db.GetVehicleInfoByLicensePlate(CreateWarrantObject.license_id, _databaseContext.Server);
+                    var vehicle = _db.GetVehicleInfoByLicensePlate(CreateWarrantObject.plate_number, _databaseContext.Server);
                     if (vehicle == null || vehicle.Count() == 0)
                     {
                         return BadRequest("Invalid Citizen");
