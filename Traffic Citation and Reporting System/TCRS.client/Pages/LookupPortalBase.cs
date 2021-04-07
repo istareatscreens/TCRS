@@ -119,16 +119,16 @@ namespace TCRS.Client.Pages
             {
                 createWarrantData.license_id = citizenData.license_id;
                 await WarrantManager.PostWarrant(createWarrantData);
+                warrantCitizenData = await WarrantManager.GetWarrants(createWarrantData);
                 createWarrantData = new CreateWarrantObject();
-                warrantCitizenData = await WarrantManager.GetWarrants(citizenData.license_id);
             }
             // vehicle
             else if (curTab == 2)
             {
                 createWarrantData.plate_number = vehicleData.plate_number;
                 await WarrantManager.PostWarrant(createWarrantData);
+                warrantVehicleData = await WarrantManager.GetWarrants(createWarrantData);
                 createWarrantData = new CreateWarrantObject();
-                warrantVehicleData = await WarrantManager.GetWarrants(vehicleData.plate_number);
             }
 
             StateHasChanged();
@@ -140,13 +140,13 @@ namespace TCRS.Client.Pages
             if(curTab == 1)
             {
                 await WarrantManager.RemoveWarrant(reference_no);
-                warrantCitizenData = await WarrantManager.GetWarrants(citizenData.license_id);
+                warrantCitizenData = await WarrantManager.GetWarrants( new CreateWarrantObject { license_id = citizenData.license_id });
             }
             // vehicle
             else if(curTab == 2)
             {
                 await WarrantManager.RemoveWarrant(reference_no);
-                warrantVehicleData = await WarrantManager.GetWarrants(vehicleData.plate_number);
+                warrantVehicleData = await WarrantManager.GetWarrants(new CreateWarrantObject { plate_number = vehicleData.plate_number });
             }
             StateHasChanged();
         }

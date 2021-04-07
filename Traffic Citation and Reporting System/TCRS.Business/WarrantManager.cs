@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TCRS.Shared.Contracts;
@@ -15,11 +16,23 @@ namespace TCRS.Business
             _api = api;
         }
 
-        public async Task<List<WarrantData>> GetWarrants(string license_id)
+        public async Task<List<WarrantData>> GetWarrants(CreateWarrantObject createWarrantObject)
         {
             var parameters = new List<KeyValuePair<string, string>>();
-            parameters.Add(new KeyValuePair<string, string>("license_id", license_id));
 
+            if (createWarrantObject.license_id != null)
+            {
+                parameters.Add(new KeyValuePair<string, string>("license_id", createWarrantObject.license_id));
+            }
+            else if(createWarrantObject.plate_number != null)
+            {
+                parameters.Add(new KeyValuePair<string, string>("plate_number", createWarrantObject.plate_number));
+            }
+            else
+            {
+                throw new Exception("No licence_id or plate_number specified");
+            }
+            
             var data = await _api.GetAsync<WarrantData>(parameters);
             return data.ToList();
         }
