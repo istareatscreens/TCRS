@@ -28,16 +28,16 @@ namespace TCRS.Server.Controllers
         }
 
         [HttpPut("RemoveCitation")]
-        public ActionResult ResolveCitation([FromQuery] string citation_number)
+        public ActionResult ResolveCitation(RemoveCitationObject RemoveCitationObject)
         {
             try
             {
-                if (IsValidCitationNumber(citation_number))
+                if (RemoveCitationObject == null || RemoveCitationObject.citation_number.Length < 36)
                 {
                     return NotFound("Invalid Citation Number Length");
                 }
 
-                var Citation = _db.GetCitationByNumber(citation_number, _databaseContext.Server);
+                var Citation = _db.GetCitationByNumber(RemoveCitationObject.citation_number, _databaseContext.Server);
                 if (Citation == null || Citation.Count() == 0)
                 {
                     return BadRequest("Invalid citation number");
