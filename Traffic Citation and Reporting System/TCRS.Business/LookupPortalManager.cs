@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TCRS.Shared.Contracts;
 using TCRS.Shared.Contracts.LookupPortal;
+using TCRS.Shared.Objects.Citations;
 using TCRS.Shared.Objects.Lookup;
 
 namespace TCRS.Business
@@ -41,5 +42,9 @@ namespace TCRS.Business
             return data.ToList().FirstOrDefault();
         }
 
+        public async Task ResolveCitation(RemoveCitationObject removeCitationObject)
+        {
+            await _api.PutAsync<RemoveCitationObject>(removeCitationObject);
+        }
     }
 }

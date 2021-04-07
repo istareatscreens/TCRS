@@ -43,7 +43,7 @@ namespace TCRS.Server.Controllers
             //checks if user exists or active status is false
             if (user == null || !user.active)
             {
-                return NotFound("User Not Found");
+                return NotFound(new { message = "User Not Found" });
             }
             //Generate JWT token
             try
@@ -58,7 +58,7 @@ namespace TCRS.Server.Controllers
             }
             catch (Exception e)
             {
-                return NotFound(e.Message); //User has no role, this 
+                return NotFound(new { message = e.Message }); //User has no role, this 
             }
             return tokens;
         }
@@ -91,14 +91,14 @@ namespace TCRS.Server.Controllers
                 }
                 catch (Exception e)
                 {
-                    return NotFound(e.Message); //User has no role
+                    return NotFound(new { message = e.Message }); //User has no role
                 }
 
                 //Pass new jwt back to client
                 return jwt;
 
             }
-            return NotFound("Invalid Request");
+            return NotFound(new { message = "Invalid Request" });
         }
 
         //        public async ActionResult<>

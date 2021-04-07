@@ -33,7 +33,7 @@ namespace TCRS.Server.Controllers
                 User user = new User(authorization);
                 if (!user.isSchool_Rep)
                 {
-                    return BadRequest("Incorrect credentials");
+                    return BadRequest(new { message = "Incorrect credentials" });
                 }
 
                 var Course = new Course
@@ -57,10 +57,10 @@ namespace TCRS.Server.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest("Failed to post object, potential database issue" + e);
+                return BadRequest(new { message = "Failed to post object, potential database issue" + e });
             }
 
-            return Accepted("Course Posted");
+            return Accepted(new { message = "Course Posted" });
         }
 
         [HttpGet("GetCourses")]
@@ -86,7 +86,7 @@ namespace TCRS.Server.Controllers
             }
             catch
             {
-                return NotFound("Unkown Error, likely database connection error");
+                return NotFound(new { message = "Unkown Error, likely database connection error" });
             }
         }
 
@@ -101,7 +101,7 @@ namespace TCRS.Server.Controllers
             //Validate if parameters passed are valid
             if (citationList == null || courseList == null)
             {
-                return BadRequest("Invalid Registration Details");
+                return BadRequest(new { message = "Invalid Registration Details" });
             }
 
             //unpack parameters
@@ -111,31 +111,31 @@ namespace TCRS.Server.Controllers
             //Check if request is valid
             if (!citation.Citation_Type.training_eligable || !(citation.citation_type_id == course.citation_type_id) || course.scheduled < DateTime.Now)
             {
-                return BadRequest("Invalid Registration Details");
+                return BadRequest(new { message = "Invalid Registration Details" });
             }
 
             //check if already registered for course
             if (_db.CitationIsRegisteredToCourse(citation.citation_id, _databaseContext.Server))
             {
-                return BadRequest("Invalid Parameters");
+                return BadRequest(new { message = "Invalid Parameters" });
             }
 
             var NumberOfSpacesLeft = course.capacity - _db.GetEnrollmentNumberForCourse(course.course_id, _databaseContext.Server);
             //Check if course is already full
             if (NumberOfSpacesLeft <= 0)
             {
-                return BadRequest("Course is Full");
+                return BadRequest(new { message = "Course is Full" });
             }
 
             //Check if citation is marked as resolved, if not check in the database and update citation to be resolved if it is resolved
             if (citation.is_resolved || _db.CheckIfCitationIsResolved(citation.citation_id, _databaseContext.Server))
             {
-                return BadRequest("Already resolved");
+                return BadRequest(new { message = "Already resolved" });
             }
 
             if (citation.Driver_Record == null)
             {
-                return BadRequest("Invalid citation type");
+                return BadRequest(new { message = "Invalid citation type" });
             }
 
             //Passed all checks enroll in course
@@ -153,7 +153,7 @@ namespace TCRS.Server.Controllers
         }
             */
 
-            return Accepted("Successfully registered for course");
+            return Accepted(new { message = "Successfully registered for course" });
 
         }
 

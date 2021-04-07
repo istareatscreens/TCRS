@@ -31,12 +31,12 @@ namespace TCRS.Server.Controllers
                 var Citation = _db.GetCitationByNumber(paymentData.citation_number, _databaseContext.Server).ToList().FirstOrDefault();
                 if (Citation == null)
                 {
-                    return NotFound("Citation Not Found");
+                    return NotFound(new { message = "Citation Not Found" });
                 }
 
                 if (Citation.is_resolved || _db.CheckIfCitationIsResolved(Citation.citation_id, _databaseContext.Server))
                 {
-                    return BadRequest("Citation has already been resolved");
+                    return BadRequest(new { message = "Citation has already been resolved" });
                 }
                 var Payment = new Payment
                 {
@@ -50,11 +50,11 @@ namespace TCRS.Server.Controllers
 
                 _db.PayForCitation(Payment, _databaseContext.Server);
                 _db.UpdateCitationToResolved(Citation.citation_id, _databaseContext.Server);
-                return Ok("Recipt Issued");
+                return Ok(new { message = "Receipt Issued" });
             }
             catch
             {
-                return BadRequest("Invalid request");
+                return BadRequest(new { message = "Invalid request" });
             }
         }
 

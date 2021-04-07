@@ -34,20 +34,20 @@ namespace TCRS.Server.Controllers
             {
                 if (RemoveCitationObject == null || RemoveCitationObject.citation_number.Length > 36)
                 {
-                    return NotFound("Invalid Citation Number Length");
+                    return NotFound(new { message = "Invalid Citation Number Length" });
                 }
 
                 var Citation = _db.GetCitationByNumber(RemoveCitationObject.citation_number, _databaseContext.Server);
                 if (Citation == null || Citation.Count() == 0)
                 {
-                    return BadRequest("Invalid citation number");
+                    return BadRequest(new { message = "Invalid citation number" });
                 }
                 _db.UpdateCitationToResolved(Citation.ToList().FirstOrDefault().citation_id, _databaseContext.Server);
-                return Ok("Successfully Removed");
+                return Ok(new { message = "Successfully Removed" });
             }
             catch
             {
-                return BadRequest("Bad Request");
+                return BadRequest(new { message = "Bad Request" });
             }
 
         }
@@ -57,7 +57,7 @@ namespace TCRS.Server.Controllers
         {
             if (IsValidCitationNumber(citation_number))
             {
-                return NotFound("Invalid");
+                return NotFound(new { message = "Invalid" });
             }
 
             try
@@ -114,7 +114,7 @@ namespace TCRS.Server.Controllers
             }
             catch
             {
-                return NotFound("Invalid Citation");
+                return NotFound(new { message = "Invalid Citation" });
             }
 
         }
@@ -134,7 +134,7 @@ namespace TCRS.Server.Controllers
         {
             if (IsValidCitationNumber(citation_number))
             {
-                return NotFound("Invalid");
+                return NotFound(new { message = "Invalid" });
             }
 
             try
@@ -143,7 +143,7 @@ namespace TCRS.Server.Controllers
                 //Check if citation is marked as resolved, if not check in the database and update citation to be resolved if it is resolved
                 if (Citation.is_resolved || _db.CheckIfCitationIsResolved(Citation.citation_id, _databaseContext.Server) || _db.CitationIsRegisteredToCourse(Citation.citation_id, _databaseContext.Server))
                 {
-                    return NotFound("Is Resolved or Registered for Course");
+                    return NotFound(new { message = "Is Resolved or Registered for Course" });
                 }
 
                 if (Citation.Vehicle_Record != null)
@@ -191,7 +191,7 @@ namespace TCRS.Server.Controllers
             }
             catch (Exception)
             {
-                return NotFound("Not found");
+                return NotFound(new { message = "Not found" });
             }
         }
 
@@ -222,7 +222,7 @@ namespace TCRS.Server.Controllers
                 //Check citation type
                 if (_db.GetCitationTypeById(citationIssueData.citation_type_id, _databaseContext.Server) == null)
                 {
-                    return BadRequest("Invalid Citation Type");
+                    return BadRequest(new { message = "Invalid Citation Type" });
                 }
 
                 //Get Data For Citizen or License Plate
@@ -253,7 +253,7 @@ namespace TCRS.Server.Controllers
                 }
                 else
                 {
-                    return NotFound("Licence plate or id not specified");
+                    return NotFound(new { message = "Licence plate or id not specified" });
                 }
 
                 //Post data
@@ -271,7 +271,7 @@ namespace TCRS.Server.Controllers
             }
             catch (Exception e)
             {
-                return NotFound("Connection Error" + e.Message);
+                return NotFound(new { message = "Connection Error" + e.Message });
             }
 
             //Func<Citation, DateTime> calculateDueDate = (Citation citation) => citation.date_recieved.AddMonths(citation.Citation_Type.due_date_month);

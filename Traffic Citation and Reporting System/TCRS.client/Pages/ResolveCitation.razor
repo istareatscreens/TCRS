@@ -12,6 +12,7 @@
             <DataAnnotationsValidator />
             <MudCard>
                 <MudCardContent>
+                    <MudText Typo="Typo.h6">Enter your citation number to retrieve all associated citations</MudText>
                     <MudTextField Label="Citation Number" Variant="Variant.Outlined"
                                   @bind-Value="LoginData.citation_number" For="@(() => LoginData.citation_number)" />
                 </MudCardContent>

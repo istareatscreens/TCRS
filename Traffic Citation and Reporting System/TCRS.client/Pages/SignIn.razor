@@ -12,6 +12,8 @@
         <MudCard>
             <EditForm EditContext="@EditContext" OnSubmit="@HandleSubmit">
                 <MudCardContent>
+                    <MudText Typo="Typo.h6">Enter your credentials below to sign in</MudText>
+
                     <MudForm @bind-IsValid="@success" @bind-Errors="@errors">
                         <MudTextField @bind-value="UserCredentials.Email" Variant="Variant.Outlined" T="string" Label="Email" Required="true"
                                       RequiredError="Email is required!"

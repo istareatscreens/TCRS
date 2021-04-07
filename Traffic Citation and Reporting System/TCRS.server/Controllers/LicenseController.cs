@@ -30,7 +30,7 @@ namespace TCRS.Server.Controllers
             //I pull licenseplate url query parameter here to be passed to database query
             if (license_id == null)
             {
-                return NotFound("Citizen with this License ID does not exist");
+                return NotFound(new { message = "Citizen with this License ID does not exist" });
             }
             try
             {
@@ -72,7 +72,7 @@ namespace TCRS.Server.Controllers
             }
             catch (Exception)
             {
-                return NotFound("Not found");
+                return NotFound(new { message = "Not found" });
             }
         }
 
@@ -85,7 +85,7 @@ namespace TCRS.Server.Controllers
             //I pull licenseplate url query parameter here to be passed to database query
             if (plate_number == null)
             {
-                return NotFound("Vehicle with this Plate number does not exist");
+                return NotFound(new { message = "Vehicle with this Plate number does not exist" });
             }
             try
             {
@@ -145,7 +145,7 @@ namespace TCRS.Server.Controllers
             }
             catch (Exception)
             {
-                return NotFound("Not found");
+                return NotFound(new { message = "Not found" });
             }
         }
     }
