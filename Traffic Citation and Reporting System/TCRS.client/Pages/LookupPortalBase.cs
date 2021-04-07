@@ -150,7 +150,7 @@ namespace TCRS.Client.Pages
         protected async Task ResolveCitation()
         {
             await LookupPortalManager.ResolveCitation(new RemoveCitationObject {citation_number = citationData.citation_number });
-            citationData = new LookupCitationDisplayData();
+            citationData = await LookupPortalManager.LookupCitationData(LookupData.CitationData);
             StateHasChanged();
         }
     }
