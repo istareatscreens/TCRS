@@ -32,7 +32,7 @@ namespace TCRS.Server.Controllers
         {
             try
             {
-                if (RemoveCitationObject == null || RemoveCitationObject.citation_number.Length < 36)
+                if (RemoveCitationObject == null || RemoveCitationObject.citation_number.Length > 36)
                 {
                     return NotFound("Invalid Citation Number Length");
                 }
