@@ -57,7 +57,7 @@ namespace TCRS.Server.Controllers
                         dangerous = record.Wanted.dangerous,
                         crime = record.Wanted.crime,
                         status = record.Wanted.active_status
-                    }) : null,
+                    }) : new List<WarrantData>(),
                     CitationData = (citationData != null) ? citationData.Select(citation => new CitationData
                     {
                         citation_number = citation.citation_number,
@@ -65,7 +65,7 @@ namespace TCRS.Server.Controllers
                         date_recieved = citation.date_recieved,
                         date_due = citation.date_recieved.AddDays(citation.Citation_Type.due_date_month),
                         fine = Double.Parse(citation.Citation_Type.fine)
-                    }) : null
+                    }) : new List<CitationData>()
                 }
             );
                 return Ok(citizen);
@@ -130,7 +130,7 @@ namespace TCRS.Server.Controllers
                         dangerous = record.Wanted.dangerous,
                         crime = record.Wanted.crime,
                         status = record.Wanted.active_status
-                    }) : null,
+                    }) : new List<WarrantData>(),
                     CitationData = (citationData != null) ? citationData.Select(citation => new CitationData
                     {
                         citation_number = citation.citation_number,
@@ -138,7 +138,7 @@ namespace TCRS.Server.Controllers
                         date_recieved = citation.date_recieved,
                         date_due = citation.date_recieved.AddDays(citation.Citation_Type.due_date_month),
                         fine = Double.Parse(citation.Citation_Type.fine)
-                    }) : null
+                    }) : new List<CitationData>()
                 });
 
                 return Ok(vehicleData);
