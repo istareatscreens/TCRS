@@ -76,7 +76,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (var item in warrantData)
+                                @foreach (var item in warrantCitizenData)
                                 {
                                     <tr>
                                         <td>@item.reference_no</td>
@@ -135,7 +135,6 @@
                     <br />
                     <MudCard>
                         <MudCardContent>
-                            @*
                             <MudText Typo="Typo.h6">Warrant Creation</MudText>
                             <MudTextField Label="Reference number:" Variant="Variant.Outlined" Placeholder="Reference number:"
                                           @bind-Value="createWarrantData.reference_no" />
@@ -147,14 +146,12 @@
                                           @bind-Value="createWarrantData.crime" Lines="4" />
                             <br />
                             <MudButton OnClick="postWarrantData" ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary">Issue Warrant</MudButton>
-                                *@
                         </MudCardContent>
                     </MudCard>
                 </div>
                 <br />
                 <MudCard>
                     <MudCardContent>
-                        @*
                         <MudText Typo="Typo.h6">Warrant Information</MudText>
                         <MudSimpleTable Hover="true" FixedHeader="true">
                             <thead>
@@ -166,7 +163,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (var item in warrantData)
+                                @foreach (var item in warrantVehicleData)
                                 {
                                     <tr>
                                         <td>@item.reference_no</td>
@@ -180,7 +177,6 @@
                                 }
                             </tbody>
                         </MudSimpleTable>
-                        *@
                     </MudCardContent>
                 </MudCard>
             </MudTabPanel>
