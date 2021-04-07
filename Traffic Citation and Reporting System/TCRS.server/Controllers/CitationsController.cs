@@ -32,7 +32,7 @@ namespace TCRS.Server.Controllers
         {
             try
             {
-                if (!IsValidCitationNumber(citation_number))
+                if (IsValidCitationNumber(citation_number))
                 {
                     return NotFound("Invalid Citation Number Length");
                 }

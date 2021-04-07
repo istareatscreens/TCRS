@@ -121,6 +121,7 @@
                         <MudCardContent>
                             <MudText Typo="Typo.h6">Vehicle Information</MudText>
                             <MudButton OnClick="@clearVehicleForm" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Delete" Color="Color.Error">Clear Forms</MudButton>
+                            <MudTextField Value="vehicleData.Owner" Label="Vehicle Owner:" ReadOnly="true" Variant="Variant.Filled" />
                             <MudTextField Value="vehicleData.plate_number" Label="Vehicle Licence Plate Number:" ReadOnly="true" Variant="Variant.Filled" />
                             <MudTextField Value="vehicleData.vin" Label="Vehicle VIN:" ReadOnly="true" Variant="Variant.Filled" />
                             <MudTextField Value="vehicleData.name" Label="Vehicle Name:" ReadOnly="true" Variant="Variant.Filled" />
@@ -130,6 +131,8 @@
                             <MudTextField Value="vehicleData.year_made" Label="Vehicle Year Made:" ReadOnly="true" Variant="Variant.Filled" />
                             <MudTextField Value="vehicleData.citizen_id" Label="Vehicle Citizen ID Relation:" ReadOnly="true" Variant="Variant.Filled" />
                             <MudTextField Value="vehicleData.insurer_id" Label="Vehicle Insured ID Relation:" ReadOnly="true" Variant="Variant.Filled" />
+                            <MudTextField Value="vehicleData.insurer_name" Label="Vehicle Insured Name Relation:" ReadOnly="true" Variant="Variant.Filled" />
+
                         </MudCardContent>
                     </MudCard>
                     <br />
@@ -228,7 +231,8 @@
                             <MudTextField Value="@citationData.date_due" Label="Date Due" ReadOnly="true" Variant="Variant.Filled" />
                             <MudTextField Value="@citationData.name" Label="Citation Type" ReadOnly="true" Variant="Variant.Filled" />
                             <br />
-                            <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Send" Color="Color.Primary" OnClick="@ResolveCitation" Class="ml-auto">Resolve Citation</MudButton>
+                            <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Send" Color="Color.Primary" 
+                                       OnClick="@ResolveCitation" Class="ml-auto">Resolve Citation</MudButton>
                         </MudCardContent>
                     </MudCard>
                 </div>

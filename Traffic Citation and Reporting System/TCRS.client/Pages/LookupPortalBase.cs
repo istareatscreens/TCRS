@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TCRS.Shared.Contracts.LookupPortal;
 using TCRS.Shared.Contracts.Warrant;
+using TCRS.Shared.Objects.Citations;
 using TCRS.Shared.Objects.Lookup;
 using TCRS.Shared.Objects.Warrant;
 
@@ -102,11 +103,6 @@ namespace TCRS.Client.Pages
             return "";
         }
 
-        protected void ResolveCitation()
-        {
-
-        }
-
         public string Disabled { get; set; }
 
         // Warrant data headings
@@ -148,6 +144,13 @@ namespace TCRS.Client.Pages
                 await WarrantManager.RemoveWarrant(reference_no);
                 warrantVehicleData = await WarrantManager.GetWarrants(new CreateWarrantObject { plate_number = vehicleData.plate_number });
             }
+            StateHasChanged();
+        }
+
+        protected async Task ResolveCitation()
+        {
+            await LookupPortalManager.ResolveCitation(new RemoveCitationObject {citation_number = citationData.citation_number });
+            citationData = new LookupCitationDisplayData();
             StateHasChanged();
         }
     }
