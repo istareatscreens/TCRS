@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -34,7 +34,7 @@ namespace TCRS.Server
                 services.AddCors(options =>
                     options.AddDefaultPolicy(builder =>
                     {
-                        builder.AllowAnyHeader().AllowAnyOrigin();
+                        builder.AllowAnyHeader().AllowAnyOrigin().WithMethods("PUT", "DELETE", "POST", "GET"); ;
                     }));
             }
             else
