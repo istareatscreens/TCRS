@@ -48,7 +48,7 @@ namespace TCRS.Server.Controllers
 
                 else
                 {
-                    return BadRequest("Invalid User Credentials");
+                    return BadRequest(new { message = "Invalid User Credentials" });
                 }
 
                 var CitationCountbyType = new List<KeyValuePair<int, int>>();
@@ -90,9 +90,9 @@ namespace TCRS.Server.Controllers
             }
             catch
             {
-                return BadRequest("Request Error");
+                return BadRequest(new { message = "Request Error" });
             }
-            return BadRequest("Unreachable Error");
+            return BadRequest(new { message = "Unreachable Error" });
         }
 
         [HttpGet("EmployeeNames")]
@@ -128,9 +128,9 @@ namespace TCRS.Server.Controllers
             }
             catch
             {
-                return BadRequest("Bad Request");
+                return BadRequest(new { message = "Bad Request" });
             }
-            return BadRequest("Unreachable Error");
+            return BadRequest(new { message = "Unreachable Error" });
         }
 
 
@@ -142,7 +142,7 @@ namespace TCRS.Server.Controllers
             //I pull licenseplate url query parameter here to be passed to database query
             if (person_id == 0 || person_id > 1000)
             {
-                return NotFound("Employee with this ID does not exist");
+                return NotFound(new { message = "Employee with this ID does not exist" });
             }
             try
             {
@@ -170,7 +170,7 @@ namespace TCRS.Server.Controllers
             }
             catch (Exception)
             {
-                return NotFound("Not found");
+                return NotFound(new { message = "Not found" });
             }
         }
     }

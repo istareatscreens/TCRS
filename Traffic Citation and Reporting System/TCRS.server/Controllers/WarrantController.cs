@@ -29,15 +29,15 @@ namespace TCRS.Server.Controllers
             {
                 if (deleteWarrantObject.reference_no.Length > 36)
                 {
-                    return Ok("Invalid reference_no");
+                    return Ok(new { message = "Invalid reference_no" });
                 }
 
                 _db.ChangeWarrantStatus(deleteWarrantObject.reference_no, false, _databaseContext.Server);
-                return Ok("Successfully Removed");
+                return Ok(new { message = "Successfully Removed" });
             }
             catch
             {
-                return BadRequest("Bad Request");
+                return BadRequest(new { message = "Bad Request" });
             }
         }
         [HttpGet]
@@ -51,7 +51,7 @@ namespace TCRS.Server.Controllers
                     var citizen = _db.GetCitizenInfoByLicenseID(license_id, _databaseContext.Server);
                     if (citizen == null || citizen.Count() == 0)
                     {
-                        return BadRequest("Invalid license id");
+                        return BadRequest(new { message = "Invalid license id" });
                     }
 
                     var warrants = _db.GetCitizenWarrants(citizen.ToList().FirstOrDefault().citizen_id, _databaseContext.Server);
@@ -78,7 +78,7 @@ namespace TCRS.Server.Controllers
                     var license = _db.GetVehicleInfoByLicensePlate(plate_number, _databaseContext.Server);
                     if (license == null || license.Count() == 0)
                     {
-                        return BadRequest("Invalid license id");
+                        return BadRequest(new { message = "Invalid license id" });
                     }
 
                     var warrants = _db.GetVehicleWarrants(license.ToList().FirstOrDefault().vehicle_id, _databaseContext.Server);
@@ -104,12 +104,12 @@ namespace TCRS.Server.Controllers
                 }
                 else
                 {
-                    return BadRequest("Invalid input");
+                    return BadRequest(new { message = "Invalid input" });
                 }
             }
             catch
             {
-                return BadRequest("No Warrants Exist");
+                return BadRequest(new { message = "No Warrants Exist" });
             }
         }
 
@@ -125,7 +125,7 @@ namespace TCRS.Server.Controllers
                     var citizen = _db.GetCitizenInfoByLicenseID(CreateWarrantObject.license_id, _databaseContext.Server);
                     if (citizen == null || citizen.Count() == 0)
                     {
-                        return BadRequest("Invalid Citizen");
+                        return BadRequest(new { message = "Invalid Citizen" });
                     }
 
                     _db.CreateCitizenWanted(new Wanted
@@ -136,7 +136,7 @@ namespace TCRS.Server.Controllers
                         active_status = true
                     }, citizen.ToList().FirstOrDefault().citizen_id, _databaseContext.Server);
 
-                    return Ok("Successfully posted");
+                    return Ok(new { message = "Successfully posted" });
 
                 }
                 else if (CreateWarrantObject.plate_number != null && CreateWarrantObject.plate_number != "")
@@ -144,7 +144,7 @@ namespace TCRS.Server.Controllers
                     var vehicle = _db.GetVehicleInfoByLicensePlate(CreateWarrantObject.plate_number, _databaseContext.Server);
                     if (vehicle == null || vehicle.Count() == 0)
                     {
-                        return BadRequest("Invalid Citizen");
+                        return BadRequest(new { message = "Invalid Citizen" });
                     }
 
                     _db.CreateVehicleWanted(new Wanted
@@ -155,16 +155,16 @@ namespace TCRS.Server.Controllers
                         active_status = true
                     }, vehicle.ToList().FirstOrDefault().vehicle_id, _databaseContext.Server);
 
-                    return Ok("Successfully posted");
+                    return Ok(new { message = "Successfully posted" });
                 }
                 else
                 {
-                    return BadRequest("Invalid request");
+                    return BadRequest(new { message = "Invalid request" });
                 }
             }
             catch
             {
-                return BadRequest("Invalid request or Duplicate Entry");
+                return BadRequest(new { message = "Invalid request or Duplicate Entry" });
             }
         }
 
