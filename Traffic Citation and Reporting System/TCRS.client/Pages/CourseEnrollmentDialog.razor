@@ -51,26 +51,45 @@
     [Inject]
     private ICourseManager CourseManager { get; set; }
 
+    [Inject]
+    ISnackbar SnackBar { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
-        base.OnInitialized();
+        try
+        {
+            base.OnInitialized();
 
-        var courseInformation = await CourseManager.GetCourses(data.citation_type_id + "");
+            var courseInformation = await CourseManager.GetCourses(data.citation_type_id + "");
 
-        this.CourseData = courseInformation;
+            this.CourseData = courseInformation;
+        }
+        catch (Exception e)
+        {
+            SnackBar.Add(e.Message, Severity.Error);
+        }
+
     }
 
     protected async Task BookDialogPress(CourseEnrollmentData selectedCourse)
     {
+        try
+        {
+            bookingData = new CourseEnrollmentBookingData
+            {
+                course_id = selectedCourse.course_id,
+                citation_number = data.citation_number,
+            };
+
+            await CourseManager.BookCourse(bookingData);
+
+            MudDialog.Close(DialogResult.Ok(true));
+        }
+        catch (Exception e)
+        {
+            SnackBar.Add(e.Message, Severity.Error);
+        }
         // register the user in the course
-        bookingData = new CourseEnrollmentBookingData {
-            course_id = selectedCourse.course_id,
-            citation_number = data.citation_number,
-        };
-
-        await CourseManager.BookCourse(bookingData);
-
-        MudDialog.Close(DialogResult.Ok(true));
 
     }
 

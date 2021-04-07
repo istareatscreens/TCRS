@@ -20,9 +20,11 @@ namespace TCRS.Client.Pages
         [Inject]
         private IUserService CurrentUser { get; set; }
 
+        [Inject]
+        ISnackbar SnackBar { get; set; }
+
         public string PersonName { get; set; }
         public string PersonID { get; set; }
-
 
         // TEMP DATA
         public Type typeValue { get; set; }
@@ -52,25 +54,30 @@ namespace TCRS.Client.Pages
 
         protected async void OnValidSubmit(EditContext context)
         {
-            if (!EditContext.Validate())
+            try
             {
-                // Print out invalid input message
-                return;
+                if (!EditContext.Validate())
+                {
+                    // Print out invalid input message
+                    return;
+                }
+
+                //Convert type to int
+                CourseData.scheduled = (DateTime)dateSelect;
+                CourseData.citation_type_id = (int)CourseData.CitizenCitationType;
+
+                await CourseManager.CreateCourse(CourseData);
+
+                // reset the forms
+                CourseData = new CourseManagementData();
+                dateSelect = DateTime.Today;
+                StateHasChanged();
             }
-
-            //Convert type to int
-            CourseData.scheduled = (DateTime)dateSelect;
-            CourseData.citation_type_id = (int)CourseData.CitizenCitationType;
-
-            await CourseManager.CreateCourse(CourseData);
-
-            // reset the forms
-            CourseData = new CourseManagementData();
-            dateSelect = DateTime.Today;
-            StateHasChanged();
+            catch(Exception e)
+            {
+                SnackBar.Add(e.Message, Severity.Error);
+            }
         }
-
-        public string Disabled { get; set; }
 
     }
 }

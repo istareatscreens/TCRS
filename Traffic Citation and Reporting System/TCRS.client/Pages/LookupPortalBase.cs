@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using MudBlazor;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -39,31 +41,41 @@ namespace TCRS.Client.Pages
         [Inject]
         private IWarrantManager WarrantManager { get; set; }
 
+        [Inject]
+        ISnackbar SnackBar { get; set; }
+
         protected async void OnValidSubmit(EditContext context)
         {
-            if (!EditContext.Validate())
+            try
             {
-                // Print out invalid input message
-                return;
-            }
+                if (!EditContext.Validate())
+                {
+                    // Print out invalid input message
+                    return;
+                }
 
-            if (curTab == 1)
-            {
-                citizenData = await LookupPortalManager.LookupCitizenData(LookupData.CitizenData);
-                warrantCitizenData = citizenData.CitizenWantedData.ToList();
-            }
-            else if (curTab == 2)
-            {
-                vehicleData = await LookupPortalManager.LookupVehicleData(LookupData.VehicleData);
-                warrantVehicleData = vehicleData.WarrantData.ToList();
-            }
-            else if (curTab == 3)
-            {
-                citationData = await LookupPortalManager.LookupCitationData(LookupData.CitationData);
-            }
+                if (curTab == 1)
+                {
+                    citizenData = await LookupPortalManager.LookupCitizenData(LookupData.CitizenData);
+                    warrantCitizenData = citizenData.CitizenWantedData.ToList();
+                }
+                else if (curTab == 2)
+                {
+                    vehicleData = await LookupPortalManager.LookupVehicleData(LookupData.VehicleData);
+                    warrantVehicleData = vehicleData.WarrantData.ToList();
+                }
+                else if (curTab == 3)
+                {
+                    citationData = await LookupPortalManager.LookupCitationData(LookupData.CitationData);
+                }
 
-            //success = true;
-            StateHasChanged();
+                //success = true;
+                StateHasChanged();
+            }
+            catch(Exception e)
+            {
+                SnackBar.Add(e.Message, Severity.Error);
+            }
         }
 
         protected void currentTab(int x)
@@ -110,48 +122,71 @@ namespace TCRS.Client.Pages
 
         protected async Task postWarrantData()
         {
-            // citizen
-            if (curTab == 1)
+            try
             {
-                createWarrantData.license_id = citizenData.license_id;
-                await WarrantManager.PostWarrant(createWarrantData);
-                warrantCitizenData = await WarrantManager.GetWarrants(createWarrantData);
-                createWarrantData = new CreateWarrantObject();
+                // citizen
+                if (curTab == 1)
+                {
+                    createWarrantData.license_id = citizenData.license_id;
+                    await WarrantManager.PostWarrant(createWarrantData);
+                    warrantCitizenData = await WarrantManager.GetWarrants(createWarrantData);
+                    createWarrantData = new CreateWarrantObject();
+                }
+                // vehicle
+                else if (curTab == 2)
+                {
+                    createWarrantData.plate_number = vehicleData.plate_number;
+                    await WarrantManager.PostWarrant(createWarrantData);
+                    warrantVehicleData = await WarrantManager.GetWarrants(createWarrantData);
+                    createWarrantData = new CreateWarrantObject();
+                }
+
+                StateHasChanged();
             }
-            // vehicle
-            else if (curTab == 2)
+            catch (Exception e)
             {
-                createWarrantData.plate_number = vehicleData.plate_number;
-                await WarrantManager.PostWarrant(createWarrantData);
-                warrantVehicleData = await WarrantManager.GetWarrants(createWarrantData);
-                createWarrantData = new CreateWarrantObject();
+                SnackBar.Add(e.Message, Severity.Error);
             }
 
-            StateHasChanged();
         }
 
         protected async Task removeWarrant(string reference_no)
         {
-            // citizen
-            if(curTab == 1)
+            try
             {
-                await WarrantManager.RemoveWarrant(reference_no);
-                warrantCitizenData = await WarrantManager.GetWarrants( new CreateWarrantObject { license_id = citizenData.license_id });
+                // citizen
+                if (curTab == 1)
+                {
+                    await WarrantManager.RemoveWarrant(reference_no);
+                    warrantCitizenData = await WarrantManager.GetWarrants(new CreateWarrantObject { license_id = citizenData.license_id });
+                }
+                // vehicle
+                else if (curTab == 2)
+                {
+                    await WarrantManager.RemoveWarrant(reference_no);
+                    warrantVehicleData = await WarrantManager.GetWarrants(new CreateWarrantObject { plate_number = vehicleData.plate_number });
+                }
+                StateHasChanged();
             }
-            // vehicle
-            else if(curTab == 2)
+            catch(Exception e)
             {
-                await WarrantManager.RemoveWarrant(reference_no);
-                warrantVehicleData = await WarrantManager.GetWarrants(new CreateWarrantObject { plate_number = vehicleData.plate_number });
+                SnackBar.Add(e.Message, Severity.Error);
             }
-            StateHasChanged();
+
         }
 
         protected async Task ResolveCitation()
         {
-            await LookupPortalManager.ResolveCitation(new RemoveCitationObject {citation_number = citationData.citation_number });
-            citationData = await LookupPortalManager.LookupCitationData(LookupData.CitationData);
-            StateHasChanged();
+            try
+            {
+                await LookupPortalManager.ResolveCitation(new RemoveCitationObject { citation_number = citationData.citation_number });
+                citationData = await LookupPortalManager.LookupCitationData(LookupData.CitationData);
+                StateHasChanged();
+            }
+            catch (Exception e)
+            {
+                SnackBar.Add(e.Message, Severity.Error);
+            }
         }
     }
 }

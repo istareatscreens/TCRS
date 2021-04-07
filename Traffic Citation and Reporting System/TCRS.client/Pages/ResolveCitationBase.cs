@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Components.Forms;
 using TCRS.Shared.Contracts;
 using TCRS.Shared.Objects.CitationResolution;
+using MudBlazor;
+using System;
 
 namespace TCRS.Client.Pages
 {
@@ -20,6 +22,9 @@ namespace TCRS.Client.Pages
         [Inject]
         private ICitationService CitationService { get; set; }
 
+        [Inject]
+        ISnackbar SnackBar { get; set; }
+
         protected override void OnInitialized()
         {
             base.OnInitialized();
@@ -28,19 +33,23 @@ namespace TCRS.Client.Pages
 
         protected async void OnValidSubmit(EditContext context)
         {
-            if (!EditContext.Validate())
+            
+            try
             {
-                // Print out invalid input message
-                return;
+                if (!EditContext.Validate())
+                {
+                    // Print out invalid input message
+                    return;
+                }
+                CitationService.SetCitizenVehicleCitations(await CitationManager.CitizenLogin(LoginData));
+                NavigationManager.NavigateTo($"/Citationresolution/{LoginData.citation_number}");
+                //success = true;
+                StateHasChanged();
             }
-
-            CitationService.SetCitizenVehicleCitations(await CitationManager.CitizenLogin(LoginData));
-            NavigationManager.NavigateTo($"/Citationresolution/{LoginData.citation_number}");
-
-            //success = true;
-            StateHasChanged();
+            catch (Exception e)
+            {
+                SnackBar.Add(e.Message, Severity.Error);
+            }      
         }
-
-
     }
 }

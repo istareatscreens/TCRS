@@ -29,7 +29,7 @@ namespace TCRS.Business
             }
             else
             {
-                throw new NullReferenceException();
+                throw new NullReferenceException("Empty citation entered.");
             }
 
             var crld = await _api.GetAsync<CitizenVehicleCitation>(parameters);
