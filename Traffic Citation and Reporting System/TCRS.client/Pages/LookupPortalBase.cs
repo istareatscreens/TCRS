@@ -17,8 +17,10 @@ namespace TCRS.Client.Pages
         protected LookupCitationDisplayData citationData = new LookupCitationDisplayData();
         protected LookupCitizenDisplayData citizenData = new LookupCitizenDisplayData();
         protected LookupVehicleDisplayData vehicleData = new LookupVehicleDisplayData();
+
         protected LookupDisplayData LookupData { get; set; } = new LookupDisplayData();
         protected List<WarrantData> warrantData { get; set; } = new List<WarrantData>();
+
         protected CreateWarrantObject createWarrantData { get; set; } = new CreateWarrantObject();
 
         protected EditContext EditContext { get; set; }
