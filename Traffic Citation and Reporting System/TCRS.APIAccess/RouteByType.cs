@@ -38,7 +38,7 @@ namespace TCRS.APIAccess
 
             /* ***** CourseManagement ***** */
             // JWT should be passed for the logged in instructor's id
-            {typeof(CourseManagementData), "api/Course/SubmitCourse" },
+            {typeof(CoursePostingData), "api/Course/SubmitCourse" },
 
             /* ***** EmployeeLookup ***** */
             // Returns EmployeeLookupData 

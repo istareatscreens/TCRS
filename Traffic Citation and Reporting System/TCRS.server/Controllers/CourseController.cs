@@ -26,9 +26,106 @@ namespace TCRS.Server.Controllers
             _databaseContext = databaseContext.Value;
         }
 
+
+        [HttpPut("Passfailstudent")]
+        //[Authorize(Roles = Roles.SchoolRep)]
+        public ActionResult PassFailStudent(StudentData studentData)
+        {
+            try
+            {
+                _db.UpdateStudentsPassedStatusInCourse(studentData.course_id, studentData.citizen_id, studentData.passed, _databaseContext.Server);
+                return Ok("Successfully updated");
+            }
+            catch
+            {
+                return BadRequest("Invalid Request");
+            }
+        }
+
+        [HttpGet("Getenrollmentdata")]
+        //[Authorize(Roles = Roles.SchoolRep)]
+        public ActionResult GetEnrollmentData([FromHeader] string authorization)
+        {
+            User user = new User(authorization);
+            if (!user.isSchool_Rep)
+            {
+                return BadRequest(new { message = "Incorrect credentials" });
+            }
+            try
+            {
+                var CourseEnrollmentData = new List<KeyValuePair<CoursePostingData, IEnumerable<StudentData>>>();
+                var schoolData = _db.GetSchoolRep(user.person_id, _databaseContext.Server);
+                if (schoolData == null || schoolData.Count() == 0)
+                {
+                    return BadRequest("No associated school found");
+                }
+                var school_id = schoolData.ToList().FirstOrDefault().school_id;
+                var registration_data = _db.GetUnevaluatedCourses(school_id, _databaseContext.Server);
+                if (registration_data == null || registration_data.Count() == 0)
+                {
+                    return Ok(CourseEnrollmentData);
+                }
+
+                foreach (var record in registration_data)
+                {
+                    //Format course data
+                    var CourseData = new CoursePostingData
+                    {
+                        name = record.name,
+                        course_id = record.course_id,
+                        scheduled = record.scheduled,
+                        address = record.address,
+                        citation_type_id = record.citation_type_id
+                    };
+                    //Get enrollment Data
+                    var enrollmentList = _db.GetRegistrationList(record.course_id, _databaseContext.Server);
+                    if (enrollmentList != null || enrollmentList.Count() != 0)
+                    {
+                        CourseEnrollmentData.Add(new KeyValuePair<CoursePostingData, IEnumerable<StudentData>>(CourseData, enrollmentList.ToList().Select(registration =>
+                         new StudentData
+                         {
+                             citizen_id = (registration.Citizen != null) ? registration.Citizen.citizen_id : 0,
+                             course_id = (registration.Citizen != null) ? registration.course_id : 0,
+                             first_name = (registration.Citizen != null) ? registration.Citizen.first_name : "",
+                             middle_name = (registration.Citizen != null) ? registration.Citizen.middle_name : "",
+                             last_name = (registration.Citizen != null) ? registration.Citizen.last_name : "",
+                             dob = (registration.Citizen != null) ? registration.Citizen.dob : new DateTime()
+                         }
+                         )));
+                    }
+                    else
+                    {
+                        CourseEnrollmentData.Add(new KeyValuePair<CoursePostingData, IEnumerable<StudentData>>(CourseData, new List<StudentData>()));
+                    }
+                }
+
+                return Ok(CourseEnrollmentData);
+            }
+            catch
+            {
+                return NotFound("Unknown Error");
+            }
+        }
+
+        [HttpPut("Retirecourse")]
+        //[Authorize(Roles = Roles.SchoolRep)]
+        public ActionResult RetireCourse(RetireCourseData RetireCourseData)
+        {
+            try
+            {
+                _db.RetireCourse(RetireCourseData.course_id, _databaseContext.Server);
+                return Ok("Course successfully marked evaluated");
+            }
+            catch
+            {
+                return BadRequest("Invalid course id or unknown error");
+            }
+
+        }
+
         [HttpPost("SubmitCourse")]
         [Authorize(Roles = Roles.SchoolRep)]
-        public ActionResult PostCourse([FromBody] CourseManagementData courseManagementData, [FromHeader] string authorization)
+        public ActionResult PostCourse([FromBody] CoursePostingData courseManagementData, [FromHeader] string authorization)
         {
             try
             {

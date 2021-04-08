@@ -12,7 +12,7 @@
                 <NavBar>
                     <NavButtons>
                         @if (@UserService.User.isSchool_Rep)
-                        {<MudButton Class="navbar__homepage" Link="/Coursemanagement" Color="Color.Primary" Variant="Variant.Filled">Course Management</MudButton>}
+                        {<MudButton Class="navbar__homepage" Link="/Courseposting" Color="Color.Primary" Variant="Variant.Filled">Course Management</MudButton>}
                         @if (UserService.User.isHighway_Patrol_Officer || @UserService.User.isMunicipal_Officer)
                         {<MudButton Class="navbar__homepage" Link="/Citationissuing" Color="Color.Primary" Variant="Variant.Filled">Citation Issuing</MudButton>}
                         @if ((UserService.User.isManager && UserService.User.isMunicipal_Officer) || UserService.User.isHighway_Patrol_Officer)

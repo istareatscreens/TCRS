@@ -6771,3 +6771,8 @@ INSERT INTO `tcrs-db`.`vehicle_record` (`vehicle_id`, `citation_id`) VALUES ('3'
 
 UPDATE `tcrs-db`.`citation` SET `date_recieved` = '2020-08-14 13:53:02' WHERE (`citation_id` = '8');
 
+ALTER TABLE `tcrs-db`.`course` 
+ADD COLUMN `completed` TINYINT NOT NULL DEFAULT 0 AFTER `is_full`;
+
+ALTER TABLE `tcrs-db`.`course` 
+CHANGE COLUMN `completed` `evaluated` TINYINT(4) NOT NULL DEFAULT '0' ;

@@ -16,9 +16,9 @@ namespace TCRS.Business
             _api = api;
         }
 
-        public async Task CreateCourse(CourseManagementData courseManagementData)
+        public async Task CreateCourse(CoursePostingData courseManagementData)
         {
-            await _api.PostAsync<CourseManagementData>(courseManagementData);
+            await _api.PostAsync<CoursePostingData>(courseManagementData);
         }
 
         public async Task<List<CourseEnrollmentData>> GetCourses(string citation_type_id)

@@ -23,6 +23,17 @@ namespace TCRS.Client.Pages
         {
             base.OnInitialized();
             EditContext = new EditContext(UserCredentials);
+            if (UserService.User != null)
+            {
+                if (UserService.User.isSchool_Rep)
+                {
+                    NavigationManager.NavigateTo("/Courseposting");
+                }
+                else
+                {
+                    NavigationManager.NavigateTo("/Citationissuing");
+                }
+            }
         }
 
         [Inject]
@@ -56,7 +67,7 @@ namespace TCRS.Client.Pages
                 if (tokensAcquired != null)
                 {
                     authenticationStateProvider.SetAuthenticatedState(tokensAcquired);
-                    NavigationManager.NavigateTo(UserService.User.isSchool_Rep ? "/Coursemanagement" : "/Citationissuing");
+                    NavigationManager.NavigateTo(UserService.User.isSchool_Rep ? "/Courseposting" : "/Citationissuing");
                 }
             }
             catch (Exception e)
@@ -66,7 +77,7 @@ namespace TCRS.Client.Pages
             finally
             {
                 BusyOverlayService.SetBusyState(BusyEnum.NotBusy);
-            }            
+            }
         }
     }
 }

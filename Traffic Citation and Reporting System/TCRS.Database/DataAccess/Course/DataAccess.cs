@@ -10,6 +10,47 @@ namespace TCRS.Database
     //Course Management
     public partial class DataAccess
     {
+
+        //course management
+        public IEnumerable<Registration> GetRegistrationList(int course_id, string connectionString)
+        {
+
+            var sql = "SELECT * FROM (SELECT * FROM registration WHERE course_id = @course_id) as reg " +
+                      "LEFT JOIN citizen ON reg.citizen_id = citizen.citizen_id";
+
+            using (IDbConnection connection = new MySqlConnection(connectionString))
+            {
+                var rows = connection.Query<Registration, Citizen, Registration>(sql, (Registration, Citizen) =>
+               {
+                   Registration.Citizen = Citizen;
+                   return Registration;
+               }, new { course_id = course_id }, splitOn: "citizen_id, citizen_id");
+
+                return rows;
+            }
+        }
+
+
+        public IEnumerable<Course> GetUnevaluatedCourses(int school_id, string connectionString)
+        {
+            return SyncLoadData<Course, Course>(
+                "SELECT * FROM course WHERE school_id = @school_id AND evaluated=0",
+                new Course { school_id = school_id },
+                connectionString
+                );
+        }
+
+        public void UpdateStudentsPassedStatusInCourse(int course_id, int citizen_id, bool passed, string connectionString)
+        {
+            UpdateData<Registration>("UPDATE registration SET passed = @passed WHERE (citizen_id = @citizen_id) and (course_id = @course_id)", new Registration { course_id = course_id, citizen_id = citizen_id, passed = passed }, connectionString);
+
+        }
+
+        public void RetireCourse(int course_id, string connectionString)
+        {
+            UpdateData<Course>("UPDATE course SET evaluated = 1 WHERE (course_id = @course_id)", new Course { course_id = course_id }, connectionString);
+        }
+
         public void PostCourse(Course Course, string connectionString)
         {
             SaveData<Course>(
@@ -49,6 +90,7 @@ namespace TCRS.Database
             }
 
         }
+
         public int GetEnrollmentNumberForCourse(int course_id, string connectionString)
         {
             return GetCount<DynamicParameters>("SELECT COUNT(*) FROM registration WHERE course_id = @course_id", new DynamicParameters(new { course_id = course_id }), connectionString);

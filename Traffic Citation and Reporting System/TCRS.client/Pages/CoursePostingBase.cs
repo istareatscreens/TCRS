@@ -8,9 +8,9 @@ using TCRS.Shared.Objects.CourseManagement;
 
 namespace TCRS.Client.Pages
 {
-    public class CourseManagementBase : ComponentBase
+    public class CoursePostingBase : ComponentBase
     {
-        protected CourseManagementData CourseData { get; set; } = new CourseManagementData();
+        protected CoursePostingData CourseData { get; set; } = new CoursePostingData();
 
         protected EditContext EditContext { get; set; }
 
@@ -68,7 +68,7 @@ namespace TCRS.Client.Pages
                 await CourseManager.CreateCourse(CourseData);
 
                 // reset the forms
-                CourseData = new CourseManagementData();
+                CourseData = new CoursePostingData();
                 dateSelect = DateTime.Today;
                 StateHasChanged();
             }

@@ -1,4 +1,4 @@
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace TCRS.Database.Model
 {
@@ -7,9 +7,9 @@ namespace TCRS.Database.Model
         [Key]
         public int citizen_id { get; set; }
         [Key]
-        public string course_id { get; set; }
+        public int course_id { get; set; }
         [Key]
-        public string citation_id { get; set; }
+        public int citation_id { get; set; }
         public bool passed { get; set; }
 
         //Relationship 
