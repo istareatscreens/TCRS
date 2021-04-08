@@ -17,11 +17,7 @@
                     <tr>
                         @foreach (var prop in ObjectPrinter.PropertiesOfType(data))
                         {
-                            //if (prop.Key == "course_id" || prop.Key == "scheduled" || prop.Key == "address")
-                            //{
                             <td>@prop.Value</td>
-                            //}
-
                         }
                         <MudButton @onclick="@((e) => BookDialogPress(data))" Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary" Class="ma-2">Book</MudButton>
                     </tr>
@@ -89,7 +85,6 @@
         {
             SnackBar.Add(e.Message, Severity.Error);
         }
-        // register the user in the course
 
     }
 

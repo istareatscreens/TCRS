@@ -6762,3 +6762,12 @@ ADD COLUMN `wantedcol` VARCHAR(45) NOT NULL DEFAULT '1' AFTER `active_status`;
 ALTER TABLE `tcrs-db`.`wanted` 
 DROP COLUMN `wantedcol`;
 
+INSERT INTO `tcrs-db`.`license_plate` (`plate_number`, `vehicle_id`, `expired`) VALUES ('54976014', '3', '0');
+
+INSERT INTO `tcrs-db`.`vehicle_record` (`vehicle_id`, `citation_id`) VALUES ('3', '8');
+INSERT INTO `tcrs-db`.`vehicle_record` (`vehicle_id`, `citation_id`) VALUES ('3', '12');
+INSERT INTO `tcrs-db`.`vehicle_record` (`vehicle_id`, `citation_id`) VALUES ('3', '15');
+INSERT INTO `tcrs-db`.`vehicle_record` (`vehicle_id`, `citation_id`) VALUES ('3', '21');
+
+UPDATE `tcrs-db`.`citation` SET `date_recieved` = '2020-08-14 13:53:02' WHERE (`citation_id` = '8');
+

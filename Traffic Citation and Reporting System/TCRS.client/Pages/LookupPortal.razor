@@ -1,4 +1,5 @@
 ﻿@page "/Lookupportal"
+@attribute [Authorize(Roles = Roles.HighwayPatrolOfficer + "," + Roles.Manager)]
 @inherits LookupPortalBase
 
 @using System.ComponentModel.DataAnnotations
@@ -68,7 +69,7 @@
                                 @foreach (var h in headings)
                                 {
                                     <th>@h</th>
-}
+                                }
                             </tr>
                         </thead>
                         <tbody>
@@ -83,7 +84,7 @@
                                                    Color="Color.Error">Remove Wanted Status</MudButton>
                                     </td>
                                 </tr>
-}
+                            }
                         </tbody>
                     </MudSimpleTable>
 
@@ -156,7 +157,7 @@
                                 @foreach (var h in headings)
                                 {
                                     <th>@h</th>
-}
+                                }
                             </tr>
                         </thead>
                         <tbody>
@@ -171,7 +172,7 @@
                                                    Color="Color.Error">Remove Wanted Status</MudButton>
                                     </td>
                                 </tr>
-}
+                            }
                         </tbody>
                     </MudSimpleTable>
                 </MudCardContent>

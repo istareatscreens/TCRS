@@ -1,5 +1,5 @@
 ﻿@page "/Citationissuing"
-@*@attribute [Authorize(Roles = Roles.HighwayPatrolOfficer)]*@
+@attribute [Authorize(Roles = Roles.HighwayPatrolOfficer + "," + Roles.MunicipalOfficer)]
 @inherits CitationIssuingBase
 
 @using System.ComponentModel.DataAnnotations

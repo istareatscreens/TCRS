@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components.Forms;
 using MudBlazor;
 using System;
 using TCRS.Client.AuthStateProvider;
+using TCRS.Client.BusyOverlay;
 using TCRS.Shared.Contracts;
 using TCRS.Shared.Objects.Auth;
 
@@ -34,6 +35,9 @@ namespace TCRS.Client.Pages
         private IUserService UserService { get; set; }
 
         [Inject]
+        private BusyOverlayService BusyOverlayService { get; set; }
+
+        [Inject]
         private IAuthServiceProvider authenticationStateProvider { get; set; }
 
         [Inject]
@@ -47,6 +51,7 @@ namespace TCRS.Client.Pages
                 {
                     return;
                 }
+                BusyOverlayService.SetBusyState(BusyEnum.Busy);
                 var tokensAcquired = await UserManager.UserSignIn(UserCredentials);
                 if (tokensAcquired != null)
                 {
@@ -58,6 +63,10 @@ namespace TCRS.Client.Pages
             {
                 SnackBar.Add(e.Message, Severity.Error);
             }
+            finally
+            {
+                BusyOverlayService.SetBusyState(BusyEnum.NotBusy);
+            }            
         }
     }
 }

@@ -28,6 +28,7 @@ namespace TCRS.Server.Controllers
         }
 
         [HttpPut("RemoveCitation")]
+        [Authorize(Roles = Roles.HighwayPatrolOfficer + "," + Roles.Manager)]
         public ActionResult ResolveCitation(RemoveCitationObject RemoveCitationObject)
         {
             try
@@ -53,6 +54,7 @@ namespace TCRS.Server.Controllers
         }
 
         [HttpGet("Lookup")]
+        [Authorize(Roles = Roles.HighwayPatrolOfficer + "," + Roles.Manager)]
         public ActionResult<IEnumerable<LookupCitationDisplayData>> CitationLookup([FromQuery] string citation_number)
         {
             if (IsValidCitationNumber(citation_number))
@@ -130,6 +132,7 @@ namespace TCRS.Server.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = Roles.HighwayPatrolOfficer + "," + Roles.Manager)]
         public ActionResult<IEnumerable<CitizenVehicleCitation>> GetCitationListByCitationNumber([FromQuery] String citation_number)
         {
             if (IsValidCitationNumber(citation_number))
@@ -197,7 +200,7 @@ namespace TCRS.Server.Controllers
 
 
         [HttpPost("IssueCitation")]
-        [Authorize(Roles = Roles.HighwayPatrolOfficer + ", " + Roles.MunicipalOfficer)]
+        [Authorize(Roles = Roles.HighwayPatrolOfficer + "," + Roles.MunicipalOfficer)]
         public ActionResult<IEnumerable<CitationIssuingDisplayData>> PostCitation([FromHeader] string authorization, [FromBody] CitationIssueData citationIssueData)
         {
 
@@ -323,6 +326,7 @@ namespace TCRS.Server.Controllers
         private Func<Citation, DateTime> CalculateDueDate = (Citation citation) => citation.date_recieved.AddMonths(citation.Citation_Type.due_date_month);
 
         [HttpGet("All")]
+        [Authorize(Roles = Roles.HighwayPatrolOfficer + "," + Roles.Manager)]
         public IEnumerable<Citation_Type> GetCitationType()
         {
             return _db.GetAllCitationType<Citation_Type>(_databaseContext.Server, new Citation_Type());

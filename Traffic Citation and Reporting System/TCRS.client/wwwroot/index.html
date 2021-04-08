@@ -15,7 +15,13 @@
 <body>
     <script src="_content/MudBlazor/MudBlazor.min.js?v=5.0.6"></script>
     <script src="_framework/blazor.webassembly.js"></script>
-    <App>Loading...</App>
+    <App>
+        <div class="busy-overlay">
+            <div id="preloader">
+                <div id="loader"></div>
+            </div>
+        </div>
+    </App>
 
     <div id="blazor-error-ui">
         An unhandled error has occurred.

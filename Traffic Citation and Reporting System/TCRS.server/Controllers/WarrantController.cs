@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Collections.Generic;
 using System.Linq;
 using TCRS.Database;
 using TCRS.Database.Model;
 using TCRS.Server.Tokens;
+using TCRS.Shared.Objects.Auth;
 using TCRS.Shared.Objects.Warrant;
 
 namespace TCRS.Server.Controllers
@@ -23,6 +25,7 @@ namespace TCRS.Server.Controllers
         }
 
         [HttpPut("RemoveWarrant")]
+        [Authorize(Roles = Roles.HighwayPatrolOfficer + "," + Roles.Manager)]
         public ActionResult RemoveWarrant(DeleteWarrantObject deleteWarrantObject)
         {
             try
@@ -41,11 +44,11 @@ namespace TCRS.Server.Controllers
             }
         }
         [HttpGet]
+        [Authorize(Roles = Roles.HighwayPatrolOfficer + "," + Roles.Manager)]
         public ActionResult<IEnumerable<WarrantData>> GetWarrants([FromQuery] string license_id, [FromQuery] string plate_number)
         {
             try
             {
-
                 if (license_id != null)
                 {
                     var citizen = _db.GetCitizenInfoByLicenseID(license_id, _databaseContext.Server);
@@ -115,6 +118,7 @@ namespace TCRS.Server.Controllers
 
         //TEST IMPLEMENTATION (Need to integrate payment API)
         [HttpPost("PostWarrant")]
+        [Authorize(Roles = Roles.HighwayPatrolOfficer + "," + Roles.Manager)]
         public ActionResult PostWarrant(CreateWarrantObject CreateWarrantObject)
         {
             try

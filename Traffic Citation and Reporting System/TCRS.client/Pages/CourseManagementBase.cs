@@ -50,7 +50,6 @@ namespace TCRS.Client.Pages
         }
 
         public DateTime? dateSelect = DateTime.Today;
-        MudDatePicker _picker;
 
         protected async void OnValidSubmit(EditContext context)
         {
