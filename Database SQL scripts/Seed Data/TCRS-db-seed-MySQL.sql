@@ -6771,3 +6771,11 @@ INSERT INTO `tcrs-db`.`vehicle_record` (`vehicle_id`, `citation_id`) VALUES ('3'
 
 UPDATE `tcrs-db`.`citation` SET `date_recieved` = '2020-08-14 13:53:02' WHERE (`citation_id` = '8');
 
+INSERT INTO `tcrs-db`.`person` (`person_id`, `first_name`, `last_name`, `email`, `password`, `active`) VALUES ('52', 'Gary', 'Payton', 'highwaymanager@gmail.com', '1234', '1');
+INSERT INTO `tcrs-db`.`person` (`person_id`, `first_name`, `last_name`, `email`, `password`, `active`) VALUES ('53', 'Karl', 'Malone', 'municipalmanager@gmail.com', '1234', '1');
+INSERT INTO `tcrs-db`.`person` (`person_id`, `first_name`, `last_name`, `email`, `password`, `active`) VALUES ('54', 'Steve', 'Nash', 'highwaypatrolofficer@gmail.com', '1234', '1');
+INSERT INTO `tcrs-db`.`person` (`person_id`, `first_name`, `last_name`, `email`, `password`, `active`) VALUES ('55', 'Shawn', 'Kemp', 'municipalofficer@gmail.com', '1234', '1');
+
+INSERT INTO `tcrs-db`.`police_dept` (`police_dept_id`, `manager_id`, `name`) VALUES ('4', '52', 'Royal Canadian Mounted Police');
+
+INSERT INTO `tcrs-db`.`municipality` (`munic_id`, `manager_id`, `name`) VALUES ('4', '53', 'Thunder Bay Police Service');
