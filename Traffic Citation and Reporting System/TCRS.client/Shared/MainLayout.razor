@@ -2,34 +2,38 @@
 
 <AuthorizeView>
 
-<Authorized>
-<div class="page">
-<MudThemeProvider/>
-<MudDialogProvider/>
-<MudSnackbarProvider/>
-    <div class="main">
-        <!--Universal components go here-->
-        <NavBar>
-            <NavButtons>
-                <MudButton Class="navbar__homepage" Link="/Coursemanagement" Color="Color.Primary" Variant="Variant.Filled">Course Management</MudButton>
-                <MudButton Class="navbar__homepage" Link="/Citationissuing" Color="Color.Primary" Variant="Variant.Filled">Citation Issuing</MudButton>
-                <MudButton Class="navbar__homepage" Link="/Lookupportal" Color="Color.Primary" Variant="Variant.Filled">Lookup Portal</MudButton>
-                <MudButton Class="navbar__homepage" Link="/Employeelookup" Color="Color.Primary" Variant="Variant.Filled">Employee Lookup</MudButton>
-            </NavButtons>
-            <LoginLogout>
-                <MudButton OnClick="@SignOut" Variant="Variant.Filled" Color="Color.Primary" class="navbar__signout-btn">Sign out</MudButton>
-            </LoginLogout>
-        </NavBar>
-        <div class="main-body">
-            <!--Render Page-->
-            @Body
+    <Authorized>
+        <div class="page">
+            <MudThemeProvider />
+            <MudDialogProvider />
+            <MudSnackbarProvider />
+            <div class="main">
+                <!--Universal components go here-->
+                <NavBar>
+                    <NavButtons>
+                        @if (@UserService.User.isSchool_Rep)
+                        {<MudButton Class="navbar__homepage" Link="/Coursemanagement" Color="Color.Primary" Variant="Variant.Filled">Course Management</MudButton>}
+                        @if (UserService.User.isHighway_Patrol_Officer || @UserService.User.isMunicipal_Officer)
+                        {<MudButton Class="navbar__homepage" Link="/Citationissuing" Color="Color.Primary" Variant="Variant.Filled">Citation Issuing</MudButton>}
+                        @if ((UserService.User.isManager && UserService.User.isMunicipal_Officer) || UserService.User.isHighway_Patrol_Officer)
+                        {<MudButton Class="navbar__homepage" Link="/Lookupportal" Color="Color.Primary" Variant="Variant.Filled"> Lookup Portal </MudButton>}
+                        @if (UserService.User.isManager && (UserService.User.isHighway_Patrol_Officer || UserService.User.isMunicipal_Officer))
+                        {<MudButton Class="navbar__homepage" Link="/Employeelookup" Color="Color.Primary" Variant="Variant.Filled">Employee Lookup</MudButton>}
+                    </NavButtons>
+                    <LoginLogout>
+                        <MudButton OnClick="@SignOut" Variant="Variant.Filled" Color="Color.Primary" class="navbar__signout-btn">Sign out</MudButton>
+                    </LoginLogout>
+                </NavBar>
+                <div class="main-body">
+                    <!--Render Page-->
+                    @Body
+                </div>
+            </div>
         </div>
-    </div>
-</div>
-</Authorized>
-<NotAuthorized>
-    <div>
-    @{ NavigationManager.NavigateTo("/Signin"); }
-    </div>
-</NotAuthorized>
+    </Authorized>
+    <NotAuthorized>
+        <div>
+            @{ NavigationManager.NavigateTo("/Signin"); }
+        </div>
+    </NotAuthorized>
 </AuthorizeView>
