@@ -2,24 +2,21 @@
 @inherits LookupPortalBase
 
 @using System.ComponentModel.DataAnnotations
-
-<MudText Typo="Typo.h3">Lookup Portal for Citizen, Vehicle, Citation</MudText>
-
-<div class="citation-body">
+<div class="tab-page">
 
     <MudPaper Class="pa-1 ma-2" Elevation="3">
 
         <MudTabs Elevation="4" Rounded="true" Centered="true" Color="@Color.Primary">
             <br />
 
-            <MudTabPanel OnClick="((e) => currentTab(1))" Text="Person Information">
+            <MudTabPanel OnClick="((e) => currentTab(1))" Text="Citizen Information">
 
-                <div style="max-width: 400px;">
+                <div class="info_card">
                     <EditForm Model="@EditContext" OnValidSubmit="@OnValidSubmit">
                         <DataAnnotationsValidator />
                         <MudCard>
                             <MudCardContent>
-                                <MudText Typo="Typo.h6">Person Lookup </MudText>
+                                <MudText Typo="Typo.h6">Citizen Lookup </MudText>
                                 <MudTextField Label="Licence ID" Variant="Variant.Outlined"
                                               @bind-Value="LookupData.CitizenData" For="@(() => LookupData.CitizenData)" />
                             </MudCardContent>
@@ -31,22 +28,20 @@
                 </div>
                 <br />
 
-                <div style="max-width: 400px;">
-                    <MudCard>
-                        <MudCardContent>
-                            <MudText Typo="Typo.h6">Person Information</MudText>
-                            <MudButton OnClick="@clearCitizenForm" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Delete" Color="Color.Error">Clear Forms</MudButton>
-                            <MudTextField Value="citizenData.GetOffenderName()" Label="Person Name:" ReadOnly="true" Variant="Variant.Filled" />
-                            <MudTextField Value="citizenData.dob" Label="Date of Birth:" ReadOnly="true" Variant="Variant.Filled" />
-                            <MudTextField Value="citizenData.home_address" Label="Home Address:" ReadOnly="true" Variant="Variant.Filled" />
-                            <MudTextField Value="citizenData.license_id" Label="Person Licence ID:" ReadOnly="true" Variant="Variant.Filled" />
-                            <MudTextField Value="citizenData.license_class" Label="Licence Class:" ReadOnly="true" Variant="Variant.Filled" />
-                            <MudTextField Value="citizenData.expiration_date" Label="Licence Expiration :" ReadOnly="true" Variant="Variant.Filled" />
-                            <MudTextField Value="citizenData.is_revoked" Label="Licence Revoked?:" ReadOnly="true" Variant="Variant.Filled" />
-                            <MudTextField Value="citizenData.is_suspended" Label="Licence Suspended?" ReadOnly="true" Variant="Variant.Filled" />
-                            <br />
-                        </MudCardContent>
-                    </MudCard>
+                <div class="info_card">
+                    <MudCardContent>
+                        <MudText Typo="Typo.h6">Person Information</MudText>
+                        <MudButton OnClick="@clearCitizenForm" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Delete" Color="Color.Error">Clear Forms</MudButton>
+                        <MudTextField Value="citizenData.GetOffenderName()" Label="Person Name:" ReadOnly="true" Variant="Variant.Filled" />
+                        <MudTextField Value="citizenData.dob" Label="Date of Birth:" ReadOnly="true" Variant="Variant.Filled" />
+                        <MudTextField Value="citizenData.home_address" Label="Home Address:" ReadOnly="true" Variant="Variant.Filled" />
+                        <MudTextField Value="citizenData.license_id" Label="Person Licence ID:" ReadOnly="true" Variant="Variant.Filled" />
+                        <MudTextField Value="citizenData.license_class" Label="Licence Class:" ReadOnly="true" Variant="Variant.Filled" />
+                        <MudTextField Value="citizenData.expiration_date" Label="Licence Expiration :" ReadOnly="true" Variant="Variant.Filled" />
+                        <MudTextField Value="citizenData.is_revoked" Label="Licence Revoked?:" ReadOnly="true" Variant="Variant.Filled" />
+                        <MudTextField Value="citizenData.is_suspended" Label="Licence Suspended?" ReadOnly="true" Variant="Variant.Filled" />
+                        <br />
+                    </MudCardContent>
                     <br />
                     <MudCard>
                         <MudCardContent>
@@ -65,42 +60,38 @@
                     </MudCard>
                 </div>
                 <br />
-                <MudCard>
-                    <MudCardContent>
-                        <MudText Typo="Typo.h6">Warrant Information</MudText>
-                        <MudSimpleTable Hover="true" FixedHeader="true">
-                            <thead>
-                                <tr>
-                                    @foreach (var h in headings)
-                                    {
-                                        <th>@h</th>
-                                    }
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var item in warrantCitizenData)
+                <MudCardContent>
+                    <MudText Typo="Typo.h6">Warrant Information</MudText>
+                    <MudSimpleTable Hover="true" FixedHeader="true">
+                        <thead>
+                            <tr>
+                                @foreach (var h in headings)
                                 {
-                                    <tr>
-                                        <td>@item.reference_no</td>
-                                        <MudTextField T="string" Variant="Variant.Outlined" Value="@item.crime" Lines="4" />
-                                        <td>@item.dangerous</td>
-                                        <td>
-                                            <MudButton OnClick="((e) => removeWarrant(item.reference_no))" ButtonType="ButtonType.Submit" Variant="Variant.Filled"
-                                                       Color="Color.Error">Remove Wanted Status</MudButton>
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </MudSimpleTable>
+<th>@h</th>}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in warrantCitizenData)
+                            {
+<tr>
+    <td>@item.reference_no</td>
+    <MudTextField T="string" Variant="Variant.Outlined" Value="@item.crime" Lines="4" />
+    <td>@item.dangerous</td>
+    <td>
+        <MudButton OnClick="((e) => removeWarrant(item.reference_no))" ButtonType="ButtonType.Submit" Variant="Variant.Filled"
+                   Color="Color.Error">Remove Wanted Status</MudButton>
+    </td>
+</tr>}
+                        </tbody>
+                    </MudSimpleTable>
 
-                    </MudCardContent>
-                </MudCard>
+                </MudCardContent>
 
             </MudTabPanel>
 
             <MudTabPanel OnClick="((e) => currentTab(2))" Text="Vehicle Information">
 
-                <div style="max-width: 400px;">
+                <div class="info_card">
                     <EditForm Model="@EditContext" OnValidSubmit="@OnValidSubmit">
                         <DataAnnotationsValidator />
                         <MudCard>
@@ -118,27 +109,25 @@
 
                 <br />
 
-                <div style="max-width: 400px;">
-                    <MudCard>
-                        <MudCardContent>
-                            <MudText Typo="Typo.h6">Vehicle Information</MudText>
-                            <MudButton OnClick="@clearVehicleForm" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Delete" Color="Color.Error">Clear Forms</MudButton>
-                            <MudTextField Value="vehicleData.Owner" Label="Vehicle Owner:" ReadOnly="true" Variant="Variant.Filled" />
-                            <MudTextField Value="citationData.dob" Label="Date of Birth:" ReadOnly="true" Variant="Variant.Filled" />
-                            <MudTextField Value="citationData.home_address" Label="Home Address:" ReadOnly="true" Variant="Variant.Filled" />
-                            <MudTextField Value="vehicleData.plate_number" Label="Vehicle Licence Plate Number:" ReadOnly="true" Variant="Variant.Filled" />
-                            <MudTextField Value="vehicleData.vin" Label="Vehicle VIN:" ReadOnly="true" Variant="Variant.Filled" />
-                            <MudTextField Value="vehicleData.name" Label="Vehicle Name:" ReadOnly="true" Variant="Variant.Filled" />
-                            <MudTextField Value="vehicleData.stolen" Label="vehicle Stolen:" ReadOnly="true" Variant="Variant.Filled" />
-                            <MudTextField Value="vehicleData.make" Label="Vehicle Make:" ReadOnly="true" Variant="Variant.Filled" />
-                            <MudTextField Value="vehicleData.model" Label="Vehicle Model:" ReadOnly="true" Variant="Variant.Filled" />
-                            <MudTextField Value="vehicleData.year_made" Label="Vehicle Year Made:" ReadOnly="true" Variant="Variant.Filled" />
-                            <MudTextField Value="vehicleData.citizen_id" Label="Vehicle Citizen ID Relation:" ReadOnly="true" Variant="Variant.Filled" />
-                            <MudTextField Value="vehicleData.insurer_id" Label="Vehicle Insured ID Relation:" ReadOnly="true" Variant="Variant.Filled" />
-                            <MudTextField Value="vehicleData.insurer_name" Label="Vehicle Insured Name Relation:" ReadOnly="true" Variant="Variant.Filled" />
+                <div class="info_card">
+                    <MudCardContent>
+                        <MudText Typo="Typo.h6">Vehicle Information</MudText>
+                        <MudButton OnClick="@clearVehicleForm" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Delete" Color="Color.Error">Clear Forms</MudButton>
+                        <MudTextField Value="vehicleData.Owner" Label="Vehicle Owner:" ReadOnly="true" Variant="Variant.Filled" />
+                        <MudTextField Value="citationData.dob" Label="Date of Birth:" ReadOnly="true" Variant="Variant.Filled" />
+                        <MudTextField Value="citationData.home_address" Label="Home Address:" ReadOnly="true" Variant="Variant.Filled" />
+                        <MudTextField Value="vehicleData.plate_number" Label="Vehicle Licence Plate Number:" ReadOnly="true" Variant="Variant.Filled" />
+                        <MudTextField Value="vehicleData.vin" Label="Vehicle VIN:" ReadOnly="true" Variant="Variant.Filled" />
+                        <MudTextField Value="vehicleData.name" Label="Vehicle Name:" ReadOnly="true" Variant="Variant.Filled" />
+                        <MudTextField Value="vehicleData.stolen" Label="vehicle Stolen:" ReadOnly="true" Variant="Variant.Filled" />
+                        <MudTextField Value="vehicleData.make" Label="Vehicle Make:" ReadOnly="true" Variant="Variant.Filled" />
+                        <MudTextField Value="vehicleData.model" Label="Vehicle Model:" ReadOnly="true" Variant="Variant.Filled" />
+                        <MudTextField Value="vehicleData.year_made" Label="Vehicle Year Made:" ReadOnly="true" Variant="Variant.Filled" />
+                        <MudTextField Value="vehicleData.citizen_id" Label="Vehicle Citizen ID Relation:" ReadOnly="true" Variant="Variant.Filled" />
+                        <MudTextField Value="vehicleData.insurer_id" Label="Vehicle Insured ID Relation:" ReadOnly="true" Variant="Variant.Filled" />
+                        <MudTextField Value="vehicleData.insurer_name" Label="Vehicle Insured Name Relation:" ReadOnly="true" Variant="Variant.Filled" />
 
-                        </MudCardContent>
-                    </MudCard>
+                    </MudCardContent>
                     <br />
                     <MudCard>
                         <MudCardContent>
@@ -157,40 +146,36 @@
                     </MudCard>
                 </div>
                 <br />
-                <MudCard>
-                    <MudCardContent>
-                        <MudText Typo="Typo.h6">Warrant Information</MudText>
-                        <MudSimpleTable Hover="true" FixedHeader="true">
-                            <thead>
-                                <tr>
-                                    @foreach (var h in headings)
-                                    {
-                                        <th>@h</th>
-                                    }
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var item in warrantVehicleData)
+                <MudCardContent>
+                    <MudText Typo="Typo.h6">Warrant Information</MudText>
+                    <MudSimpleTable Hover="true" FixedHeader="true">
+                        <thead>
+                            <tr>
+                                @foreach (var h in headings)
                                 {
-                                    <tr>
-                                        <td>@item.reference_no</td>
-                                        <MudTextField T="string" Variant="Variant.Outlined" Value="@item.crime" Lines="4" />
-                                        <td>@item.dangerous</td>
-                                        <td>
-                                            <MudButton OnClick="((e) => removeWarrant(item.reference_no))" ButtonType="ButtonType.Submit" Variant="Variant.Filled"
-                                                       Color="Color.Error">Remove Wanted Status</MudButton>
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </MudSimpleTable>
-                    </MudCardContent>
-                </MudCard>
+<th>@h</th>}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in warrantVehicleData)
+                            {
+<tr>
+    <td>@item.reference_no</td>
+    <MudTextField T="string" Variant="Variant.Outlined" Value="@item.crime" Lines="4" />
+    <td>@item.dangerous</td>
+    <td>
+        <MudButton OnClick="((e) => removeWarrant(item.reference_no))" ButtonType="ButtonType.Submit" Variant="Variant.Filled"
+                   Color="Color.Error">Remove Wanted Status</MudButton>
+    </td>
+</tr>}
+                        </tbody>
+                    </MudSimpleTable>
+                </MudCardContent>
             </MudTabPanel>
 
             <MudTabPanel OnClick="((e) => currentTab(3))" Text="Citation Information">
 
-                <div style="max-width: 400px;">
+                <div class="info_card">
                     <EditForm Model="@EditContext" OnValidSubmit="@OnValidSubmit">
                         <DataAnnotationsValidator />
                         <MudCard>
@@ -206,47 +191,40 @@
                     </EditForm>
                 </div>
                 <br />
-                <div style="max-width: 400px;">
-                    <MudCard>
-                        <MudCardContent>
-                            <MudText Typo="Typo.h6">Citation Information</MudText>
-                            <MudButton OnClick="@clearCitationForm" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Delete" Color="Color.Error">Clear Forms</MudButton>
-                            @*citation information*@
-                            <MudTextField Value="@GetCitationType()" Label="Citation Type:" ReadOnly="true" Variant="Variant.Filled" />
-                            <MudTextField Value="citationData.is_resolved" Label="Is Resolved:" ReadOnly="true" Variant="Variant.Filled" />
-                            @*officer information*@
-                            <MudTextField Value="@citationData.officer_id" Label="Officer ID:" ReadOnly="true" Variant="Variant.Filled" />
-                            @*citizen*@
-                            @if (citationData.is_citizen)
-                            {
-                                <MudTextField Value="citationData.GetOffenderName()" Label="Citizen Name:" ReadOnly="true" Variant="Variant.Filled" />
+                <div class="info_card">
+                    <MudCardContent>
+                        <MudText Typo="Typo.h6">Citation Information</MudText>
+                        <MudButton OnClick="@clearCitationForm" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Delete" Color="Color.Error">Clear Forms</MudButton>
+                        @*citation information*@
+                        <MudTextField Value="@GetCitationType()" Label="Citation Type:" ReadOnly="true" Variant="Variant.Filled" />
+                        <MudTextField Value="citationData.is_resolved" Label="Is Resolved:" ReadOnly="true" Variant="Variant.Filled" />
+                        @*officer information*@
+                        <MudTextField Value="@citationData.officer_id" Label="Officer ID:" ReadOnly="true" Variant="Variant.Filled" />
+                        @*citizen*@
+                        @if (citationData.is_citizen)
+                        {
+<MudTextField Value="citationData.GetOffenderName()" Label="Citizen Name:" ReadOnly="true" Variant="Variant.Filled" />
                                 <MudTextField Value="citationData.dob" Label="Date of Birth:" ReadOnly="true" Variant="Variant.Filled" />
-                                <MudTextField Value="citationData.home_address" Label="Home Address:" ReadOnly="true" Variant="Variant.Filled" />
-                                <MudTextField Value="citationData.license" Label="License Number:" ReadOnly="true" Variant="Variant.Filled" />
-                                <MudTextField Value="citationData.license_class" Label="License Class:" ReadOnly="true" Variant="Variant.Filled" />
-                            }
-                            @*vehicle*@
-                            @if (citationData.is_vehicle)
-                            {
-                                <MudTextField Value="citationData.plate_number" Label="Plate Number:" ReadOnly="true" Variant="Variant.Filled" />
+                                                                <MudTextField Value="citationData.home_address" Label="Home Address:" ReadOnly="true" Variant="Variant.Filled" />
+                                                                                                <MudTextField Value="citationData.license" Label="License Number:" ReadOnly="true" Variant="Variant.Filled" />
+                                                                                                                                <MudTextField Value="citationData.license_class" Label="License Class:" ReadOnly="true" Variant="Variant.Filled" /> } @*vehicle*@
+                        @if (citationData.is_vehicle)
+                        {
+<MudTextField Value="citationData.plate_number" Label="Plate Number:" ReadOnly="true" Variant="Variant.Filled" />
                                 <MudTextField Value="citationData.vin" Label="Vehicle Number:" ReadOnly="true" Variant="Variant.Filled" />
-                                <MudTextField Value="citationData.is_stolen" Label="Is Stolen:" ReadOnly="true" Variant="Variant.Filled" />
-                                <MudTextField Value="citationData.make" Label="Make:" ReadOnly="true" Variant="Variant.Filled" />
-                                <MudTextField Value="citationData.model" Label="Model:" ReadOnly="true" Variant="Variant.Filled" />
-                                <MudTextField Value="citationData.year_made" Label="Year Made:" ReadOnly="true" Variant="Variant.Filled" />
-                                <MudTextField Value="citationData.insurer" Label="Insurer:" ReadOnly="true" Variant="Variant.Filled" />
-                                <MudTextField Value="citationData.is_insured" Label="Is Insured:" ReadOnly="true" Variant="Variant.Filled" />
-
-                            }
-                            @*status*@
-                            <MudTextField Value="citationData.date_recieved" Label="Date Recieved:" ReadOnly="true" Variant="Variant.Filled" />
-                            <MudTextField Value="citationData.date_due" Label="Date Due:" ReadOnly="true" Variant="Variant.Filled" />
-                            <MudTextField Value="citationData.name" Label="Citation Type:" ReadOnly="true" Variant="Variant.Filled" />
-                            <br />
-                            <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Send" Color="Color.Primary"
-                                       OnClick="@ResolveCitation" Class="ml-auto">Resolve Citation</MudButton>
-                        </MudCardContent>
-                    </MudCard>
+                                                                <MudTextField Value="citationData.is_stolen" Label="Is Stolen:" ReadOnly="true" Variant="Variant.Filled" />
+                                                                                                <MudTextField Value="citationData.make" Label="Make:" ReadOnly="true" Variant="Variant.Filled" />
+                                                                                                                                <MudTextField Value="citationData.model" Label="Model:" ReadOnly="true" Variant="Variant.Filled" />
+                                                                                                                                                                <MudTextField Value="citationData.year_made" Label="Year Made:" ReadOnly="true" Variant="Variant.Filled" />
+                                                                                                                                                                                                <MudTextField Value="citationData.insurer" Label="Insurer:" ReadOnly="true" Variant="Variant.Filled" />
+                                                                                                                                                                                                                                <MudTextField Value="citationData.is_insured" Label="Is Insured:" ReadOnly="true" Variant="Variant.Filled" /> } @*status*@
+                        <MudTextField Value="citationData.date_recieved" Label="Date Recieved:" ReadOnly="true" Variant="Variant.Filled" />
+                        <MudTextField Value="citationData.date_due" Label="Date Due:" ReadOnly="true" Variant="Variant.Filled" />
+                        <MudTextField Value="citationData.name" Label="Citation Type:" ReadOnly="true" Variant="Variant.Filled" />
+                        <br />
+                        <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Send" Color="Color.Primary"
+                                   OnClick="@ResolveCitation" Class="ml-auto">Resolve Citation</MudButton>
+                    </MudCardContent>
                 </div>
             </MudTabPanel>
 
