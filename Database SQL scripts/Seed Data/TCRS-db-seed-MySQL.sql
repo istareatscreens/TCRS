@@ -6779,3 +6779,16 @@ INSERT INTO `tcrs-db`.`person` (`person_id`, `first_name`, `last_name`, `email`,
 INSERT INTO `tcrs-db`.`police_dept` (`police_dept_id`, `manager_id`, `name`) VALUES ('4', '52', 'Royal Canadian Mounted Police');
 
 INSERT INTO `tcrs-db`.`municipality` (`munic_id`, `manager_id`, `name`) VALUES ('4', '53', 'Thunder Bay Police Service');
+
+UPDATE `tcrs-db`.`citation` SET `officer_id` = '52' WHERE (`citation_id` = '228');
+UPDATE `tcrs-db`.`citation` SET `officer_id` = '52' WHERE (`citation_id` = '224');
+UPDATE `tcrs-db`.`citation` SET `officer_id` = '53' WHERE (`citation_id` = '223');
+UPDATE `tcrs-db`.`citation` SET `officer_id` = '53' WHERE (`citation_id` = '222');
+UPDATE `tcrs-db`.`citation` SET `officer_id` = '54' WHERE (`citation_id` = '237');
+UPDATE `tcrs-db`.`citation` SET `officer_id` = '54' WHERE (`citation_id` = '242');
+UPDATE `tcrs-db`.`citation` SET `officer_id` = '52' WHERE (`citation_id` = '240');
+UPDATE `tcrs-db`.`citation` SET `officer_id` = '53' WHERE (`citation_id` = '250');
+UPDATE `tcrs-db`.`citation` SET `officer_id` = '54' WHERE (`citation_id` = '247');
+UPDATE `tcrs-db`.`citation` SET `officer_id` = '55' WHERE (`citation_id` = '997');
+UPDATE `tcrs-db`.`citation` SET `officer_id` = '55' WHERE (`citation_id` = '992');
+UPDATE `tcrs-db`.`citation` SET `officer_id` = '55' WHERE (`citation_id` = '994');
