@@ -10,7 +10,7 @@ namespace TCRS.Shared.Contracts.CourseManagement
         Task CreateCourse(CoursePostingData courseManagementData);
         Task<List<CourseEnrollmentData>> GetCourses(string citation_type_id);
         Task BookCourse(CourseEnrollmentBookingData bookingData);
-        Task<List<KeyValuePair<CoursePostingData, IEnumerable<StudentData>>>> GetCourseEnrollmentData();
+        Task<IEnumerable<KeyValuePair<CoursePostingData, IEnumerable<StudentData>>>> GetCourseEnrollmentData();
         Task RetireCourse(CoursePostingData courseData);
         Task PassFailStudent(StudentData studentData, bool passed);
     }

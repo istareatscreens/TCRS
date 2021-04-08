@@ -35,10 +35,10 @@ namespace TCRS.Business
             await _api.PostAsync<CourseEnrollmentBookingData>(bookingData);
         }
 
-        public async Task<List<KeyValuePair<CoursePostingData, IEnumerable<StudentData>>>> GetCourseEnrollmentData()
+        public async Task<IEnumerable<KeyValuePair<CoursePostingData, IEnumerable<StudentData>>>> GetCourseEnrollmentData()
         {
             var result = await _api.GetAsync<CourseManagementData>();
-            return result.ToList().FirstOrDefault().CourseEnrollmentData.ToList();
+            return result.ToList().FirstOrDefault().CourseEnrollmentData;
         }
 
         public async Task RetireCourse(CoursePostingData courseData)
