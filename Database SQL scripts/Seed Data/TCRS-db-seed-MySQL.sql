@@ -6776,3 +6776,8 @@ ADD COLUMN `completed` TINYINT NOT NULL DEFAULT 0 AFTER `is_full`;
 
 ALTER TABLE `tcrs-db`.`course` 
 CHANGE COLUMN `completed` `evaluated` TINYINT(4) NOT NULL DEFAULT '0' ;
+
+INSERT INTO `tcrs-db`.`municipal_officer` (`person_id`, `position`, `munic_id`) VALUES ('53', 'Commissioner', '4');
+INSERT INTO `tcrs-db`.`highway_patrol_officer` (`person_id`, `position`, `police_dept_id`) VALUES ('52', 'Staff Seargeant', '4');
+INSERT INTO `tcrs-db`.`municipal_officer` (`person_id`, `position`, `munic_id`) VALUES ('55', 'Trooper First Class', '4');
+INSERT INTO `tcrs-db`.`highway_patrol_officer` (`person_id`, `position`, `police_dept_id`) VALUES ('54', 'Constable', '4');
