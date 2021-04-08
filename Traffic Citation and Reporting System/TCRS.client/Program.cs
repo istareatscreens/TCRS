@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using TCRS.APIAccess;
 using TCRS.Business;
 using TCRS.Client.AuthStateProvider;
+using TCRS.Client.BusyOverlay;
 using TCRS.Shared.Contracts;
 using TCRS.Shared.Contracts.CitationManagement;
 using TCRS.Shared.Contracts.CourseManagement;
@@ -28,6 +29,9 @@ namespace TCRS.Client
             builder.Services.AddScoped(
                 sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
             builder.Services.AddMudServices();
+
+            //Busy Overlay
+            builder.Services.AddScoped<BusyOverlayService>();
 
             //Add local storage service
             builder.Services.AddBlazoredLocalStorage();

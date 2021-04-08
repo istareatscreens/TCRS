@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using TCRS.Client.AuthStateProvider;
+using TCRS.Client.BusyOverlay;
 using TCRS.Shared.Contracts;
 using TCRS.Shared.Objects.Auth;
 
@@ -32,6 +33,9 @@ namespace TCRS.Client.Pages
         private IUserService UserService { get; set; }
 
         [Inject]
+        private BusyOverlayService BusyOverlayService { get; set; }
+
+        [Inject]
         private IAuthServiceProvider authenticationStateProvider { get; set; }
 
         protected async void HandleSubmit()
@@ -42,11 +46,19 @@ namespace TCRS.Client.Pages
             }
 
             //TODO: add warning message
-            var tokensAcquired = await UserManager.UserSignIn(UserCredentials);
-            if (tokensAcquired != null)
+            try
             {
-                authenticationStateProvider.SetAuthenticatedState(tokensAcquired);
-                NavigationManager.NavigateTo(UserService.User.isSchool_Rep ? "/Coursemanagement" : "/Citationissuing");
+                BusyOverlayService.SetBusyState(BusyEnum.Busy);
+                var tokensAcquired = await UserManager.UserSignIn(UserCredentials);
+                if (tokensAcquired != null)
+                {
+                    authenticationStateProvider.SetAuthenticatedState(tokensAcquired);
+                    NavigationManager.NavigateTo(UserService.User.isSchool_Rep ? "/Coursemanagement" : "/Citationissuing");
+                }
+            }
+            finally
+            {
+                BusyOverlayService.SetBusyState(BusyEnum.NotBusy);
             }
         }
     }
