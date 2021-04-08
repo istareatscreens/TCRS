@@ -32,7 +32,6 @@ namespace TCRS.Server.Controllers
         {
             var User = new User(authorization);
 
-            IEnumerable<EmployeeLookupData> EmployeeData = null;
             IEnumerable<Police_Dept> PoliceEmployee = null;
             IEnumerable<Municipality> MunicipalEmployee = null;
             try

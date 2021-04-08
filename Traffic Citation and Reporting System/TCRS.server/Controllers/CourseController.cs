@@ -44,7 +44,7 @@ namespace TCRS.Server.Controllers
 
         [HttpGet("Getenrollmentdata")]
         //[Authorize(Roles = Roles.SchoolRep)]
-        public ActionResult GetEnrollmentData([FromHeader] string authorization)
+        public ActionResult<IEnumerable<CourseManagementData>> GetEnrollmentData([FromHeader] string authorization)
         {
             User user = new User(authorization);
             if (!user.isSchool_Rep)
@@ -63,7 +63,9 @@ namespace TCRS.Server.Controllers
                 var registration_data = _db.GetUnevaluatedCourses(school_id, _databaseContext.Server);
                 if (registration_data == null || registration_data.Count() == 0)
                 {
-                    return Ok(CourseEnrollmentData);
+                    var emptyResult = new List<CourseManagementData>();
+                    emptyResult.Add(new CourseManagementData { CourseEnrollmentData = CourseEnrollmentData });
+                    return Ok(emptyResult);
                 }
 
                 foreach (var record in registration_data)
@@ -99,7 +101,10 @@ namespace TCRS.Server.Controllers
                     }
                 }
 
-                return Ok(CourseEnrollmentData);
+                //wrap result
+                var result = new List<CourseManagementData>();
+                result.Add(new CourseManagementData { CourseEnrollmentData = CourseEnrollmentData });
+                return Ok(result);
             }
             catch
             {

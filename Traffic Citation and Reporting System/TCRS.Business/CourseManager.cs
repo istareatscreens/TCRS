@@ -35,5 +35,23 @@ namespace TCRS.Business
             await _api.PostAsync<CourseEnrollmentBookingData>(bookingData);
         }
 
+        public async Task<List<KeyValuePair<CoursePostingData, IEnumerable<StudentData>>>> GetCourseEnrollmentData()
+        {
+            var result = await _api.GetAsync<CourseManagementData>();
+            return result.ToList().FirstOrDefault().CourseEnrollmentData.ToList();
+        }
+
+        public async Task RetireCourse(CoursePostingData courseData)
+        {
+            await _api.PutAsync<RetireCourseData>(new RetireCourseData { course_id = courseData.course_id });
+        }
+
+        public async Task PassFailStudent(StudentData studentData, bool passed)
+        {
+            //set passed status
+            studentData.passed = passed;
+            await _api.PutAsync<StudentData>(studentData);
+        }
+
     }
 }

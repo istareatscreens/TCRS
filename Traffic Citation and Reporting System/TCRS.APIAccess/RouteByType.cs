@@ -18,8 +18,11 @@ namespace TCRS.APIAccess
         {
             /* ***** Warrant ***** */
             {typeof(DeleteWarrantObject), "api/Warrant/RemoveWarrant" },
-            /* ***** Warrant ***** */
-            {typeof(RemoveCitationObject), "api/Citations/RemoveCitation" }
+            /* ***** deactivate citation ***** */
+            {typeof(RemoveCitationObject), "api/Citations/RemoveCitation" },
+            /* Course management */
+            {typeof(RetireCourseData), "api/Course/Retirecourse" },
+            {typeof(StudentData), "api​/Course​/Passfailstudent" }
         };
 
         public static Dictionary<Type, string> PostEntityRouteAssignment { get; } = new Dictionary<Type, string>
@@ -61,6 +64,8 @@ namespace TCRS.APIAccess
             /* ***** Get All Courses ***** */
             // CourseEnrollmentDataController : get(course_id, citation_id)
             {typeof(CourseEnrollmentData), "api/Course/GetCourses" },
+
+            {typeof(CourseManagementData), "api/Course/Getenrollmentdata" },
 
             /* ***** CitationResolution ***** */
             // CitationResolutionController: get(citation_id)
