@@ -115,8 +115,13 @@ namespace TCRS.Database
 
         public IEnumerable<Citation> GetCitationAllInformationByNumber(string citation_number, string connectionString)
         {
-            var citation_id = (SyncLoadData<Citation, Citation>(
-                "SELECT citation_id FROM citation WHERE citation_number = @citation_number", new Citation { citation_number = citation_number }, connectionString)).ToList().FirstOrDefault().citation_id;
+            var citation_data = (SyncLoadData<Citation, Citation>(
+                "SELECT citation_id FROM citation WHERE citation_number = @citation_number", new Citation { citation_number = citation_number }, connectionString));
+            if (citation_data == null || citation_data.Count() == 0)
+            {
+                throw new Exception("Citation Number Not Found");
+            }
+            var citation_id = citation_data.ToList().FirstOrDefault().citation_id;
 
             var Vehicle_Record = (SyncLoadData<Vehicle_Record, Citation>(
                 "SELECT * FROM vehicle_record WHERE citation_id = @citation_id", new Citation { citation_id = citation_id }, connectionString));

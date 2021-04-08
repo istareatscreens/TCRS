@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using MudBlazor;
+using System;
 using TCRS.Shared.Contracts.CitationManagement;
 using TCRS.Shared.Enums;
 using TCRS.Shared.Objects.Citations;
@@ -24,29 +26,36 @@ namespace TCRS.Client.Pages
         [Inject]
         private ICitationManager CitationManager { get; set; }
 
+        [Inject]
+        ISnackbar SnackBar { get; set; }
+
         protected async void OnValidSubmit(EditContext context)
         {
-            if (!EditContext.Validate())
+            try
             {
-                // Print out invalid input message
-                return;
+                if (!EditContext.Validate())
+                {
+                    // Print out invalid input message
+                    return;
+                }
+                if (curTab == 1)
+                {
+                    CitationData.citation_type_id = (int)CitationData.citizenCitationTypes;
+                }
+                else if (curTab == 2)
+                {
+                    CitationData.citation_type_id = (int)CitationData.vehicleCitationTypes;
+                }
+                data = await CitationManager.IssueCitation(CitationData);
+                //Clear data from form
+                CitationData = new CitationIssueData();
+                //success = true;
+                StateHasChanged();
             }
-
-            if(curTab == 1)
+            catch (Exception e)
             {
-                CitationData.citation_type_id = (int)CitationData.citizenCitationTypes;
+                SnackBar.Add(e.Message, Severity.Error);
             }
-            else if(curTab == 2)
-            {
-                CitationData.citation_type_id = (int)CitationData.vehicleCitationTypes;
-            }
-
-            data = await CitationManager.IssueCitation(CitationData);
-
-            //Clear data from form
-            CitationData = new CitationIssueData();
-            //success = true;
-            StateHasChanged();
         }
 
         protected string Disabled { get; set; }
@@ -57,19 +66,5 @@ namespace TCRS.Client.Pages
             curTab = x;
             data = new CitationIssuingDisplayData();
         }
-
-        protected string WarrantInfo()
-        {
-            if (HasWarrant())
-            {
-                return "Warrant info";
-            }
-            return "";
-        }
-        protected bool HasWarrant()
-        {
-            return false;
-        }
-
     }
 }

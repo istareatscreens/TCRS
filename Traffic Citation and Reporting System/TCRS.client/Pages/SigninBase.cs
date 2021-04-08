@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using MudBlazor;
+using System;
 using TCRS.Client.AuthStateProvider;
 using TCRS.Shared.Contracts;
 using TCRS.Shared.Objects.Auth;
@@ -34,19 +36,27 @@ namespace TCRS.Client.Pages
         [Inject]
         private IAuthServiceProvider authenticationStateProvider { get; set; }
 
+        [Inject]
+        ISnackbar SnackBar { get; set; }
+
         protected async void HandleSubmit()
         {
-            if (!EditContext.Validate())
+            try
             {
-                return;
+                if (!EditContext.Validate())
+                {
+                    return;
+                }
+                var tokensAcquired = await UserManager.UserSignIn(UserCredentials);
+                if (tokensAcquired != null)
+                {
+                    authenticationStateProvider.SetAuthenticatedState(tokensAcquired);
+                    NavigationManager.NavigateTo(UserService.User.isSchool_Rep ? "/Coursemanagement" : "/Citationissuing");
+                }
             }
-
-            //TODO: add warning message
-            var tokensAcquired = await UserManager.UserSignIn(UserCredentials);
-            if (tokensAcquired != null)
+            catch (Exception e)
             {
-                authenticationStateProvider.SetAuthenticatedState(tokensAcquired);
-                NavigationManager.NavigateTo(UserService.User.isSchool_Rep ? "/Coursemanagement" : "/Citationissuing");
+                SnackBar.Add(e.Message, Severity.Error);
             }
         }
     }

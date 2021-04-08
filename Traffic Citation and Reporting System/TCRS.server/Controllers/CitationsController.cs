@@ -134,7 +134,7 @@ namespace TCRS.Server.Controllers
         {
             if (IsValidCitationNumber(citation_number))
             {
-                return NotFound(new { message = "Invalid" });
+                return NotFound(new { message = "Invalid Citation Number" });
             }
 
             try
@@ -201,13 +201,6 @@ namespace TCRS.Server.Controllers
         public ActionResult<IEnumerable<CitationIssuingDisplayData>> PostCitation([FromHeader] string authorization, [FromBody] CitationIssueData citationIssueData)
         {
 
-            Citation Citation = new Citation
-            {
-                citation_number = Guid.NewGuid().ToString(), //Generate GUID
-                date_recieved = DateTime.Now,
-                citation_type_id = citationIssueData.citation_type_id,
-                officer_id = (new User(authorization)).person_id
-            };
 
             //Check data
             License FoundLicense = null;
@@ -218,6 +211,14 @@ namespace TCRS.Server.Controllers
 
             try
             {
+                Citation Citation = new Citation
+                {
+                    citation_number = Guid.NewGuid().ToString(), //Generate GUID
+                    date_recieved = DateTime.Now,
+                    citation_type_id = citationIssueData.citation_type_id,
+                    officer_id = (new User(authorization)).person_id
+                };
+
 
                 //Check citation type
                 if (_db.GetCitationTypeById(citationIssueData.citation_type_id, _databaseContext.Server) == null)
@@ -268,55 +269,55 @@ namespace TCRS.Server.Controllers
 
                 NewCitation = IEnumerableHandler.UnpackIEnumerable(_db.GetCitationAllInformationByNumber(Citation.citation_number, _databaseContext.Server));
 
+                //Func<Citation, DateTime> calculateDueDate = (Citation citation) => citation.date_recieved.AddMonths(citation.Citation_Type.due_date_month);
+
+                return IEnumerableHandler.PackageInList<CitationIssuingDisplayData>(
+                (FoundLicense != null) ?
+                new CitationIssuingDisplayData
+                {
+                    is_citizen = true,
+                    first_name = FoundLicense.Citizen.first_name,
+                    middle_name = FoundLicense.Citizen.last_name,
+                    last_name = FoundLicense.Citizen.middle_name,
+                    license_id = FoundLicense.license_id,
+                    is_suspended = FoundLicense.is_suspended,
+                    is_revoked = FoundLicense.is_revoked,
+                    home_address = FoundLicense.Citizen.home_address,
+                    dob = FoundLicense.Citizen.dob,
+                    //common data
+                    citation_number = Citation.citation_number,
+                    insurer = NewCitation.Driver_Record.Citizen.Insurer != null ? NewCitation.Driver_Record.Citizen.Insurer.name : "",
+                    date_recieved = Citation.date_recieved,
+                    DateDue = CalculateDueDate(NewCitation),
+                    fine = NewCitation.Citation_Type.fine,
+                    is_dangerous = is_dangerous,
+                    is_wanted = is_wanted
+                } : new CitationIssuingDisplayData
+                {
+                    is_vehicle = true,
+                    plate_number = citationIssueData.licencePlate,
+                    vin = NewCitation.Vehicle_Record.Vehicle.vin,
+                    model = NewCitation.Vehicle_Record.Vehicle.model,
+                    make = NewCitation.Vehicle_Record.Vehicle.make,
+                    year_made = NewCitation.Vehicle_Record.Vehicle.year_made,
+                    stolen = NewCitation.Vehicle_Record.Vehicle.stolen,
+
+                    //common data
+                    citation_number = Citation.citation_number,
+                    insurer = NewCitation.Vehicle_Record.Vehicle.Insurer != null ? NewCitation.Vehicle_Record.Vehicle.Insurer.name : "",
+                    date_recieved = Citation.date_recieved,
+                    DateDue = CalculateDueDate(NewCitation),
+                    fine = NewCitation.Citation_Type.fine,
+                    is_dangerous = is_dangerous,
+                    is_wanted = is_wanted
+                }
+                );
+
             }
             catch (Exception e)
             {
-                return NotFound(new { message = "Connection Error" + e.Message });
+                return NotFound(new { message = e.Message });
             }
-
-            //Func<Citation, DateTime> calculateDueDate = (Citation citation) => citation.date_recieved.AddMonths(citation.Citation_Type.due_date_month);
-
-            return IEnumerableHandler.PackageInList<CitationIssuingDisplayData>(
-            (FoundLicense != null) ?
-            new CitationIssuingDisplayData
-            {
-                is_citizen = true,
-                first_name = FoundLicense.Citizen.first_name,
-                middle_name = FoundLicense.Citizen.last_name,
-                last_name = FoundLicense.Citizen.middle_name,
-                license_id = FoundLicense.license_id,
-                is_suspended = FoundLicense.is_suspended,
-                is_revoked = FoundLicense.is_revoked,
-                home_address = FoundLicense.Citizen.home_address,
-                dob = FoundLicense.Citizen.dob,
-                //common data
-                citation_number = Citation.citation_number,
-                insurer = NewCitation.Driver_Record.Citizen.Insurer != null ? NewCitation.Driver_Record.Citizen.Insurer.name : "",
-                date_recieved = Citation.date_recieved,
-                DateDue = CalculateDueDate(NewCitation),
-                fine = NewCitation.Citation_Type.fine,
-                is_dangerous = is_dangerous,
-                is_wanted = is_wanted
-            } : new CitationIssuingDisplayData
-            {
-                is_vehicle = true,
-                plate_number = citationIssueData.licencePlate,
-                vin = NewCitation.Vehicle_Record.Vehicle.vin,
-                model = NewCitation.Vehicle_Record.Vehicle.model,
-                make = NewCitation.Vehicle_Record.Vehicle.make,
-                year_made = NewCitation.Vehicle_Record.Vehicle.year_made,
-                stolen = NewCitation.Vehicle_Record.Vehicle.stolen,
-
-                //common data
-                citation_number = Citation.citation_number,
-                insurer = NewCitation.Vehicle_Record.Vehicle.Insurer != null ? NewCitation.Vehicle_Record.Vehicle.Insurer.name : "",
-                date_recieved = Citation.date_recieved,
-                DateDue = CalculateDueDate(NewCitation),
-                fine = NewCitation.Citation_Type.fine,
-                is_dangerous = is_dangerous,
-                is_wanted = is_wanted
-            }
-            );
         }
 
         private Func<Citation, DateTime> CalculateDueDate = (Citation citation) => citation.date_recieved.AddMonths(citation.Citation_Type.due_date_month);

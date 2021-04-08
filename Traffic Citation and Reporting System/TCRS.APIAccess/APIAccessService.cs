@@ -12,7 +12,6 @@ namespace TCRS.APIAccess
 {
     public class APIAccessService : IPersistenceService
     {
-
         private readonly HttpClient _httpClient;
         private readonly JsonSerializerSettings _settings;
 
@@ -29,7 +28,10 @@ namespace TCRS.APIAccess
         public async Task<IEnumerable<T>> GetAsync<T>(List<KeyValuePair<string, string>> parametersList)
         {
             var requestUrl = RouteByType.GetEntityRouteAssignment[typeof(T)] + stringifyParameter(parametersList);
-            return await _httpClient.GetFromJsonAsync<IList<T>>(requestUrl);
+            //var response = await _httpClient.GetFromJsonAsync<IList<T>>(requestUrl);
+            var response = await _httpClient.GetAsync(requestUrl);
+            await CheckHttpResponseMessage(response);
+            return await response.Content.ReadFromJsonAsync<IList<T>>();
         }
 
         private string stringifyParameter(List<KeyValuePair<string, string>> parametersList)
@@ -59,14 +61,10 @@ namespace TCRS.APIAccess
         public async Task<IEnumerable<U>> PostAsync<T, U>(T data, List<KeyValuePair<string, string>> parametersList)
         {
             var requestUrl = RouteByType.PostEntityRouteAssignment[typeof(T)] + stringifyParameter(parametersList);
-            var request = await _httpClient.PostAsJsonAsync(requestUrl, data);
-            if (!request.IsSuccessStatusCode)
-            {
-                Console.WriteLine(request.Content);
-            }
-
+            var response = await _httpClient.PostAsJsonAsync(requestUrl, data);
+            await CheckHttpResponseMessage(response);
             return JsonConvert.DeserializeObject<IEnumerable<U>>(
-               await (request)
+               await (response)
                    .Content
                    .ReadAsStringAsync(), _settings);
         }
@@ -74,7 +72,8 @@ namespace TCRS.APIAccess
         public async Task PutAsync<T>(T data)
         {
             var requestUrl = RouteByType.PutEntityRouteAssignment[typeof(T)];
-            await _httpClient.PutAsJsonAsync(requestUrl, data);
+            var response = await _httpClient.PutAsJsonAsync(requestUrl, data);
+            await CheckHttpResponseMessage(response);
         }
 
         public async Task PostAsync<T>(T data)
@@ -85,17 +84,44 @@ namespace TCRS.APIAccess
         public async Task PostAsync<T>(T data, List<KeyValuePair<string, string>> parametersList)
         {
             var requestUrl = RouteByType.PostEntityRouteAssignment[typeof(T)] + stringifyParameter(parametersList);
-            await _httpClient.PostAsJsonAsync(requestUrl, data);
+            var response = await _httpClient.PostAsJsonAsync(requestUrl, data);
+            await CheckHttpResponseMessage(response);
         }
 
         public async Task<UserTokens> AuthenticateAndGetUserAsync(UserLoginCredentials userLoginCredentials)
         {
             //Post to login end point, get body content, read content as string, deserialize object to json object
-            return JsonConvert.DeserializeObject<UserTokens>(
-               await (await _httpClient.PostAsJsonAsync("/api/Users/login", userLoginCredentials))
+            var response = await _httpClient.PostAsJsonAsync("/api/Users/login", userLoginCredentials);
+            await CheckHttpResponseMessage(response);
+            var result = JsonConvert.DeserializeObject<UserTokens>(
+               await (response)
                    .Content
                    .ReadAsStringAsync(), _settings);
+            return result;
+        }
+
+        private async Task CheckHttpResponseMessage(HttpResponseMessage response)
+        {
+            //If response is not successful provide error message from server
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception(await GetResponseMessage(response));
+            }
+        }
+
+        private async Task<string> GetResponseMessage(HttpResponseMessage response)
+        {
+            try
+            {
+                return (await response.Content.ReadFromJsonAsync<ErrorString>()).Message;
+            }
+            catch
+            {
+                //Mask other errors
+                return "Unknown Error";
+            }
         }
 
     }
+
 }

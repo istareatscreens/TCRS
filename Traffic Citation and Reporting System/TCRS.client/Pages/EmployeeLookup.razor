@@ -4,13 +4,10 @@
 @inherits EmployeeLookupBase
 
 @using System.ComponentModel.DataAnnotations
-
-<MudText Typo="Typo.h3">Employee Lookup</MudText>
-
-<div class="citation-body">
+<div class="regular-page">
     <MudPaper Class="pa-1 ma-2" Elevation="3">
 
-        <div style="max-width: 400px;">
+        <div class="info_card">
             <EditForm Model="@EditContext" OnValidSubmit="OnValidSubmit">
                 <DataAnnotationsValidator />
                 <MudCard>
@@ -18,7 +15,7 @@
                         <MudSelect Label="Select Employee" @bind-Value="selectedEmployee" Variant="Variant.Outlined">
                             @foreach (var emp in EmployeeNames)
                             {
-                                <MudSelectItem Value="@emp">@emp.GetEmployeeName()</MudSelectItem>}
+<MudSelectItem Value="@emp">@emp.GetEmployeeName()</MudSelectItem>}
                         </MudSelect>
 
                         <MudDateRangePicker Label="Citation Search Range" @bind-DateRange="dateRange" />
@@ -29,55 +26,51 @@
                 </MudCard>
             </EditForm>
 
-        </div>            
-        <br />
-        <div style="max-width: 400px;">
-            <MudCard>
-                <MudCardContent>
-                    <MudText Typo="Typo.h6">Employee Information for: @displayActiveEmployee.GetEmployeeName()</MudText>
-
-                    <MudTextField @bind-Value="@displayActiveEmployee.email" Label="Employee Email:" ReadOnly="true" Variant="Variant.Filled" />
-                    <MudTextField @bind-Value="@displayActiveEmployee.active" Label="Employee Account Active:" ReadOnly="true" Variant="Variant.Filled" />
-                    <MudTextField @bind-Value="@displayActiveEmployee.police_dept_id" Label="Police Department ID:" ReadOnly="true" Variant="Variant.Filled" />
-                    <MudTextField @bind-Value="@displayActiveEmployee.munic_id" Label="Municipality Department ID:" ReadOnly="true" Variant="Variant.Filled" />
-                </MudCardContent>
-            </MudCard>
         </div>
         <br />
-        <div style="max-width: 400px;">
+        <div class="info_card">
+            <MudCardContent>
+                <MudText Typo="Typo.h6">Employee Information for: @displayActiveEmployee.GetEmployeeName()</MudText>
 
-            <MudCard>
-                <MudCardContent>
-                    <MudText Typo="Typo.h6">Citation Count Information</MudText>
-                    <MudSimpleTable Hover="true" Dense="true" FixedHeader="true" Style="height:400px">
-                        <thead>
-                            <tr>
-                                @foreach (var h in headings)
-                                {
-                                    <th>@h</th>
-                                }
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ((var key, var value) in displayActiveEmployee.CitationCountbyType)
+                <MudTextField @bind-Value="@displayActiveEmployee.email" Label="Employee Email:" ReadOnly="true" Variant="Variant.Filled" />
+                <MudTextField @bind-Value="@displayActiveEmployee.active" Label="Employee Account Active:" ReadOnly="true" Variant="Variant.Filled" />
+                @if (displayActiveEmployee.police_dept_name != "")
+                {
+<MudTextField @bind-Value="@displayActiveEmployee.police_dept_name" Label="Police Department ID:" ReadOnly="true" Variant="Variant.Filled" /> }
+else
+{
+<MudTextField @bind-Value="@displayActiveEmployee.municipality_name" Label="Municipality Department ID:" ReadOnly="true" Variant="Variant.Filled" />}
+            </MudCardContent>
+        </div>
+        <br />
+        <div class="info_card">
+
+            <MudCardContent>
+                <MudText Typo="Typo.h6">Citation Count Information</MudText>
+                <MudSimpleTable Hover="true" Dense="true" FixedHeader="true" Style="height:400px">
+                    <thead>
+                        <tr>
+                            @foreach (var h in headings)
                             {
-                                <tr>
-                                    @if (key == 0)
-                                    {
-                                        <td>"Total Citations Issued"</td>
-                                    }
-                                    else
-                                    {
-                                        <td>@(((CitationTypes)key).ToDescriptionString())</td>
-                                    }
-                                    <td>@value</td>
+    <th>@h</th>}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ((var key, var value) in displayActiveEmployee.CitationCountbyType)
+                        {
+<tr>
+    @if (key == 0)
+    {
+<td>"Total Citations Issued"</td> }
+                            else
+                            {
+<td>@(((CitationTypes)key).ToDescriptionString())</td>}
+    <td>@value</td>
 
-                                </tr>
-                            }
-                        </tbody>
-                    </MudSimpleTable>
-                </MudCardContent>
-            </MudCard>
+</tr>}
+                    </tbody>
+                </MudSimpleTable>
+            </MudCardContent>
         </div>
     </MudPaper>
 

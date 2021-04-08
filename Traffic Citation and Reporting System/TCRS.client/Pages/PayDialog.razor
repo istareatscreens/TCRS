@@ -25,19 +25,30 @@
     [Inject]
     private IResolveCitationManager ResolveCitationManager { get; set; }
 
+    [Inject]
+    ISnackbar SnackBar { get; set; }
+
     public string CreditCardNumber { get; set; } = "";
     public string CVCNumber { get; set; } = "";
 
     protected async Task Submit()
     {
-        PaymentData paymentData = new PaymentData
+        try
         {
-            citation_number = data.citation_number,
-            payment = data.fine
-        };
-        await ResolveCitationManager.MakePayment(paymentData);
+            PaymentData paymentData = new PaymentData
+            {
+                citation_number = data.citation_number,
+                payment = data.fine
+            };
+            await ResolveCitationManager.MakePayment(paymentData);
 
-        MudDialog.Close(DialogResult.Ok(true));
+            MudDialog.Close(DialogResult.Ok(true));
+        }
+        catch (Exception e)
+        {
+            SnackBar.Add(e.Message, Severity.Error);
+        }
+
     }
 
     protected void Cancel() => MudDialog.Cancel();

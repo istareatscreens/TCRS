@@ -3,15 +3,15 @@
     <div class="navbar__btn-group">
         @NavButtons
     </div>
-    @LoginLogout
+    <div class="navbar__sign-in-out">
+        @LoginLogout
+    </div>
 </div>
 
 
 @code
-{
-    [Parameter]
+{ [Parameter]
     public RenderFragment NavButtons { get; set; }
 
     [Parameter]
-    public RenderFragment LoginLogout { get; set; }
-}
+    public RenderFragment LoginLogout { get; set; } }

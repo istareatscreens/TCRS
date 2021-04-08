@@ -13,6 +13,8 @@ namespace TCRS.Shared.Objects.EmployeeLookup
         public bool active { get; set; }
         public int police_dept_id { get; set; }
         public int munic_id { get; set; }
+        public string police_dept_name { get; set; }
+        public string municipality_name { get; set; }
 
         // Key = 0, value = sum(citations)
         // Key = citation_type_id 

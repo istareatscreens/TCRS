@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
+using MudBlazor;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TCRS.Shared.Contracts;
@@ -18,41 +20,40 @@ namespace TCRS.Client.Pages
         private IResolveCitationManager CitationManager { get; set; }
         [Inject]
         private ICitationService CitationService { get; set; }
+        [Inject]
+        ISnackbar SnackBar { get; set; }
 
         [Parameter]
         public string citation_number { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
-            base.OnInitialized();
+            try
+            {
+                base.OnInitialized();
 
-            //Get citation data
-            var data = CitationService.GetCitizenVehicleCitations();
-            if (data == null)
-            {
-                CitationService.SetCitizenVehicleCitations(await CitationManager.CitizenLogin(new CitationResolutionLoginData { citation_number = citation_number }));
-                data = CitationService.GetCitizenVehicleCitations();
-            }
-
-            if (data == null)
-            {
-                //navigate away no information to view
-                NavigationManager.NavigateTo("/ResolveCitation");
-            }
-            else
-            {
-                this.CitizenVehicleCitation = data;
-            }
-
-            /*
-            foreach (var data in (CitizenVehicleCitation))
-            {
-                foreach (var prop in ObjectPrinter.PropertiesOfType(data))
+                //Get citation data
+                var data = CitationService.GetCitizenVehicleCitations();
+                if (data == null)
                 {
-                    Console.Write(prop.Key + " " + prop.Value);
+                    CitationService.SetCitizenVehicleCitations(await CitationManager.CitizenLogin(new CitationResolutionLoginData { citation_number = citation_number }));
+                    data = CitationService.GetCitizenVehicleCitations();
+                }
+
+                if (data == null)
+                {
+                    //navigate away no information to view
+                    NavigationManager.NavigateTo("/ResolveCitation");
+                }
+                else
+                {
+                    this.CitizenVehicleCitation = data;
                 }
             }
-            */
+            catch (Exception e)
+            {
+                SnackBar.Add(e.Message, Severity.Error);
+            }
         }
 
         protected string[] headings = { "Citation Number", "Citation Type", "Date Received", "Date Due", "Training Eligable", "Fine (CAD)" };
