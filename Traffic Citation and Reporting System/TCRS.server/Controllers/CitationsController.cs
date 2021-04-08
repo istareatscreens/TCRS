@@ -132,7 +132,7 @@ namespace TCRS.Server.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = Roles.HighwayPatrolOfficer + "," + Roles.Manager)]
+        //[Authorize(Roles = Roles.HighwayPatrolOfficer + "," + Roles.Manager)]
         public ActionResult<IEnumerable<CitizenVehicleCitation>> GetCitationListByCitationNumber([FromQuery] String citation_number)
         {
             if (IsValidCitationNumber(citation_number))
