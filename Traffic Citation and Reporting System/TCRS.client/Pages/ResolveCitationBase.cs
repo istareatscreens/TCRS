@@ -33,7 +33,7 @@ namespace TCRS.Client.Pages
 
         protected async void OnValidSubmit(EditContext context)
         {
-            
+
             try
             {
                 if (!EditContext.Validate())
@@ -49,7 +49,7 @@ namespace TCRS.Client.Pages
             catch (Exception e)
             {
                 SnackBar.Add(e.Message, Severity.Error);
-            }      
+            }
         }
     }
 }

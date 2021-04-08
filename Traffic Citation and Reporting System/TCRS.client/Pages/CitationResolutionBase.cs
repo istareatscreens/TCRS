@@ -50,7 +50,7 @@ namespace TCRS.Client.Pages
                     this.CitizenVehicleCitation = data;
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 SnackBar.Add(e.Message, Severity.Error);
             }

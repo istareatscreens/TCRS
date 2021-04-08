@@ -72,7 +72,7 @@ namespace TCRS.Client.Pages
                 //success = true;
                 StateHasChanged();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 SnackBar.Add(e.Message, Severity.Error);
             }
@@ -168,7 +168,7 @@ namespace TCRS.Client.Pages
                 }
                 StateHasChanged();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 SnackBar.Add(e.Message, Severity.Error);
             }

@@ -40,16 +40,16 @@ namespace TCRS.Client.Pages
             }
 
         }
-        
+
         protected override void OnInitialized()
         {
             base.OnInitialized();
             EditContext = new EditContext(dateRange);
         }
-      
+
         protected async void OnValidSubmit(EditContext context)
         {
-            
+
             try
             {
                 if (!EditContext.Validate())
@@ -76,7 +76,7 @@ namespace TCRS.Client.Pages
             }
         }
 
-        protected string[] headings = {"Citation Type", "Citation Issue Sum"};
+        protected string[] headings = { "Citation Type", "Citation Issue Sum" };
 
     }
 }

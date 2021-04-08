@@ -17,7 +17,7 @@
                     <MudSelect Label="Select type" @bind-Value="CourseData.CitizenCitationType" Variant="Variant.Outlined">
                         @foreach (CitizenCitationTypes item in Enum.GetValues(typeof(CitizenCitationTypes)))
                         {
-<MudSelectItem Value="@item">@item.ToDescriptionString()</MudSelectItem>}
+                            <MudSelectItem Value="@item">@item.ToDescriptionString()</MudSelectItem>}
 
                     </MudSelect>
                     <MudTextField Label="Course Address" Variant="Variant.Outlined"

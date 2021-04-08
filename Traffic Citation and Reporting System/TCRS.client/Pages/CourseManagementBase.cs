@@ -73,7 +73,7 @@ namespace TCRS.Client.Pages
                 dateSelect = DateTime.Today;
                 StateHasChanged();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 SnackBar.Add(e.Message, Severity.Error);
             }

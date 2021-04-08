@@ -54,7 +54,7 @@ namespace TCRS.Client.Pages
                     NavigationManager.NavigateTo(UserService.User.isSchool_Rep ? "/Coursemanagement" : "/Citationissuing");
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 SnackBar.Add(e.Message, Severity.Error);
             }

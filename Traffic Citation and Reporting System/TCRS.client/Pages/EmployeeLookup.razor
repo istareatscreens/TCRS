@@ -15,7 +15,7 @@
                         <MudSelect Label="Select Employee" @bind-Value="selectedEmployee" Variant="Variant.Outlined">
                             @foreach (var emp in EmployeeNames)
                             {
-<MudSelectItem Value="@emp">@emp.GetEmployeeName()</MudSelectItem>}
+                                <MudSelectItem Value="@emp">@emp.GetEmployeeName()</MudSelectItem>}
                         </MudSelect>
 
                         <MudDateRangePicker Label="Citation Search Range" @bind-DateRange="dateRange" />
@@ -48,22 +48,26 @@
                         <tr>
                             @foreach (var h in headings)
                             {
-    <th>@h</th>}
+                                <th>@h</th>
+                            }
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ((var key, var value) in displayActiveEmployee.CitationCountbyType)
                         {
-<tr>
-    @if (key == 0)
-    {
-<td>"Total Citations Issued"</td> }
-                            else
-                            {
-<td>@(((CitationTypes)key).ToDescriptionString())</td>}
-    <td>@value</td>
+                            <tr>
+                                @if (key == 0)
+                                {
+                                    <td>"Total Citations Issued"</td>
+                                }
+                                else
+                                {
+                                    <td>@(((CitationTypes)key).ToDescriptionString())</td>
+                                }
+                                <td>@value</td>
 
-</tr>}
+                            </tr>
+                        }
                     </tbody>
                 </MudSimpleTable>
             </MudCardContent>
