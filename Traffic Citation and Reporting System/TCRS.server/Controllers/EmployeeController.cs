@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -25,6 +26,8 @@ namespace TCRS.Server.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = Roles.Manager)]
+        [Authorize(Roles = Roles.HighwayPatrolOfficer + "," + Roles.MunicipalOfficer)]
         public ActionResult<IEnumerable<EmployeeLookupData>> GetEmployeeData([FromHeader] string authorization, [FromQuery] DateTime start_date, [FromQuery] DateTime end_date)
         {
             var User = new User(authorization);
@@ -98,6 +101,8 @@ namespace TCRS.Server.Controllers
         }
 
         [HttpGet("EmployeeNames")]
+        [Authorize(Roles = Roles.Manager)]
+        [Authorize(Roles = Roles.HighwayPatrolOfficer + "," + Roles.MunicipalOfficer)]
         public ActionResult<IEnumerable<Employee>> GetEmployeeName([FromHeader] string authorization)
         {
             var User = new User(authorization);
@@ -137,6 +142,8 @@ namespace TCRS.Server.Controllers
 
 
         [HttpGet("GetCitationsByOfficer")]
+        [Authorize(Roles = Roles.Manager)]
+        [Authorize(Roles = Roles.HighwayPatrolOfficer + "," + Roles.MunicipalOfficer)]
         public ActionResult<IEnumerable<EmployeeCitationsLookup>> GetCitationIssuedByOfficers([FromQuery] int person_id)
         {
             //Return type is wrapped in action result to allow NotFond to be returned

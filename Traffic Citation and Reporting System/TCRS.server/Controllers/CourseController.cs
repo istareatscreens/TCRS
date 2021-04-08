@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,7 @@ namespace TCRS.Server.Controllers
         }
 
         [HttpPost("SubmitCourse")]
+        [Authorize(Roles = Roles.SchoolRep)]
         public ActionResult PostCourse([FromBody] CourseManagementData courseManagementData, [FromHeader] string authorization)
         {
             try

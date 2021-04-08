@@ -38,12 +38,10 @@ namespace TCRS.Client.Pages
             {
                 if (!EditContext.Validate())
                 {
-                    // Print out invalid input message
                     return;
                 }
                 CitationService.SetCitizenVehicleCitations(await CitationManager.CitizenLogin(LoginData));
                 NavigationManager.NavigateTo($"/Citationresolution/{LoginData.citation_number}");
-                //success = true;
                 StateHasChanged();
             }
             catch (Exception e)

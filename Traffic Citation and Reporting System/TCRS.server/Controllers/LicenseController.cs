@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using TCRS.Database;
 using TCRS.Server.Tokens;
+using TCRS.Shared.Objects.Auth;
 using TCRS.Shared.Objects.Lookup;
 using TCRS.Shared.Objects.LookupPortal;
 using TCRS.Shared.Objects.Warrant;
@@ -24,6 +26,7 @@ namespace TCRS.Server.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = Roles.HighwayPatrolOfficer + "," + Roles.Manager)]
         public ActionResult<IEnumerable<LookupCitizenDisplayData>> GetCitizenInfoByLicenseID([FromQuery] string license_id)
         {
             //Return type is wrapped in action result to allow NotFond to be returned
@@ -77,6 +80,7 @@ namespace TCRS.Server.Controllers
         }
 
         [HttpGet("GetVehicleInfoByLicensePlate")]
+        [Authorize(Roles = Roles.HighwayPatrolOfficer + "," + Roles.Manager)]
         public ActionResult<IEnumerable<LookupVehicleDisplayData>> LookupVehicleInfoByLicensePlate([FromQuery] string plate_number)
 
         {

@@ -20,8 +20,6 @@ namespace TCRS.APIAccess
             {typeof(DeleteWarrantObject), "api/Warrant/RemoveWarrant" },
             /* ***** Warrant ***** */
             {typeof(RemoveCitationObject), "api/Citations/RemoveCitation" }
-
-
         };
 
         public static Dictionary<Type, string> PostEntityRouteAssignment { get; } = new Dictionary<Type, string>
