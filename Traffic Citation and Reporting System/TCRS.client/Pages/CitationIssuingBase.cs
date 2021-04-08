@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using TCRS.Shared.Contracts.CitationManagement;
-using TCRS.Shared.Enums;
 using TCRS.Shared.Objects.Citations;
 
 namespace TCRS.Client.Pages
@@ -32,11 +31,11 @@ namespace TCRS.Client.Pages
                 return;
             }
 
-            if(curTab == 1)
+            if (curTab == 1)
             {
                 CitationData.citation_type_id = (int)CitationData.citizenCitationTypes;
             }
-            else if(curTab == 2)
+            else if (curTab == 2)
             {
                 CitationData.citation_type_id = (int)CitationData.vehicleCitationTypes;
             }
