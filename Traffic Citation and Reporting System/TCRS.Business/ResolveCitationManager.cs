@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using TCRS.Shared.Contracts;
 using TCRS.Shared.Objects.CitationResolution;
 using TCRS.Shared.Objects.Citations;
-using TCRS.Shared.Objects.CourseEnrollment;
 using TCRS.Shared.Objects.Payment;
 
 namespace TCRS.Business
@@ -29,7 +27,7 @@ namespace TCRS.Business
             }
             else
             {
-                throw new NullReferenceException("Empty citation entered.");
+                throw new NullReferenceException("Empty citation number entered.");
             }
 
             var crld = await _api.GetAsync<CitizenVehicleCitation>(parameters);
