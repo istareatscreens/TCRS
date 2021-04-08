@@ -71,6 +71,7 @@ namespace TCRS.Server.Controllers
                         email = employee.Persons.email,
                         active = employee.Persons.active,
                         police_dept_id = employee.police_dept_id,
+                        police_dept_name = PoliceEmployee.ToList().FirstOrDefault().name,
                         CitationCountbyType = CitationCountbyType
                     }));
                 }
@@ -84,6 +85,7 @@ namespace TCRS.Server.Controllers
                         email = employee.Person.email,
                         active = employee.Person.active,
                         munic_id = employee.munic_id,
+                        municipality_name = MunicipalEmployee.ToList().FirstOrDefault().name,
                         CitationCountbyType = CitationCountbyType
                     }));
                 }
