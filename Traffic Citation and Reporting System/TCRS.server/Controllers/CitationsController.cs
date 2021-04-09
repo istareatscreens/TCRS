@@ -132,7 +132,6 @@ namespace TCRS.Server.Controllers
         }
 
         [HttpGet]
-        //[Authorize(Roles = Roles.HighwayPatrolOfficer + "," + Roles.Manager)]
         public ActionResult<IEnumerable<CitizenVehicleCitation>> GetCitationListByCitationNumber([FromQuery] String citation_number)
         {
             if (IsValidCitationNumber(citation_number))
@@ -317,9 +316,9 @@ namespace TCRS.Server.Controllers
                 );
 
             }
-            catch (Exception e)
+            catch 
             {
-                return NotFound(new { message = e.Message });
+                return NotFound(new { message = "Error Invalid licence Or Plate Number" });
             }
         }
 

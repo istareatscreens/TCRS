@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TCRS.Client.BusyOverlay;
 using TCRS.Shared.Contracts.LookupPortal;
 using TCRS.Shared.Contracts.Warrant;
 using TCRS.Shared.Objects.Citations;
@@ -17,9 +18,9 @@ namespace TCRS.Client.Pages
     {
         private int curTab = 1;
         protected bool IssueWarrant { get; set; }
-        protected LookupCitationDisplayData citationData = new LookupCitationDisplayData();
-        protected LookupCitizenDisplayData citizenData = new LookupCitizenDisplayData();
-        protected LookupVehicleDisplayData vehicleData = new LookupVehicleDisplayData();
+        protected LookupCitationDisplayData citationData = null;
+        protected LookupCitizenDisplayData citizenData = null;
+        protected LookupVehicleDisplayData vehicleData = null; 
 
         protected LookupDisplayData LookupData { get; set; } = new LookupDisplayData();
         protected List<WarrantData> warrantCitizenData { get; set; } = new List<WarrantData>();
@@ -44,6 +45,19 @@ namespace TCRS.Client.Pages
         [Inject]
         ISnackbar SnackBar { get; set; }
 
+        [Inject]
+        protected BusyOverlayService BusyOverlayService { get; set; }
+
+        protected void SetDisplayDataToNull(int tab)
+        {
+            if(tab!=1)
+         citationData = null;
+            if(tab!=2)
+         citizenData = null;
+            if(tab!=3)
+         vehicleData = null; 
+        }
+
         protected async void OnValidSubmit(EditContext context)
         {
             try
@@ -54,6 +68,7 @@ namespace TCRS.Client.Pages
                     return;
                 }
 
+                BusyOverlayService.SetBusyState(BusyEnum.Busy);
                 if (curTab == 1)
                 {
                     citizenData = await LookupPortalManager.LookupCitizenData(LookupData.CitizenData);
@@ -69,12 +84,15 @@ namespace TCRS.Client.Pages
                     citationData = await LookupPortalManager.LookupCitationData(LookupData.CitationData);
                 }
 
-                //success = true;
                 StateHasChanged();
             }
             catch (Exception e)
             {
                 SnackBar.Add(e.Message, Severity.Error);
+            }
+            finally
+            {
+                BusyOverlayService.SetBusyState(BusyEnum.NotBusy);
             }
         }
 

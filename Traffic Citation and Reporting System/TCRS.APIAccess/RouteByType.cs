@@ -22,7 +22,7 @@ namespace TCRS.APIAccess
             {typeof(RemoveCitationObject), "api/Citations/RemoveCitation" },
             /* Course management */
             {typeof(RetireCourseData), "api/Course/Retirecourse" },
-            {typeof(StudentData), "api​/Course​/Passfailstudent" }
+            {typeof(StudentData), @"api/Course/Passfailstudent" }
         };
 
         public static Dictionary<Type, string> PostEntityRouteAssignment { get; } = new Dictionary<Type, string>

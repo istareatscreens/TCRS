@@ -4,17 +4,11 @@
         @NavButtons
     </div>
     <div class="navbar__sign-in-out">
+    @if (username != null) { 
+        <MudText Typo="Typo.h6" Style="padding-right:10px; color:#ffffff">@username</MudText>
+    }
         @LoginLogout
     </div>
 </div>
 
 
-@code
-{   
-    [Parameter]
-    public RenderFragment NavButtons { get; set; }
-
-    [Parameter]
-    public RenderFragment LoginLogout { get; set; } 
-
-}

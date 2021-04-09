@@ -4,6 +4,7 @@ using MudBlazor;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using TCRS.Client.BusyOverlay;
 using TCRS.Shared.Contracts.EmployeeLookup;
 using TCRS.Shared.Objects.EmployeeLookup;
 
@@ -12,7 +13,7 @@ namespace TCRS.Client.Pages
     public class EmployeeLookupBase : ComponentBase
     {
         protected Employee selectedEmployee { get; set; }
-        protected EmployeeLookupData displayActiveEmployee { get; set; } = new EmployeeLookupData();
+        protected EmployeeLookupData displayActiveEmployee { get; set; } = null;
         protected MudDateRangePicker _picker;
         protected DateRange dateRange = new DateRange(DateTime.Now.Date, DateTime.Now.AddDays(5).Date);
         protected List<Employee> EmployeeNames { get; set; } = new List<Employee>();
@@ -25,17 +26,25 @@ namespace TCRS.Client.Pages
         [Inject]
         ISnackbar SnackBar { get; set; }
 
+        [Inject]
+        protected BusyOverlayService BusyOverlayService { get; set; }
+
         protected override async Task OnInitializedAsync()
         {
             try
             {
                 base.OnInitialized();
+                BusyOverlayService.SetBusyState(BusyEnum.Busy);
                 var employeeList = await EmployeeManager.GetEmployeeNames();
                 this.EmployeeNames = employeeList;
             }
             catch (Exception e)
             {
                 SnackBar.Add(e.Message, Severity.Error);
+            }
+            finally
+            {
+                BusyOverlayService.SetBusyState(BusyEnum.NotBusy);
             }
 
         }
@@ -60,6 +69,7 @@ namespace TCRS.Client.Pages
                 DateTime start_date = (DateTime)dateRange.Start;
                 DateTime end_date = (DateTime)dateRange.End;
 
+                BusyOverlayService.SetBusyState(BusyEnum.Busy);
                 var data = await EmployeeManager.GetEmployeeLookup(start_date, end_date);
                 this.EmployeeLookupData = data;
 
@@ -72,6 +82,10 @@ namespace TCRS.Client.Pages
             catch (Exception e)
             {
                 SnackBar.Add(e.Message, Severity.Error);
+            }
+            finally
+            {
+                BusyOverlayService.SetBusyState(BusyEnum.NotBusy);
             }
         }
 

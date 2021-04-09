@@ -3,6 +3,7 @@ using MudBlazor;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using TCRS.Client.BusyOverlay;
 using TCRS.Shared.Contracts;
 using TCRS.Shared.Contracts.CourseManagement;
 using TCRS.Shared.Objects.CourseManagement;
@@ -21,27 +22,45 @@ namespace TCRS.Client.Pages
         [Inject]
         ISnackbar SnackBar { get; set; }
 
+        [Inject]
+        protected BusyOverlayService BusyOverlayService { get; set; }
+        protected bool Switch_passed { get; set; }
+
         protected IEnumerable<KeyValuePair<CoursePostingData, IEnumerable<StudentData>>> CourseEnrollmentData { get; set; }
             = new List<KeyValuePair<CoursePostingData, IEnumerable<StudentData>>>();
         protected override async Task OnInitializedAsync()
         {
+            await LoadCourses();
+        }
+
+        protected async Task LoadCourses()
+        {
             try
             {
+
+                BusyOverlayService.SetBusyState(BusyEnum.Busy);
                 base.OnInitialized();
                 var result = await CourseManager.GetCourseEnrollmentData();
                 this.CourseEnrollmentData = result;
+                StateHasChanged();
             }
             catch (Exception e)
             {
                 SnackBar.Add(e.Message, Severity.Error);
             }
+            finally
+            {
+                BusyOverlayService.SetBusyState(BusyEnum.NotBusy);
+            }
 
         }
 
-        protected async void PassFailStudent(StudentData student, bool passed)
+
+        protected async Task PassFailStudent(StudentData student, bool passed)
         {
             try
             {
+                BusyOverlayService.SetBusyState(BusyEnum.Busy);
                 await CourseManager.PassFailStudent(student, passed);
 
                 // reset the forms
@@ -51,21 +70,30 @@ namespace TCRS.Client.Pages
             {
                 SnackBar.Add(e.Message, Severity.Error);
             }
+            finally
+            {
+                BusyOverlayService.SetBusyState(BusyEnum.NotBusy);
+            }
         }
 
 
-        protected async void RetireCourse(CoursePostingData coursePostingData)
+        protected async Task RetireCourse(CoursePostingData coursePostingData)
         {
             try
             {
+                BusyOverlayService.SetBusyState(BusyEnum.Busy);
                 await CourseManager.RetireCourse(coursePostingData);
-
                 // reset the forms
+                await LoadCourses();
                 StateHasChanged();
             }
             catch (Exception e)
             {
                 SnackBar.Add(e.Message, Severity.Error);
+            }
+            finally
+            {
+                BusyOverlayService.SetBusyState(BusyEnum.NotBusy);
             }
         }
 

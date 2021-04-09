@@ -7,21 +7,21 @@
                 <tr>
                     @foreach (var h in headings)
                     {
-                        <th>@h</th>
-                    }
+<th>@h</th>
+         }
                 </tr>
             </thead>
             <tbody>
                 @foreach (var data in CourseData)
                 {
-                    <tr>
-                        @foreach (var prop in ObjectPrinter.PropertiesOfType(data))
-                        {
-                            <td>@prop.Value</td>
-                        }
-                        <MudButton @onclick="@((e) => BookDialogPress(data))" Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary" Class="ma-2">Book</MudButton>
-                    </tr>
-                }
+<tr>
+    @foreach (var prop in ObjectPrinter.PropertiesOfType(data))
+    {
+<td>@prop.Value</td>
+    }
+    <MudButton @onclick="@((e) => BookDialogPress(data))" Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary" Class="ma-2">Book</MudButton>
+</tr>
+}
             </tbody>
         </MudSimpleTable>
     </DialogContent>
@@ -33,8 +33,7 @@
 @using TCRS.Shared.Objects.Citations;
 @using TCRS.Shared.Contracts.CourseManagement;
 @using TCRS.Shared.Objects.CourseEnrollment;
-@code {
-    protected List<CourseEnrollmentData> CourseData { get; set; } = new List<CourseEnrollmentData>();
+@code { protected List<CourseEnrollmentData> CourseData { get; set; } = new List<CourseEnrollmentData>();
     protected string[] headings = { "Course ID", "Date", "Location" };
     CourseEnrollmentBookingData bookingData = new CourseEnrollmentBookingData();
 
@@ -50,21 +49,34 @@
     [Inject]
     ISnackbar SnackBar { get; set; }
 
+    [Inject]
+    public BusyOverlayService BusyOverlayService { get; set; }
+
+
     protected override async Task OnInitializedAsync()
     {
         try
         {
             base.OnInitialized();
 
+            BusyOverlayService.SetBusyState(BusyEnum.Busy);
             var courseInformation = await CourseManager.GetCourses(data.citation_type_id + "");
 
+                if (courseInformation.Count() == 0)
+                {
+                    SnackBar.Add("No Courses Available", Severity.Error);
+                    MudDialog.Close(DialogResult.Ok(true));
+                }
             this.CourseData = courseInformation;
         }
         catch (Exception e)
         {
             SnackBar.Add(e.Message, Severity.Error);
         }
-
+        finally
+        {
+            BusyOverlayService.SetBusyState(BusyEnum.NotBusy);
+        }
     }
 
     protected async Task BookDialogPress(CourseEnrollmentData selectedCourse)
@@ -77,6 +89,7 @@
                 citation_number = data.citation_number,
             };
 
+            BusyOverlayService.SetBusyState(BusyEnum.Busy);
             await CourseManager.BookCourse(bookingData);
 
             MudDialog.Close(DialogResult.Ok(true));
@@ -85,9 +98,11 @@
         {
             SnackBar.Add(e.Message, Severity.Error);
         }
+        finally
+        {
+            BusyOverlayService.SetBusyState(BusyEnum.NotBusy);
+        }
 
     }
 
-    void Cancel() => MudDialog.Cancel();
-
-}
+    void Cancel() => MudDialog.Cancel(); }

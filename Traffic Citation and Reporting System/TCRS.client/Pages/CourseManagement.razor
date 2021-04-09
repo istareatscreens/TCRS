@@ -5,8 +5,39 @@
 
 <br />
 <div class="regular-page">
+        <br />
     <div class="info_card">
-        Hello
+        <MudCard>
+        <h1>Course Evaluation</h1>
+        
+            @foreach (var (course, list) in CourseEnrollmentData)
+            {
+            <MudExpansionPanels>
+                <MudExpansionPanel Text="@course.GetCourseNameAndDate()">
+                    <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Send" OnClick="@(async ()=>{ await RetireCourse(course); })" Color="Color.Primary">Retire Course</MudButton>
+                    <MudSimpleTable Style="overflow-x: auto;">
+    <thead>
+        <tr>
+                <th>Student Name</th>
+                <th>Pass/Fail</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var student in list)
+        {
+            <tr>
+                    <td>@student.first_name @student.middle_name @student.last_name</td>
+                    <td><MudSwitch Checked="@student.passed"  CheckedChanged="@(async (bool passed) => { await PassFailStudent(student, passed); })" Label="@((student.passed)?"Passed":"Failed")" Color="Color.Success" /></td>
+            </tr>
+        }
+    </tbody>
+                </MudSimpleTable>
+                    <br />
+                </MudExpansionPanel>
+            </MudExpansionPanels>
+            <br />
+            }
+        </MudCard>
     </div>
 
 </div>

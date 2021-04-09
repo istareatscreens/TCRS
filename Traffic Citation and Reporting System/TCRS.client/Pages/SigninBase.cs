@@ -46,7 +46,7 @@ namespace TCRS.Client.Pages
         private IUserService UserService { get; set; }
 
         [Inject]
-        private BusyOverlayService BusyOverlayService { get; set; }
+        public BusyOverlayService BusyOverlayService { get; set; }
 
         [Inject]
         private IAuthServiceProvider authenticationStateProvider { get; set; }

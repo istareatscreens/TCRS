@@ -7,6 +7,7 @@ using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using TCRS.APIAccess;
+using TCRS.Client.BusyOverlay;
 using TCRS.Shared.Contracts;
 using TCRS.Shared.Helper;
 using TCRS.Shared.Objects.Auth;
@@ -20,17 +21,20 @@ namespace TCRS.Client.AuthStateProvider
         private readonly HttpClient _httpClient;
         private readonly ILocalStorageService _localStorageService;
         private readonly APIAccessService _api;
+        private readonly BusyOverlayService _busyOverlayService;
 
         public WebApiAuthStateProvider(
            IUserService currentUserServices,
             HttpClient httpClient,
             IPersistenceService persistenceService,
-            ILocalStorageService localStorageService
+            ILocalStorageService localStorageService,
+            BusyOverlayService busyOverlayService
             )
         {
             _currentUserServices = currentUserServices;
             _httpClient = httpClient;
             _localStorageService = localStorageService;
+            _busyOverlayService = busyOverlayService;
             try
             {
                 _api = (APIAccessService)persistenceService;
@@ -46,6 +50,7 @@ namespace TCRS.Client.AuthStateProvider
             string accessToken = "";
             try
             {
+                _busyOverlayService.SetBusyState(BusyEnum.Busy);
                 accessToken = await _localStorageService.GetItemAsync<string>("authToken");
 
                 if (string.IsNullOrWhiteSpace(accessToken))
@@ -61,6 +66,10 @@ namespace TCRS.Client.AuthStateProvider
             catch
             {
                 return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
+            }
+            finally
+            {
+                _busyOverlayService.SetBusyState(BusyEnum.NotBusy);
             }
         }
 
@@ -80,9 +89,9 @@ namespace TCRS.Client.AuthStateProvider
             return new AuthenticationState(claimsPrincipal);
         }
 
-        public void UnsetUser()
+        public async Task UnsetUser()
         {
-            NotifyAuthenticationStateChanged(CreateUnsetUserAuthenticationStateAsync());
+               await Task.Run(()=> NotifyAuthenticationStateChanged(CreateUnsetUserAuthenticationStateAsync()));
         }
 
         private async Task<AuthenticationState> CreateUnsetUserAuthenticationStateAsync()

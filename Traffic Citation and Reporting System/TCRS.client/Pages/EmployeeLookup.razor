@@ -29,6 +29,7 @@
 
         </div>
         <br />
+        @if (displayActiveEmployee != null) { 
         <div class="info_card">
             <MudCardContent>
                 <MudText Typo="Typo.h6">Employee Information for: @displayActiveEmployee.GetEmployeeName()</MudText>
@@ -77,5 +78,6 @@
                 </MudSimpleTable>
             </MudCardContent>
         </div>
+        }
     </MudPaper>
 </div>

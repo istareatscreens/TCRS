@@ -9,6 +9,10 @@ namespace TCRS.Business
 
         public string GetFullName()
         {
+            if (User == null)
+            {
+                return "";
+            }
             return User.first_name + " " + User.last_name;
         }
     }

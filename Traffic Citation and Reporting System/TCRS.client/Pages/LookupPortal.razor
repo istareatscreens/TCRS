@@ -10,7 +10,7 @@
         <MudTabs Elevation="4" Rounded="true" Centered="true" Color="@Color.Primary">
             <br />
 
-            <MudTabPanel OnClick="((e) => currentTab(1))" Text="Citizen Information">
+            <MudTabPanel OnClick="((e) => { currentTab(1); SetDisplayDataToNull(1);  })" Text="Citizen Information">
 
                 <div class="info_card">
                     <EditForm Model="@EditContext" OnValidSubmit="@OnValidSubmit">
@@ -28,14 +28,14 @@
                     </EditForm>
                 </div>
                 <br />
-
+@if (citizenData != null) { 
                 <div class="info_card">
                     <MudCardContent>
                         <MudText Typo="Typo.h6">Person Information</MudText>
-                        <MudButton OnClick="@clearCitizenForm" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Delete" Color="Color.Error">Clear Forms</MudButton>
                         <MudTextField Value="citizenData.GetOffenderName()" Label="Person Name:" ReadOnly="true" Variant="Variant.Filled" />
                         <MudTextField Value="citizenData.dob" Label="Date of Birth:" ReadOnly="true" Variant="Variant.Filled" />
                         <MudTextField Value="citizenData.home_address" Label="Home Address:" ReadOnly="true" Variant="Variant.Filled" />
+                        <MudText Typo="Typo.h6">License Information</MudText>
                         <MudTextField Value="citizenData.license_id" Label="Person Licence ID:" ReadOnly="true" Variant="Variant.Filled" />
                         <MudTextField Value="citizenData.license_class" Label="Licence Class:" ReadOnly="true" Variant="Variant.Filled" />
                         <MudTextField Value="citizenData.expiration_date" Label="Licence Expiration :" ReadOnly="true" Variant="Variant.Filled" />
@@ -90,9 +90,9 @@
 
                 </MudCardContent>
 
+}
             </MudTabPanel>
-
-            <MudTabPanel OnClick="((e) => currentTab(2))" Text="Vehicle Information">
+            <MudTabPanel OnClick="((e) => { currentTab(2); SetDisplayDataToNull(2);  })" Text="Vehicle Information">
 
                 <div class="info_card">
                     <EditForm Model="@EditContext" OnValidSubmit="@OnValidSubmit">
@@ -111,14 +111,13 @@
                 </div>
 
                 <br />
+@if (vehicleData != null)
+{
 
                 <div class="info_card">
                     <MudCardContent>
                         <MudText Typo="Typo.h6">Vehicle Information</MudText>
-                        <MudButton OnClick="@clearVehicleForm" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Delete" Color="Color.Error">Clear Forms</MudButton>
                         <MudTextField Value="vehicleData.Owner" Label="Vehicle Owner:" ReadOnly="true" Variant="Variant.Filled" />
-                        <MudTextField Value="citationData.dob" Label="Date of Birth:" ReadOnly="true" Variant="Variant.Filled" />
-                        <MudTextField Value="citationData.home_address" Label="Home Address:" ReadOnly="true" Variant="Variant.Filled" />
                         <MudTextField Value="vehicleData.plate_number" Label="Vehicle Licence Plate Number:" ReadOnly="true" Variant="Variant.Filled" />
                         <MudTextField Value="vehicleData.vin" Label="Vehicle VIN:" ReadOnly="true" Variant="Variant.Filled" />
                         <MudTextField Value="vehicleData.name" Label="Vehicle Name:" ReadOnly="true" Variant="Variant.Filled" />
@@ -126,8 +125,6 @@
                         <MudTextField Value="vehicleData.make" Label="Vehicle Make:" ReadOnly="true" Variant="Variant.Filled" />
                         <MudTextField Value="vehicleData.model" Label="Vehicle Model:" ReadOnly="true" Variant="Variant.Filled" />
                         <MudTextField Value="vehicleData.year_made" Label="Vehicle Year Made:" ReadOnly="true" Variant="Variant.Filled" />
-                        <MudTextField Value="vehicleData.citizen_id" Label="Vehicle Citizen ID Relation:" ReadOnly="true" Variant="Variant.Filled" />
-                        <MudTextField Value="vehicleData.insurer_id" Label="Vehicle Insured ID Relation:" ReadOnly="true" Variant="Variant.Filled" />
                         <MudTextField Value="vehicleData.insurer_name" Label="Vehicle Insured Name Relation:" ReadOnly="true" Variant="Variant.Filled" />
 
                     </MudCardContent>
@@ -176,10 +173,10 @@
                         </tbody>
                     </MudSimpleTable>
                 </MudCardContent>
+}
             </MudTabPanel>
 
-            <MudTabPanel OnClick="((e) => currentTab(3))" Text="Citation Information">
-
+            <MudTabPanel OnClick="((e) => { currentTab(3); SetDisplayDataToNull(3);  })" Text="Citation Information">
                 <div class="info_card">
                     <EditForm Model="@EditContext" OnValidSubmit="@OnValidSubmit">
                         <DataAnnotationsValidator />
@@ -196,15 +193,20 @@
                     </EditForm>
                 </div>
                 <br />
+@if (citationData != null)
+{
                 <div class="info_card">
                     <MudCardContent>
                         <MudText Typo="Typo.h6">Citation Information</MudText>
-                        <MudButton OnClick="@clearCitationForm" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Delete" Color="Color.Error">Clear Forms</MudButton>
                         @*citation information*@
                         <MudTextField Value="@GetCitationType()" Label="Citation Type:" ReadOnly="true" Variant="Variant.Filled" />
                         <MudTextField Value="citationData.is_resolved" Label="Is Resolved:" ReadOnly="true" Variant="Variant.Filled" />
                         @*officer information*@
                         <MudTextField Value="@citationData.officer_id" Label="Officer ID:" ReadOnly="true" Variant="Variant.Filled" />
+                        <MudTextField Value="@citationData.officer_first_name" Label="Officer First Name:" ReadOnly="true" Variant="Variant.Filled" />
+                        <MudTextField Value="@citationData.officer_last_name" Label="Officer Last Name:" ReadOnly="true" Variant="Variant.Filled" />
+                        <MudTextField Value="@((citationData.Is_Police_Officer)?"Highway Patrol Officer":"Municipal Officer")" Label="Officer Type:" ReadOnly="true" Variant="Variant.Filled" />
+                        <MudTextField Value="@(citationData.dept)" Label="Officer Department:" ReadOnly="true" Variant="Variant.Filled" />
                         @*citizen*@
                         @if (citationData.is_citizen)
                         {
@@ -231,6 +233,7 @@
                                    OnClick="@ResolveCitation" Class="ml-auto">Resolve Citation</MudButton>
                     </MudCardContent>
                 </div>
+}
             </MudTabPanel>
 
         </MudTabs>

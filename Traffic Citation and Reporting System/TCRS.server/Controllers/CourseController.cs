@@ -28,7 +28,7 @@ namespace TCRS.Server.Controllers
 
 
         [HttpPut("Passfailstudent")]
-        //[Authorize(Roles = Roles.SchoolRep)]
+        [Authorize(Roles = Roles.SchoolRep)]
         public ActionResult PassFailStudent(StudentData studentData)
         {
             try
@@ -43,7 +43,7 @@ namespace TCRS.Server.Controllers
         }
 
         [HttpGet("Getenrollmentdata")]
-        //[Authorize(Roles = Roles.SchoolRep)]
+        [Authorize(Roles = Roles.SchoolRep)]
         public ActionResult<IEnumerable<CourseManagementData>> GetEnrollmentData([FromHeader] string authorization)
         {
             User user = new User(authorization);
@@ -91,7 +91,8 @@ namespace TCRS.Server.Controllers
                              first_name = (registration.Citizen != null) ? registration.Citizen.first_name : "",
                              middle_name = (registration.Citizen != null) ? registration.Citizen.middle_name : "",
                              last_name = (registration.Citizen != null) ? registration.Citizen.last_name : "",
-                             dob = (registration.Citizen != null) ? registration.Citizen.dob : new DateTime()
+                             dob = (registration.Citizen != null) ? registration.Citizen.dob : new DateTime(),
+                             passed = (registration.Citizen != null) ? registration.passed : false
                          }
                          )));
                     }

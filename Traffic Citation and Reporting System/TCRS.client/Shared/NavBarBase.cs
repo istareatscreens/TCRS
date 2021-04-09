@@ -1,20 +1,21 @@
 ﻿using Microsoft.AspNetCore.Components;
+using System.Threading.Tasks;
 using TCRS.Client.AuthStateProvider;
+using TCRS.Client.BusyOverlay;
 using TCRS.Shared.Contracts;
 
 namespace TCRS.Client.Shared
 {
     public class NavBarBase : ComponentBase
     {
-        [Inject]
-        private IUserService User { get; set; }
+        [Parameter]
+        public RenderFragment NavButtons { get; set; }
 
-        [Inject]
-        private IAuthServiceProvider authenticationStateProvider { get; set; }
-        protected void SignOut()
-        {
-            //Console.WriteLine((User.User == null)?"":User.User.email);
-            authenticationStateProvider.UnsetUser();
-        }
+        [Parameter]
+        public RenderFragment LoginLogout { get; set; }
+
+        [Parameter]
+        public string username { get; set; }
+
     }
 }

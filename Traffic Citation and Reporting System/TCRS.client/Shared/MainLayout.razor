@@ -8,16 +8,19 @@
             <MudDialogProvider />
             <MudSnackbarProvider />
             <div class="main">
+                <BusyOverlay />
                 <!--Universal components go here-->
-                <NavBar>
-                    <NavButtons>
+                    @if(UserService.User != null)
+                    {
+                <NavBar username="@UserService.GetFullName()">
+                    <NavButtons >
                         @if (@UserService.User.isSchool_Rep)
                         {<MudButton Class="navbar__homepage" Link="/Courseposting" Color="Color.Primary" Variant="Variant.Filled">Post Course</MudButton>
                                                     <MudButton Class="navbar__homepage" Link="/Coursemanagement" Color="Color.Primary" Variant="Variant.Filled">Evaluate Courses</MudButton>}
                         @if (UserService.User.isHighway_Patrol_Officer || @UserService.User.isMunicipal_Officer)
                         {<MudButton Class="navbar__homepage" Link="/Citationissuing" Color="Color.Primary" Variant="Variant.Filled">Citation Issuing</MudButton>}
                         @if ((UserService.User.isManager && UserService.User.isMunicipal_Officer) || UserService.User.isHighway_Patrol_Officer)
-                        {<MudButton Class="navbar__homepage" Link="/Lookupportal" Color="Color.Primary" Variant="Variant.Filled"> Lookup Portal </MudButton>}
+                        {<MudButton Class="navbar__homepage" Color="Color.Primary" Variant="Variant.Filled"> Lookup Portal </MudButton>}
                         @if (UserService.User.isManager && (UserService.User.isHighway_Patrol_Officer || UserService.User.isMunicipal_Officer))
                         {<MudButton Class="navbar__homepage" Link="/Employeelookup" Color="Color.Primary" Variant="Variant.Filled">Employee Lookup</MudButton>}
                     </NavButtons>
@@ -25,6 +28,7 @@
                         <MudButton OnClick="@SignOut" Variant="Variant.Filled" Color="Color.Primary" class="navbar__signout-btn">Sign out</MudButton>
                     </LoginLogout>
                 </NavBar>
+                    }
                 <div class="main-body">
                     <!--Render Page-->
                     @Body

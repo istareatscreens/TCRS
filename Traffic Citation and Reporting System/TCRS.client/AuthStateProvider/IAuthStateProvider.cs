@@ -1,10 +1,11 @@
-﻿using TCRS.Shared.Objects.Auth;
+﻿using System.Threading.Tasks;
+using TCRS.Shared.Objects.Auth;
 
 namespace TCRS.Client.AuthStateProvider
 {
     public interface IAuthServiceProvider
     {
-        void UnsetUser();
+        Task UnsetUser();
 
         void SetAuthenticatedState(UserTokens user);
     }

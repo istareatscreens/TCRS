@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components.Forms;
 using MudBlazor;
 using System;
+using TCRS.Client.BusyOverlay;
 using TCRS.Shared.Contracts.CitationManagement;
 using TCRS.Shared.Enums;
 using TCRS.Shared.Objects.Citations;
@@ -21,7 +22,8 @@ namespace TCRS.Client.Pages
             EditContext = new EditContext(CitationData);
         }
 
-        //bool success;
+        [Inject]
+        public BusyOverlayService BusyOverlayService { get; set; }
 
         [Inject]
         private ICitationManager CitationManager { get; set; }
@@ -46,6 +48,7 @@ namespace TCRS.Client.Pages
                 {
                     CitationData.citation_type_id = (int)CitationData.vehicleCitationTypes;
                 }
+                BusyOverlayService.SetBusyState(BusyEnum.Busy);
                 data = await CitationManager.IssueCitation(CitationData);
                 //Clear data from form
                 CitationData = new CitationIssueData();
@@ -56,10 +59,14 @@ namespace TCRS.Client.Pages
             {
                 SnackBar.Add(e.Message, Severity.Error);
             }
+            finally
+            {
+                BusyOverlayService.SetBusyState(BusyEnum.NotBusy);
+            }
         }
 
         protected string Disabled { get; set; }
-        protected CitationIssuingDisplayData data = new CitationIssuingDisplayData();
+        protected CitationIssuingDisplayData data = null;
 
         protected void currentTab(int x)
         {

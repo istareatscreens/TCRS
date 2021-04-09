@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components.Forms;
 using MudBlazor;
 using System;
+using TCRS.Client.BusyOverlay;
 using TCRS.Shared.Contracts;
 using TCRS.Shared.Contracts.CourseManagement;
 using TCRS.Shared.Objects.CourseManagement;
@@ -23,25 +24,11 @@ namespace TCRS.Client.Pages
         [Inject]
         ISnackbar SnackBar { get; set; }
 
+        [Inject]
+        protected BusyOverlayService BusyOverlayService { get; set; }
+
         public string PersonName { get; set; }
         public string PersonID { get; set; }
-
-        // TEMP DATA
-        public Type typeValue { get; set; }
-
-        public enum Type
-        {
-            RunningRed,
-            SeatBeltViolation,
-            FailureToFollowRightOfWay,
-            FailureToSignalWhenChangingLanes,
-            Speeding,
-            DrivingOverAMedian,
-            DrivingIllegally,
-            RunningOverAPedestrianLane,
-            DrivingPastASchoolBuswhenUnloadingLoading,
-            FailureToDriveWithinASpecifiedLane
-        }
 
         protected override void OnInitialized()
         {
@@ -65,6 +52,7 @@ namespace TCRS.Client.Pages
                 CourseData.scheduled = (DateTime)dateSelect;
                 CourseData.citation_type_id = (int)CourseData.CitizenCitationType;
 
+                BusyOverlayService.SetBusyState(BusyEnum.Busy);
                 await CourseManager.CreateCourse(CourseData);
 
                 // reset the forms
@@ -75,6 +63,10 @@ namespace TCRS.Client.Pages
             catch (Exception e)
             {
                 SnackBar.Add(e.Message, Severity.Error);
+            }
+            finally
+            {
+                BusyOverlayService.SetBusyState(BusyEnum.NotBusy);
             }
         }
 

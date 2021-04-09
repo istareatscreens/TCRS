@@ -38,6 +38,10 @@ namespace TCRS.Server.Controllers
             try
             {
                 var citizenData = _db.GetAllLicenseInfoByLicence(license_id, _databaseContext.Server);
+                if(citizenData == null || citizenData.Count()==0)
+                {
+                    return NotFound(new { message = "Citizen with this License ID does not exist" });
+                }
                 var citizenWantedList = _db.GetCitizenWarrants(citizenData.ToList().FirstOrDefault().citizen_id, _databaseContext.Server);
                 var citationData = _db.GetCitationsByLicense(license_id, _databaseContext.Server).ToList().FindAll(citation => !citation.is_resolved);
                 var citizen = citizenData.ToList().Select(citizen => new LookupCitizenDisplayData

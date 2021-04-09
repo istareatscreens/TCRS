@@ -3,6 +3,7 @@ using MudBlazor;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using TCRS.Client.BusyOverlay;
 using TCRS.Shared.Contracts;
 using TCRS.Shared.Objects.CitationResolution;
 using TCRS.Shared.Objects.Citations;
@@ -23,6 +24,9 @@ namespace TCRS.Client.Pages
         [Inject]
         ISnackbar SnackBar { get; set; }
 
+        [Inject]
+        protected BusyOverlayService BusyOverlayService { get; set; }
+
         [Parameter]
         public string citation_number { get; set; }
 
@@ -36,6 +40,7 @@ namespace TCRS.Client.Pages
                 var data = CitationService.GetCitizenVehicleCitations();
                 if (data == null)
                 {
+                    BusyOverlayService.SetBusyState(BusyEnum.Busy);
                     CitationService.SetCitizenVehicleCitations(await CitationManager.CitizenLogin(new CitationResolutionLoginData { citation_number = citation_number }));
                     data = CitationService.GetCitizenVehicleCitations();
                 }
@@ -53,6 +58,10 @@ namespace TCRS.Client.Pages
             catch (Exception e)
             {
                 SnackBar.Add(e.Message, Severity.Error);
+            }
+            finally
+            {
+                BusyOverlayService.SetBusyState(BusyEnum.NotBusy);
             }
         }
 

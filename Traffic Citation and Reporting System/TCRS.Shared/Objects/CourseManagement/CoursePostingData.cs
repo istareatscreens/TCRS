@@ -20,6 +20,11 @@ namespace TCRS.Shared.Objects.CourseManagement
         public int capacity { get; set; }
         public int citation_type_id { get; set; } = (int)CitizenCitationTypes.Speeding;
         public CitizenCitationTypes CitizenCitationType { get; set; } = CitizenCitationTypes.Speeding;
+        
+        public string GetCourseNameAndDate()
+        {
+            return $"Course Name: {name}, Course Date: {scheduled.Day}/{scheduled.Month}/{scheduled.Year}";
+        }
 
     }
 }

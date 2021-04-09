@@ -91,12 +91,12 @@ namespace TCRS.APIAccess
         public async Task<UserTokens> AuthenticateAndGetUserAsync(UserLoginCredentials userLoginCredentials)
         {
             //Post to login end point, get body content, read content as string, deserialize object to json object
-            var response = await _httpClient.PostAsJsonAsync("/api/Users/login", userLoginCredentials);
-            await CheckHttpResponseMessage(response);
-            var result = JsonConvert.DeserializeObject<UserTokens>(
-               await (response)
-                   .Content
-                   .ReadAsStringAsync(), _settings);
+                var response = await _httpClient.PostAsJsonAsync("/api/Users/login", userLoginCredentials);
+                await CheckHttpResponseMessage(response);
+                var result = JsonConvert.DeserializeObject<UserTokens>(
+                   await (response)
+                       .Content
+                       .ReadAsStringAsync(), _settings);
             return result;
         }
 
