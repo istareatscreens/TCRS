@@ -142,6 +142,7 @@ namespace TCRS.Client.Pages
         {
             try
             {
+                BusyOverlayService.SetBusyState(BusyEnum.Busy);
                 // citizen
                 if (curTab == 1)
                 {
@@ -165,6 +166,10 @@ namespace TCRS.Client.Pages
             {
                 SnackBar.Add(e.Message, Severity.Error);
             }
+            finally
+            {
+                BusyOverlayService.SetBusyState(BusyEnum.NotBusy);
+            }
 
         }
 
@@ -172,6 +177,7 @@ namespace TCRS.Client.Pages
         {
             try
             {
+                BusyOverlayService.SetBusyState(BusyEnum.Busy);
                 // citizen
                 if (curTab == 1)
                 {
@@ -190,6 +196,10 @@ namespace TCRS.Client.Pages
             {
                 SnackBar.Add(e.Message, Severity.Error);
             }
+            finally
+            {
+                BusyOverlayService.SetBusyState(BusyEnum.NotBusy);
+            }
 
         }
 
@@ -197,6 +207,7 @@ namespace TCRS.Client.Pages
         {
             try
             {
+                BusyOverlayService.SetBusyState(BusyEnum.Busy);
                 await LookupPortalManager.ResolveCitation(new RemoveCitationObject { citation_number = citationData.citation_number });
                 citationData = await LookupPortalManager.LookupCitationData(LookupData.CitationData);
                 StateHasChanged();
@@ -204,6 +215,10 @@ namespace TCRS.Client.Pages
             catch (Exception e)
             {
                 SnackBar.Add(e.Message, Severity.Error);
+            }
+            finally
+            {
+                BusyOverlayService.SetBusyState(BusyEnum.NotBusy);
             }
         }
     }

@@ -18,7 +18,6 @@ namespace TCRS.Shared.Objects.Lookup
             return first_name + ((middle_name != "") ? " " + middle_name + " " + last_name : " " + last_name);
         }
         //insurance 
-        public string? insurer_name { get; set; }
         public bool is_insured { get; set; }
 
         // licence
@@ -29,6 +28,7 @@ namespace TCRS.Shared.Objects.Lookup
         public string license_class { get; set; }
 
 #nullable enable
+        public string? insurer_name { get; set; }
         public IEnumerable<WarrantData?>? CitizenWantedData { get; set; }
         public IEnumerable<CitationData?>? CitationData { get; set; }
 #nullable restore

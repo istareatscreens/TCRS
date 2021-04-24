@@ -53,15 +53,19 @@ namespace TCRS.Server.Controllers
                     return BadRequest(new { message = "Invalid User Credentials" });
                 }
 
-                var CitationCountbyType = new List<KeyValuePair<int, int>>();
-                var sum = 0;
-                foreach (CitationTypes item in CitationTypes.GetValues(typeof(CitationTypes)))
+                Func<int, List<KeyValuePair<int, int>>> GetCitationCount = (int person_id) =>
                 {
-                    var count = _db.GetCitationCountforPersonbyTypeId(User.person_id, (int)item, start_date, end_date, _databaseContext.Server);
-                    sum += count;
-                    CitationCountbyType.Add(new KeyValuePair<int, int>((int)item, count));
-                }
-                CitationCountbyType.Add(new KeyValuePair<int, int>(0, sum)); //total
+                    var CitationCountbyType = new List<KeyValuePair<int, int>>();
+                    var sum = 0;
+                    foreach (CitationTypes item in CitationTypes.GetValues(typeof(CitationTypes)))
+                    {
+                        var count = _db.GetCitationCountforPersonbyTypeId(person_id, (int)item, start_date, end_date, _databaseContext.Server);
+                        sum += count;
+                        CitationCountbyType.Add(new KeyValuePair<int, int>((int)item, count));
+                    }
+                    CitationCountbyType.Add(new KeyValuePair<int, int>(0, sum)); //total
+                    return CitationCountbyType;
+                };
 
 
                 if (PoliceEmployee != null)
@@ -74,8 +78,8 @@ namespace TCRS.Server.Controllers
                         active = employee.Persons.active,
                         police_dept_id = employee.police_dept_id,
                         police_dept_name = PoliceEmployee.ToList().FirstOrDefault().name,
-                        CitationCountbyType = CitationCountbyType
-                    }));
+                        CitationCountbyType = GetCitationCount(employee.Persons.person_id)
+                    })) ;
                 }
 
                 else if (MunicipalEmployee != null)
@@ -88,7 +92,7 @@ namespace TCRS.Server.Controllers
                         active = employee.Person.active,
                         munic_id = employee.munic_id,
                         municipality_name = MunicipalEmployee.ToList().FirstOrDefault().name,
-                        CitationCountbyType = CitationCountbyType
+                        CitationCountbyType = GetCitationCount(employee.Person.person_id)
                     }));
                 }
             }

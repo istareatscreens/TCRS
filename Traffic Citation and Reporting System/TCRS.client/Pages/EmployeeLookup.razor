@@ -2,6 +2,7 @@
 @attribute [Authorize(Roles = Roles.Manager)]
 @attribute [Authorize(Roles = Roles.HighwayPatrolOfficer + "," + Roles.MunicipalOfficer)]
 @inherits EmployeeLookupBase
+@using TCRS.Shared.Objects.EmployeeLookup;
 
 @using System.ComponentModel.DataAnnotations
 <div class="regular-page">
@@ -12,7 +13,7 @@
                 <DataAnnotationsValidator />
                 <MudCard>
                     <MudCardContent>
-                        <MudSelect Label="Select Employee" @bind-Value="selectedEmployee" Variant="Variant.Outlined">
+                        <MudSelect Label="Select Employee" ValueChanged="(Employee employee)=>ChangeDsiplayedData(employee)"  Variant="Variant.Outlined">
                             @foreach (var emp in EmployeeNames)
                             {
                                 <MudSelectItem Value="@emp">@emp.GetEmployeeName()</MudSelectItem>
@@ -38,10 +39,10 @@
                 <MudTextField @bind-Value="@displayActiveEmployee.active" Label="Employee Account Active:" ReadOnly="true" Variant="Variant.Filled" />
                 @if (displayActiveEmployee.police_dept_name != "")
                 {
-                    <MudTextField @bind-Value="@displayActiveEmployee.police_dept_name" Label="Police Department ID:" ReadOnly="true" Variant="Variant.Filled" /> }
+                    <MudTextField @bind-Value="@displayActiveEmployee.municipality_name" Label="Municipality Department ID:" ReadOnly="true" Variant="Variant.Filled" />}
                 else
                 {
-                    <MudTextField @bind-Value="@displayActiveEmployee.municipality_name" Label="Municipality Department ID:" ReadOnly="true" Variant="Variant.Filled" />}
+                    <MudTextField @bind-Value="@displayActiveEmployee.police_dept_name" Label="Police Department ID:" ReadOnly="true" Variant="Variant.Filled" /> }
             </MudCardContent>
         </div>
         <br />

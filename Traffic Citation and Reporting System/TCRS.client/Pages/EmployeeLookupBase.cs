@@ -54,7 +54,16 @@ namespace TCRS.Client.Pages
             base.OnInitialized();
             EditContext = new EditContext(dateRange);
         }
-
+        protected Employee ChangeDsiplayedData(Employee employee)
+        {
+            selectedEmployee = employee;
+            if (EmployeeLookupData != null)
+            {
+                displayActiveEmployee = EmployeeLookupData.Find(item => item.GetEmployeeName() == employee.GetEmployeeName());
+                StateHasChanged();
+            }
+            return employee;
+        }
         protected async void OnValidSubmit(EditContext context)
         {
 
@@ -73,8 +82,11 @@ namespace TCRS.Client.Pages
                 var data = await EmployeeManager.GetEmployeeLookup(start_date, end_date);
                 this.EmployeeLookupData = data;
 
-                // Set the selected employee to be active
-                displayActiveEmployee = EmployeeLookupData.Find(item => item.GetEmployeeName() == selectedEmployee.GetEmployeeName());
+                if (selectedEmployee != null)
+                {
+                    // Set the selected employee to be active
+                    displayActiveEmployee = EmployeeLookupData.Find(item => item.GetEmployeeName() == selectedEmployee.GetEmployeeName());
+                }
 
                 //success = true;
                 StateHasChanged();

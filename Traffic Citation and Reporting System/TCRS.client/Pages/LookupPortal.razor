@@ -61,6 +61,9 @@
                     </MudCard>
                 </div>
                 <br />
+
+                @if(warrantCitizenData.Count() > 0)
+                {
                 <MudCardContent>
                     <MudText Typo="Typo.h6">Warrant Information</MudText>
                     <MudSimpleTable Hover="true" FixedHeader="true">
@@ -89,8 +92,9 @@
                     </MudSimpleTable>
 
                 </MudCardContent>
+                    }
 
-}
+                }
             </MudTabPanel>
             <MudTabPanel OnClick="((e) => { currentTab(2); SetDisplayDataToNull(2);  })" Text="Vehicle Information">
 
@@ -117,7 +121,8 @@
                 <div class="info_card">
                     <MudCardContent>
                         <MudText Typo="Typo.h6">Vehicle Information</MudText>
-                        <MudTextField Value="vehicleData.Owner" Label="Vehicle Owner:" ReadOnly="true" Variant="Variant.Filled" />
+                        <MudTextField Value="vehicleData.Owner.GetOffenderName()" Label="Vehicle Owner:" ReadOnly="true" Variant="Variant.Filled" />
+                        <MudTextField Value="vehicleData.Owner.dob" Label="Vehicle Owner:" ReadOnly="true" Variant="Variant.Filled" />
                         <MudTextField Value="vehicleData.plate_number" Label="Vehicle Licence Plate Number:" ReadOnly="true" Variant="Variant.Filled" />
                         <MudTextField Value="vehicleData.vin" Label="Vehicle VIN:" ReadOnly="true" Variant="Variant.Filled" />
                         <MudTextField Value="vehicleData.name" Label="Vehicle Name:" ReadOnly="true" Variant="Variant.Filled" />
@@ -144,8 +149,9 @@
                             <MudButton OnClick="postWarrantData" ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary">Issue Warrant</MudButton>
                         </MudCardContent>
                     </MudCard>
-                </div>
-                <br />
+                </div><br />
+                @if (warrantVehicleData.Count() > 0)
+                {
                 <MudCardContent>
                     <MudText Typo="Typo.h6">Warrant Information</MudText>
                     <MudSimpleTable Hover="true" FixedHeader="true">
@@ -173,6 +179,7 @@
                         </tbody>
                     </MudSimpleTable>
                 </MudCardContent>
+                }
 }
             </MudTabPanel>
 
